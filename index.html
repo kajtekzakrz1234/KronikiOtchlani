@@ -1,0 +1,2665 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kroniki Otchłani</title>
+<style>
+  :root {
+    --bg-dark: #0b0d13;
+    --bg-panel: #141824;
+    --bg-card: #1c2233;
+    --border: #2e3854;
+    --border-bright: #4e6094;
+    --text: #e6ecff;
+    --text-dim: #8c98bd;
+    --gold: #f5c542;
+    --essence: #c678ff;
+    --rune: #38e8ff;
+    --hp: #4ade80;
+    --mp: #60a5fa;
+    --danger: #f87171;
+    --accent: #f97316;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Courier New', Courier, monospace;
+    image-rendering: pixelated;
+  }
+
+  body {
+    background: radial-gradient(circle at top, #171d2e 0%, var(--bg-dark) 75%);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 14px;
+  }
+
+  #app {
+    width: 100%;
+    max-width: 1120px;
+    background: var(--bg-panel);
+    border: 3px solid var(--border);
+    box-shadow: 0 0 35px rgba(0, 0, 0, 0.85), inset 0 0 0 2px #090b10;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .topbar {
+    background: #0e121c;
+    border-bottom: 3px solid var(--border);
+    padding: 10px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .game-logo {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--gold);
+    text-shadow: 2px 2px 0 #000;
+    letter-spacing: 1px;
+  }
+
+  .meta-currencies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .pill {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.88rem;
+    font-weight: bold;
+  }
+
+  .pill.essence { color: var(--essence); border-color: #6b3899; }
+  .pill.gold { color: var(--gold); border-color: #8a6d1b; }
+  .pill.rune { color: var(--rune); border-color: #1c788a; }
+
+  button {
+    background: #232b42;
+    color: var(--text);
+    border: 2px solid var(--border-bright);
+    padding: 8px 14px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    box-shadow: 0 3px 0 #090b10;
+    transition: transform 0.06s, background 0.12s, border-color 0.12s;
+  }
+
+  button:hover:not(:disabled) {
+    background: #2f3b5c;
+    border-color: var(--gold);
+  }
+
+  button:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #090b10;
+  }
+
+  button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  button.primary { background: #2c4a34; border-color: var(--hp); color: #d8ffe4; }
+  button.primary:hover:not(:disabled) { background: #386143; }
+
+  button.essence-btn { background: #3c2357; border-color: var(--essence); color: #f4e3ff; }
+  button.essence-btn:hover:not(:disabled) { background: #502e75; }
+
+  button.danger { background: #522226; border-color: var(--danger); color: #ffe0e0; }
+  button.danger:hover:not(:disabled) { background: #6e2c32; }
+
+  button.gold-btn { background: #4f3d16; border-color: var(--gold); color: #fff4cc; }
+  button.gold-btn:hover:not(:disabled) { background: #6b521d; }
+
+  .screen {
+    display: none;
+    padding: 18px;
+  }
+
+  .screen.active {
+    display: block;
+  }
+
+  .start-hero {
+    text-align: center;
+    padding: 24px 12px 18px;
+    background: linear-gradient(180deg, rgba(35,43,66,0.45) 0%, rgba(14,18,28,0.2) 100%);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 18px;
+  }
+
+  .start-hero h1 {
+    font-size: 2rem;
+    color: var(--gold);
+    text-shadow: 3px 3px 0 #000;
+    margin-bottom: 8px;
+  }
+
+  .start-hero p {
+    color: var(--text-dim);
+    max-width: 680px;
+    margin: 0 auto 14px;
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+
+  .start-nav-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .nav-tile {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .nav-tile h3 {
+    color: var(--gold);
+    font-size: 1.05rem;
+  }
+
+  .nav-tile p {
+    color: var(--text-dim);
+    font-size: 0.84rem;
+    line-height: 1.4;
+  }
+
+  .slots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 12px;
+  }
+
+  .slot-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .slot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+  }
+
+  .creator-grid {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 780px) {
+    .creator-grid { grid-template-columns: 1fr; }
+  }
+
+  .panel-box {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    padding: 14px;
+  }
+
+  .panel-box h3 {
+    color: var(--gold);
+    margin-bottom: 10px;
+    font-size: 1rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+  }
+
+  .form-row {
+    margin-bottom: 12px;
+  }
+
+  .form-row label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+
+  input[type="text"], select, textarea {
+    width: 100%;
+    background: #0e121c;
+    color: var(--text);
+    border: 2px solid var(--border);
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+  .choice-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+    gap: 8px;
+  }
+
+  .choice-card {
+    background: #121622;
+    border: 2px solid var(--border);
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .choice-card.selected {
+    border-color: var(--gold);
+    background: #222940;
+  }
+
+  .tree-branches {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+    gap: 14px;
+    margin-top: 12px;
+  }
+
+  .branch-col {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .branch-title {
+    font-size: 1rem;
+    font-weight: bold;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--border);
+    text-align: center;
+  }
+
+  .tree-node {
+    background: #111521;
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    padding: 10px;
+    position: relative;
+  }
+
+  .tree-node.maxed {
+    border-color: var(--gold);
+    background: #242016;
+  }
+
+  .tree-node.unlocked {
+    border-color: var(--essence);
+  }
+
+  .tree-node.locked {
+    opacity: 0.6;
+  }
+
+  .node-top {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+
+  .node-desc {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    line-height: 1.35;
+  }
+
+  .run-hud {
+    background: #0e121c;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 14px;
+    display: grid;
+    grid-template-columns: 110px 1fr auto;
+    gap: 14px;
+    align-items: center;
+  }
+
+  @media (max-width: 780px) {
+    .run-hud { grid-template-columns: 1fr; }
+  }
+
+  .bars-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .bar-wrap {
+    background: #181e2e;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 0.82rem;
+  }
+
+  .bar-fill {
+    height: 6px;
+    background: var(--hp);
+    margin-top: 4px;
+    border-radius: 2px;
+    transition: width 0.2s;
+  }
+
+  .bar-fill.mp { background: var(--mp); }
+  .bar-fill.exp { background: var(--gold); }
+
+  .hub-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 10px;
+  }
+
+  .hub-subview {
+    display: none;
+  }
+
+  .hub-subview.active {
+    display: block;
+  }
+
+  .battle-canvas-wrap {
+    border: 3px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    background: #07090e;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  canvas#sceneCanvas, canvas#battleCanvas {
+    width: 100%;
+    height: 230px;
+    display: block;
+  }
+
+  .combatants-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  @media (max-width: 720px) {
+    .combatants-row { grid-template-columns: 1fr; }
+  }
+
+  .unit-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 8px;
+  }
+
+  .unit-card.targeted {
+    border-color: var(--gold);
+    box-shadow: 0 0 10px rgba(245, 197, 66, 0.25);
+  }
+
+  .status-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 5px;
+  }
+
+  .badge {
+    font-size: 0.74rem;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: #262f47;
+    border: 1px solid var(--border-bright);
+  }
+
+  .badge.lvl-lock {
+    background: #33191e;
+    border-color: var(--danger);
+    color: #fca5a5;
+  }
+
+  .badge.lvl-ok {
+    background: #172e22;
+    border-color: var(--hp);
+    color: #86efac;
+  }
+
+  .battle-log-box {
+    background: #0c0f17;
+    border: 2px solid var(--border);
+    padding: 10px 12px;
+    border-radius: 5px;
+    min-height: 56px;
+    margin-bottom: 12px;
+    font-size: 0.88rem;
+    line-height: 1.4;
+    color: #dbeafe;
+  }
+
+  .actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+    gap: 8px;
+  }
+
+  .items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 10px;
+  }
+
+  .item-card {
+    background: #121622;
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .item-card.equipped {
+    border-color: var(--hp);
+    background: #14241c;
+  }
+
+  .item-card.locked-lvl {
+    border-color: #5a2830;
+    background: #191117;
+    opacity: 0.82;
+  }
+
+  .crate-roller {
+    background: #0b0e17;
+    border: 3px solid var(--essence);
+    border-radius: 6px;
+    padding: 18px;
+    text-align: center;
+    margin: 14px 0;
+  }
+
+  .crate-window {
+    font-size: 1.15rem;
+    font-weight: bold;
+    padding: 16px;
+    background: #181d2e;
+    border: 2px dashed var(--gold);
+    border-radius: 5px;
+    margin: 12px auto;
+    max-width: 520px;
+    min-height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    background: #1b2236;
+    border: 2px solid var(--gold);
+    color: var(--text);
+    padding: 10px 16px;
+    border-radius: 5px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.75);
+    z-index: 999;
+    font-size: 0.88rem;
+    display: none;
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="topbar">
+    <div class="game-logo">⚔️ KRONIKI OTCHŁANI</div>
+    <div class="meta-currencies">
+      <div class="pill essence" title="Waluta premium za bossów i trudnych wrogów">🔮 Esencja: <span id="metaEssence">0</span></div>
+      <div class="pill rune" title="Rzadkie runy do ulepszania ekwipunku w Kuźni">💠 Runy: <span id="metaRunes">0</span></div>
+      <button onclick="openMainMenu()">🏠 Menu Główne</button>
+      <button onclick="openGlobalTree()">🌳 Drzewko</button>
+      <button onclick="openSettings()">⚙️ Ustawienia</button>
+    </div>
+  </div>
+
+  <!-- EKRAN 1: MENU STARTOWE -->
+  <div id="screen-start" class="screen active">
+    <div class="start-hero">
+      <h1>KRONIKI OTCHŁANI</h1>
+      <p>Taktyczne RPG roguelike w stylu pixel-art. Przemierzaj losowe biomy co 10 etapów, walcz u boku kompanów w dwuwalkach, zdobywaj rzadkie Runy i Esencję Otchłani, otwieraj skrzynie i rozwijaj 4-gałęziowe drzewko umiejętności.</p>
+      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+        <button class="primary" onclick="openCreator()">➕ Nowa Wyprawa (Run)</button>
+        <button class="essence-btn" onclick="openGlobalTree()">🌳 Drzewko Umiejętności (4 Gałęzie)</button>
+        <button class="gold-btn" onclick="openGlobalEssenceShop()">🔮 Sklep Esencji & Skrzynie</button>
+        <button onclick="openSettings()">⚙️ Ustawienia & Poradnik GitHub</button>
+      </div>
+    </div>
+
+    <div class="start-nav-grid">
+      <div class="nav-tile">
+        <h3>🌲 Losowe Biomy & Trudności</h3>
+        <p>Co 10 etapów trafiasz do nowej krainy z unikalnymi wrogami i efektami terenu. Wybierz poziom trudności runu: Łatwy (0.75x), Normalny (1x), Trudny (1.25x) lub Szalony (1.75x).</p>
+      </div>
+      <div class="nav-tile">
+        <h3>🛡️ Tarcze, Efekty & Kuźnia</h3>
+        <p>Miecze, włócznie, łuki, kostury i tarcze z szansą na 100% blok, kryt lub podpalenie. Część sprzętu i umiejętności odblokowuje się wraz z poziomem w runie.</p>
+      </div>
+      <div class="nav-tile">
+        <h3>🐺 Kompani & Dwuwalki 2v2</h3>
+        <p>Rekrutuj towarzyszy w wydarzeniach lub ze skrzynek i staw czoła duetom przeciwników w taktycznych starciach turowych.</p>
+      </div>
+      <div class="nav-tile">
+        <h3>💾 3 Sloty Zapisu + Chmura JSON</h3>
+        <p>Prowadź do 3 niezależnych wypraw jednocześnie. Twój postęp metaprogresji zapisuje się lokalnie i można go wyeksportować.</p>
+      </div>
+    </div>
+
+    <h3 style="color:var(--gold); margin-bottom:10px;">📂 Sloty Zapisu Wypraw (Maksymalnie 3 Runy)</h3>
+    <div id="saveSlotsContainer" class="slots-grid"></div>
+  </div>
+
+  <!-- EKRAN 2: KREATOR POSTACI I RUNU -->
+  <div id="screen-creator" class="screen">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+      <h2 style="color:var(--gold);">🧙 Kreator Bohatera i Parametry Runu</h2>
+      <button onclick="openMainMenu()">← Powrót do Menu</button>
+    </div>
+
+    <div class="creator-grid">
+      <div class="panel-box" style="text-align:center;">
+        <h3>Podgląd Postaci</h3>
+        <canvas id="previewCanvas" width="140" height="140" style="background:#0b0e17; border:2px solid var(--border); border-radius:6px; margin:8px auto; display:block;"></canvas>
+        <div class="form-row" style="text-align:left; margin-top:10px;">
+          <label>Imię bohatera:</label>
+          <input type="text" id="charNameInput" value="Wędrowiec" maxlength="18">
+        </div>
+        <div class="form-row" style="text-align:left;">
+          <label>Kolor peleryny / zbroi:</label>
+          <select id="charColorSelect" onchange="drawPreviewAvatar()">
+            <option value="#3b82f6">Szafirowy Błękit</option>
+            <option value="#ef4444">Karmazynowa Czerwień</option>
+            <option value="#22c55e">Szmaragdowy Las</option>
+            <option value="#a855f7">Fiolet Otchłani</option>
+            <option value="#f59e0b">Złoto Słońca</option>
+            <option value="#e2e8f0">Srebrzysty Świt</option>
+          </select>
+        </div>
+        <div class="form-row" style="text-align:left;">
+          <label>Slot zapisu:</label>
+          <select id="targetSlotSelect">
+            <option value="0">Slot 1</option>
+            <option value="1">Slot 2</option>
+            <option value="2">Slot 3</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="panel-box">
+        <h3>1. Wybierz Klasę Postaci</h3>
+        <div id="classChoices" class="choice-cards" style="margin-bottom:14px;"></div>
+
+        <h3>2. Wybierz Wrodzony Żywioł</h3>
+        <div id="elementChoices" class="choice-cards" style="margin-bottom:14px;"></div>
+
+        <h3>3. Poziom Trudności Runu</h3>
+        <div id="difficultyChoices" class="choice-cards" style="margin-bottom:16px;"></div>
+
+        <button class="primary" style="width:100%; padding:12px; font-size:1rem;" onclick="startNewRun()">⚔️ Rozpocznij Wyprawę</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EKRAN 3: DRZEWKO UMIEJĘTNOŚCI -->
+  <div id="screen-tree" class="screen">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
+      <div>
+        <h2 style="color:var(--essence);">🌳 Drzewko Umiejętności Otchłani</h2>
+        <p style="color:var(--text-dim); font-size:0.86rem;">Stałe ulepszenia aktywne we wszystkich wyprawach. Ulepszaj za Esencję Otchłani zdobywaną z bossów (etapy 10, 20, 30...).</p>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button id="treeBackToRunBtn" class="primary" style="display:none;" onclick="returnToRun()">← Wróć do Wyprawy</button>
+        <button onclick="openMainMenu()">🏠 Menu Główne</button>
+      </div>
+    </div>
+
+    <div id="treeBranchesContainer" class="tree-branches"></div>
+  </div>
+
+  <!-- EKRAN 4: SKLEP ESENCJI & SKRZYNIE LOSU -->
+  <div id="screen-essence-shop" class="screen">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+      <div>
+        <h2 style="color:var(--essence);">🔮 Sklep Esencji Otchłani & Skrzynie Losu</h2>
+        <p style="color:var(--text-dim); font-size:0.86rem;">Wydawaj walutę premium na animowane skrzynie, księgi odblokowujące zaklęcia klasowe oraz błogosławieństwa na aktywny run.</p>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button id="essenceBackToRunBtn" class="primary" style="display:none;" onclick="returnToRun()">← Wróć do Wyprawy</button>
+        <button onclick="openMainMenu()">🏠 Menu Główne</button>
+      </div>
+    </div>
+
+    <div class="crate-roller">
+      <h3 style="color:var(--gold);">🎁 Skrzynia Przeznaczenia (Koszt: 15 Esencji)</h3>
+      <p style="color:var(--text-dim); font-size:0.84rem; margin-top:4px;">Nagrody: Odblokowanie zamkniętych zaklęć/ataków klasowych, jednorazowy kompan na run, stały boost statystyk na cały run lub zwrot Esencji!</p>
+      <div id="crateWindow" class="crate-window">Kliknij przycisk poniżej, aby otworzyć skrzynię!</div>
+      <button id="openCrateBtn" class="essence-btn" onclick="openLootCrate()">🎲 Otwórz Skrzynię (15 🔮)</button>
+    </div>
+
+    <h3 style="color:var(--gold); margin:14px 0 8px;">📜 Błogosławieństwa na Aktywny Run i Księgi Umiejętności</h3>
+    <div id="essenceShopItems" class="items-grid"></div>
+  </div>
+
+  <!-- EKRAN 5: USTAWIENIA & PORADNIK GITHUB -->
+  <div id="screen-settings" class="screen">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+      <h2 style="color:var(--gold);">⚙️ Ustawienia Gry i Zarządzanie Danymi</h2>
+      <div style="display:flex; gap:8px;">
+        <button id="settingsBackToRunBtn" class="primary" style="display:none;" onclick="returnToRun()">← Wróć do Wyprawy</button>
+        <button onclick="openMainMenu()">🏠 Menu Główne</button>
+      </div>
+    </div>
+
+    <div class="creator-grid" style="grid-template-columns: 1fr 1fr;">
+      <div class="panel-box">
+        <h3>🔊 Dźwięk i Interfejs</h3>
+        <div class="form-row">
+          <label><input type="checkbox" id="sfxToggle" checked onchange="updateSettings()"> Włącz efekty dźwiękowe (Retro Web Audio)</label>
+        </div>
+        <div class="form-row">
+          <label>Głośność efektów: <span id="volLabel">50%</span></label>
+          <input type="range" id="volRange" min="0" max="100" value="50" style="width:100%;" oninput="updateSettings()">
+        </div>
+        <div class="form-row">
+          <label><input type="checkbox" id="fastAnimToggle" onchange="updateSettings()"> Szybkie animacje skrzynek i walki</label>
+        </div>
+
+        <h3 style="margin-top:16px;">💾 Eksport / Import Zapisu (JSON)</h3>
+        <p style="font-size:0.82rem; color:var(--text-dim); margin-bottom:8px;">Przenieś swoje drzewko, Esencję i 3 sloty runów między przeglądarkami lub urządzeniami.</p>
+        <div style="display:flex; gap:8px; margin-bottom:8px;">
+          <button onclick="exportSaveJson()">📤 Eksportuj kod zapisu</button>
+          <button onclick="importSaveJson()">📥 Wczytaj z pola poniżej</button>
+        </div>
+        <textarea id="jsonSaveBox" rows="4" placeholder="Tutaj pojawi się wyeksportowany zapis lub wklej swój zapis JSON..."></textarea>
+        <div style="margin-top:12px;">
+          <button class="danger" onclick="hardResetAll()">🗑️ Wyczyść wszystkie dane gry</button>
+        </div>
+      </div>
+
+      <div class="panel-box">
+        <h3>🛠️ Jak samemu edytować grę na GitHubie?</h3>
+        <div style="font-size:0.83rem; color:var(--text-dim); line-height:1.5;">
+          <p style="margin-bottom:8px;"><strong style="color:var(--text);">1. Hosting na GitHub Pages:</strong> Wrzuć ten plik jako <code>index.html</code> do repozytorium na GitHubie i włącz <em>Settings → Pages</em>. Gra działa w 100% po stronie przeglądarki (<code>localStorage</code>).</p>
+          <p style="margin-bottom:8px;"><strong style="color:var(--text);">2. Dodawanie broni, tarcz i zbroi:</strong> Odszukaj w kodzie tablicę <code>const ITEMS_CATALOG = [</code>. Skopiuj dowolny wiersz, nadaj nowe <code>id</code> i ustaw wymagany poziom w runie (<code>reqLvl</code>) oraz statystyki: <code>atk</code>, <code>def</code>, <code>critBonus</code> (% na kryt), <code>blockChance</code> (% na 100% blok) lub <code>statusEffect</code> (<code>'burn'</code>, <code>'poison'</code>, <code>'freeze'</code>).</p>
+          <p style="margin-bottom:8px;"><strong style="color:var(--text);">3. Dodawanie zaklęć i ataków klas:</strong> Odszukaj <code>const SKILLS_DB = [</code>. Możesz dodać nowe umiejętności z wymaganym poziomem (<code>reqLvl</code>) lub zablokowane do zdobycia ze skrzynki (<code>crateOnly: true</code>).</p>
+          <p style="margin-bottom:8px;"><strong style="color:var(--text);">4. Mnożniki trudności:</strong> Edytuj obiekt <code>DIFFICULTIES</code>, aby dopasować mnożniki wrogów, złota podczas runu oraz nagród i dropów (<code>0.75x</code>, <code>1x</code>, <code>1.25x</code>, <code>1.75x</code>).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EKRAN 6: AKTYWNA WYPRAWA -->
+  <div id="screen-run" class="screen">
+    <div class="run-hud">
+      <canvas id="hudAvatarCanvas" width="96" height="96" style="background:#080a10; border:2px solid var(--border); border-radius:4px;"></canvas>
+      <div>
+        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+          <strong id="hudName" style="font-size:1.1rem; color:var(--gold);">Bohater</strong>
+          <span id="hudClassBadge" class="badge">Klasa</span>
+          <span id="hudBiomeBadge" class="badge" style="border-color:var(--hp);">Biom</span>
+          <span id="hudStageBadge" class="badge" style="border-color:var(--gold);">Etap 1/30</span>
+          <span id="hudDiffBadge" class="badge">Normalny</span>
+        </div>
+        <div class="bars-grid">
+          <div class="bar-wrap">
+            HP: <strong id="hudHpText">100/100</strong>
+            <div class="bar-wrap" style="padding:0; border:none;"><div id="hudHpBar" class="bar-fill" style="width:100%"></div></div>
+          </div>
+          <div class="bar-wrap">
+            MP: <strong id="hudMpText">50/50</strong>
+            <div class="bar-wrap" style="padding:0; border:none;"><div id="hudMpBar" class="bar-fill mp" style="width:100%"></div></div>
+          </div>
+          <div class="bar-wrap">
+            EXP (Poz <span id="hudLvl">1</span>): <strong id="hudExpText">0/100</strong>
+            <div class="bar-wrap" style="padding:0; border:none;"><div id="hudExpBar" class="bar-fill exp" style="width:0%"></div></div>
+          </div>
+          <div class="bar-wrap">
+            💰 Złoto: <strong id="hudGold" style="color:var(--gold);">0</strong> | ⚔️ <span id="hudAtk">10</span> 🛡️ <span id="hudDef">5</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <button class="primary" onclick="saveCurrentRun(true)">💾 Zapisz Run</button>
+        <button onclick="openMainMenu()">🏠 Menu</button>
+      </div>
+    </div>
+
+    <div id="hubTabs" class="hub-tabs">
+      <button onclick="switchHubView('explore')">🗺️ Wyprawa & Wydarzenia</button>
+      <button onclick="switchHubView('inventory')">🎒 Ekwipunek & Kompani</button>
+      <button onclick="switchHubView('shop')">🏪 Targ Złota (Sklep Runu)</button>
+      <button onclick="switchHubView('forge')">⚒️ Kuźnia Runiczna</button>
+      <button class="essence-btn" onclick="openRunEssenceShop()">🔮 Sklep Esencji & Skrzynie</button>
+      <button class="essence-btn" onclick="openRunTree()">🌳 Drzewko</button>
+    </div>
+
+    <div id="subview-explore" class="hub-subview active">
+      <div class="battle-canvas-wrap">
+        <canvas id="sceneCanvas" width="1060" height="230"></canvas>
+      </div>
+      <div id="exploreCard" class="panel-box"></div>
+    </div>
+
+    <div id="subview-battle" class="hub-subview">
+      <div class="battle-canvas-wrap">
+        <canvas id="battleCanvas" width="1060" height="230"></canvas>
+      </div>
+
+      <div class="combatants-row">
+        <div>
+          <h4 style="color:var(--hp); margin-bottom:6px;">🛡️ Twoja Drużyna (Gracz + Kompani)</h4>
+          <div id="alliesContainer"></div>
+        </div>
+        <div>
+          <h4 style="color:var(--danger); margin-bottom:6px;">👹 Przeciwnicy (Kliknij wroga, aby wybrać cel)</h4>
+          <div id="enemiesContainer"></div>
+        </div>
+      </div>
+
+      <div id="battleLog" class="battle-log-box">Walka rozpoczęta!</div>
+      <div id="battleActions" class="actions-grid"></div>
+    </div>
+
+    <div id="subview-inventory" class="hub-subview">
+      <div class="creator-grid" style="grid-template-columns: 1fr 1fr; margin-bottom:14px;">
+        <div class="panel-box">
+          <h3>⚔️ Założony Ekwipunek</h3>
+          <div id="equippedSlotsBox"></div>
+        </div>
+        <div class="panel-box">
+          <h3>🐺 Aktywni Kompani (<span id="compCountLabel">0/1</span>)</h3>
+          <div id="companionsBox"></div>
+        </div>
+      </div>
+
+      <div class="panel-box" style="margin-bottom:14px;">
+        <h3>📖 Odblokowane Umiejętności i Zaklęcia Klasy</h3>
+        <div id="learnedSkillsBox" class="items-grid"></div>
+      </div>
+
+      <div class="panel-box">
+        <h3>🎒 Plecak</h3>
+        <div id="backpackGrid" class="items-grid"></div>
+      </div>
+    </div>
+
+    <div id="subview-shop" class="hub-subview">
+      <div class="panel-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+          <div>
+            <h3>🏪 Targ Złota (Ekonomia Progresywna i Wymagania Poziomu)</h3>
+            <p id="shopEconomyInfo" style="font-size:0.83rem; color:var(--text-dim);"></p>
+          </div>
+          <button onclick="rerollShop()">🔄 Odśwież ofertę (<span id="rerollCostLabel">35</span> zl)</button>
+        </div>
+        <div id="goldShopGrid" class="items-grid"></div>
+      </div>
+    </div>
+
+    <div id="subview-forge" class="hub-subview panel-box">
+      <h3>⚒️ Kuźnia Runiczna (Ulepszanie za rzadkie Runy 💠)</h3>
+      <p style="font-size:0.84rem; color:var(--text-dim); margin-bottom:12px;">Runy wypadają z potworów zgodnie z mnożnikiem trudności i szansą dropu. Każdy poziom ulepszenia wzmacnia bazowe statystyki założonej broni, tarczy lub pancerza.</p>
+      <div id="forgeGrid" class="items-grid"></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const DIFFICULTIES = {
+  easy: {
+    id: 'easy', name: 'Łatwy (0.75x)',
+    desc: 'Słabsi wrogowie i więcej złota (+35%) podczas runu, ale tylko 0.75x nagród rzadkich, Esencji i szans na drop.',
+    enemyMult: 0.78,
+    runGoldMult: 1.35,
+    rewardMult: 0.75,
+    dropMult: 0.75,
+    shopMult: 0.90
+  },
+  normal: {
+    id: 'normal', name: 'Normalny (1x)',
+    desc: 'Standardowa siła wrogów oraz 1x złota, nagród i szans na drop.',
+    enemyMult: 1.0,
+    runGoldMult: 1.0,
+    rewardMult: 1.0,
+    dropMult: 1.0,
+    shopMult: 1.0
+  },
+  hard: {
+    id: 'hard', name: 'Trudny (1.25x)',
+    desc: 'Silniejsi wrogowie (+32% HP/ATK) oraz 1.25x nagród (złoto, EXP, Esencja) i 1.25x szans na drop.',
+    enemyMult: 1.32,
+    runGoldMult: 1.25,
+    rewardMult: 1.25,
+    dropMult: 1.25,
+    shopMult: 1.15
+  },
+  madness: {
+    id: 'madness', name: 'Szalony (1.75x)',
+    desc: 'Bardzo ciężcy wrogowie (+75% HP/ATK), ale aż 1.75x nagród (złoto, EXP, Esencja) i 1.75x szans na drop!',
+    enemyMult: 1.75,
+    runGoldMult: 1.75,
+    rewardMult: 1.75,
+    dropMult: 1.75,
+    shopMult: 1.30
+  }
+};
+
+const CLASSES = [
+  { id: 'Paladyn',  name: 'Paladyn',  hp: 150, mp: 75,  atk: 12, def: 8,  crit: 8,  spellMult: 0.85, desc: 'Mistrz tarczy i Światła. Wysoka obrona, silny przeciw Nieumarłym.' },
+  { id: 'Mag',      name: 'Mag',      hp: 105, mp: 135, atk: 9,  def: 4,  crit: 10, spellMult: 1.40, desc: 'Potężne zaklęcia obszarowe i żywioły. Niska obrona fizyczna.' },
+  { id: 'Lowca',    name: 'Łowca',    hp: 125, mp: 85,  atk: 14, def: 6,  crit: 20, spellMult: 0.75, desc: 'Wysoka szansa na trafienie krytyczne z łuków i włóczni.' },
+  { id: 'Wojownik', name: 'Wojownik', hp: 165, mp: 60,  atk: 15, def: 7,  crit: 12, spellMult: 0.65, desc: 'Potężny atak wręcz i duża pula zdrowia.' },
+  { id: 'Nekromanta',name:'Nekromanta',hp:115, mp: 120, atk: 10, def: 5,  crit: 11, spellMult: 1.30, desc: 'Wysysa życie i nakłada klątwy osłabiające wrogów.' }
+];
+
+const ELEMENTS = [
+  { id: 'Swiatlo', name: 'Światło', color: '#facc15', desc: '+45% obrażeń przeciw Nieumarłym, Zjawom i Mrokowi.' },
+  { id: 'Ogien',   name: 'Ogień',   color: '#f87171', desc: '+30% przeciw Bestiom i Naturze. Szansa na podpalenie.' },
+  { id: 'Mroz',    name: 'Mróz',    color: '#38bdf8', desc: '+35% przeciw Ogniowi i Demonom. Spowalnia wrogów.' },
+  { id: 'Mrok',    name: 'Mrok',    color: '#c084fc', desc: '+25% przeciw żywym istotom i Gołemom.' },
+  { id: 'Natura',  name: 'Natura',  color: '#4ade80', desc: '+30% przeciw Gołemom i Bestiom. Trucizna.' }
+];
+
+// reqLvl = wymagany poziom bohatera w danym runie, aby kupić/użyć przedmiotu w sklepie
+const ITEMS_CATALOG = [
+  { id: 1,  name: 'Mikstura Zdrowia',           cat: 'MiksturaHP', subType: 'potion', reqLvl: 1, val: 70,  price: 28,  desc: 'Przywraca 70 HP.' },
+  { id: 2,  name: 'Wielki Eliksir Życia',       cat: 'MiksturaHP', subType: 'potion', reqLvl: 3, val: 155, price: 65,  desc: 'Przywraca 155 HP. (Wym. Poz. 3)' },
+  { id: 3,  name: 'Nektar Feniksa',            cat: 'MiksturaHP', subType: 'potion', reqLvl: 6, val: 280, price: 125, desc: 'Przywraca 280 HP. (Wym. Poz. 6)' },
+  { id: 4,  name: 'Mikstura Many',              cat: 'MiksturaMP', subType: 'potion', reqLvl: 1, val: 60,  price: 28,  desc: 'Przywraca 60 MP.' },
+  { id: 5,  name: 'Esencja Astralna',           cat: 'MiksturaMP', subType: 'potion', reqLvl: 4, val: 135, price: 68,  desc: 'Przywraca 135 MP. (Wym. Poz. 4)' },
+
+  { id: 6,  name: 'Fiolka Ognia Alchemika',     cat: 'Rzucany', subType: 'bomb', elem: 'Ogien',  reqLvl: 2, val: 32, turns: 3, statusEffect: 'burn',   price: 48, desc: 'Podpala na 3 tury. (Wym. Poz. 2)' },
+  { id: 7,  name: 'Bomba Jadu Żmii',            cat: 'Rzucany', subType: 'bomb', elem: 'Natura', reqLvl: 2, val: 26, turns: 4, statusEffect: 'poison', price: 46, desc: 'Zatruwa na 4 tury. (Wym. Poz. 2)' },
+  { id: 8,  name: 'Święcona Woda Otchłani',     cat: 'Rzucany', subType: 'bomb', elem: 'Swiatlo',reqLvl: 4, val: 55, turns: 1, statusEffect: null,     price: 58, desc: 'Silne obrażenia Światła. (Wym. Poz. 4)' },
+
+  { id: 10, name: 'Zardzewiały Miecz',          cat: 'Bron', subType: 'Miecz',    elem: 'Fizyczny', reqLvl: 1, atk: 8,  critBonus: 0,  blockChance: 0,  statusEffect: null,      price: 45,  desc: 'Prosty miecz bez efektów.' },
+  { id: 11, name: 'Żelazna Włócznia',           cat: 'Bron', subType: 'Włócznia', elem: 'Fizyczny', reqLvl: 2, atk: 12, critBonus: 8,  blockChance: 5,  statusEffect: null,      price: 85,  desc: '+8% kryt, +5% blok. (Wym. Poz. 2)' },
+  { id: 12, name: 'Łuk Myśliwego',              cat: 'Bron', subType: 'Łuk',      elem: 'Natura',   reqLvl: 3, atk: 14, critBonus: 16, blockChance: 0,  statusEffect: null,      price: 115, desc: '+16% kryt. (Wym. Poz. 3)' },
+  { id: 13, name: 'Ognisty Miecz Żaru',         cat: 'Bron', subType: 'Miecz',    elem: 'Ogien',    reqLvl: 4, atk: 18, critBonus: 6,  blockChance: 0,  statusEffect: 'burn',    price: 175, desc: 'Podpala przy ataku! (Wym. Poz. 4)' },
+  { id: 14, name: 'Kostur Wiecznej Zimy',       cat: 'Bron', subType: 'Kostur',   elem: 'Mroz',     reqLvl: 5, atk: 17, critBonus: 10, blockChance: 0,  statusEffect: 'freeze',  price: 190, desc: 'Zamraża cel (-30% ATK). (Wym. Poz. 5)' },
+  { id: 15, name: 'Włócznia Złotego Blasku',    cat: 'Bron', subType: 'Włócznia', elem: 'Swiatlo',  reqLvl: 6, atk: 23, critBonus: 12, blockChance: 10, statusEffect: null,      price: 245, desc: '+12% kryt, +10% blok. (Wym. Poz. 6)' },
+  { id: 16, name: 'Klinga Wampirzego Mroku',    cat: 'Bron', subType: 'Miecz',    elem: 'Mrok',     reqLvl: 7, atk: 26, critBonus: 14, blockChance: 0,  statusEffect: 'lifesteal',price:295, desc: 'Kradnie 20% obr. jako HP. (Wym. Poz. 7)' },
+  { id: 17, name: 'Smoczy Łuk Zagłady',         cat: 'Bron', subType: 'Łuk',      elem: 'Ogien',    reqLvl: 8, atk: 32, critBonus: 24, blockChance: 0,  statusEffect: 'burn',    price: 380, desc: '+24% kryt i podpalenie. (Wym. Poz. 8)' },
+  { id: 18, name: 'Miecz Bastionu (100% Blok)', cat: 'Bron', subType: 'Miecz',    elem: 'Swiatlo',  reqLvl: 8, atk: 29, critBonus: 8,  blockChance: 18, statusEffect: null,      price: 360, desc: '+18% szansy na 100% blok! (Wym. Poz. 8)' },
+
+  { id: 20, name: 'Drewniana Puklerz-Tarcza',   cat: 'Tarcza', subType: 'Tarcza', elem: 'Fizyczny', reqLvl: 1, def: 4,  blockChance: 12, critBonus: 0, price: 55,  desc: '12% szansy na 100% blok ataku.' },
+  { id: 21, name: 'Stalowa Tarcza Rycerska',    cat: 'Tarcza', subType: 'Tarcza', elem: 'Fizyczny', reqLvl: 3, def: 9,  blockChance: 20, critBonus: 0, price: 125, desc: '20% szansy na 100% blok. (Wym. Poz. 3)' },
+  { id: 22, name: 'Pawęż Świętego Strażnika',   cat: 'Tarcza', subType: 'Tarcza', elem: 'Swiatlo',  reqLvl: 6, def: 15, blockChance: 28, critBonus: 0, price: 230, desc: '28% szansy na 100% blok. (Wym. Poz. 6)' },
+  { id: 23, name: 'Egida Otchłani',             cat: 'Tarcza', subType: 'Tarcza', elem: 'Mrok',     reqLvl: 8, def: 21, blockChance: 35, critBonus: 5, price: 340, desc: '35% szansy na 100% blok. (Wym. Poz. 8)' },
+
+  { id: 30, name: 'Przeszywanica Wędrowca',     cat: 'Pancerz', subType: 'Zbroja', elem: 'Fizyczny', reqLvl: 1, def: 6,  blockChance: 0, critBonus: 0, price: 50,  desc: 'Podstawowa ochrona.' },
+  { id: 31, name: 'Kolczuga Straży',            cat: 'Pancerz', subType: 'Zbroja', elem: 'Fizyczny', reqLvl: 2, def: 11, blockChance: 4, critBonus: 0, price: 105, desc: 'Solidna kolczuga (+4% blok). (Wym. Poz. 2)' },
+  { id: 32, name: 'Szata Arcymaga Mrozu',       cat: 'Pancerz', subType: 'Zbroja', elem: 'Mroz',     reqLvl: 4, def: 14, blockChance: 0, critBonus: 8, price: 165, desc: '+8% szansy na kryt. (Wym. Poz. 4)' },
+  { id: 33, name: 'Zbroja Płytowa Królestwa',   cat: 'Pancerz', subType: 'Zbroja', elem: 'Swiatlo',  reqLvl: 6, def: 20, blockChance: 8, critBonus: 0, price: 245, desc: 'Ciężka płyta (+8% blok). (Wym. Poz. 6)' },
+  { id: 34, name: 'Smoczy Pancerz Łuskowy',     cat: 'Pancerz', subType: 'Zbroja', elem: 'Ogien',    reqLvl: 8, def: 27, blockChance: 10,critBonus: 6, price: 355, desc: 'Potężna zbroja mistrzów. (Wym. Poz. 8)' }
+];
+
+// Umiejętności z reqLvl (odblokowywane poziomem w runie) lub shopScrollLvl (możliwość nauki zwoju w sklepie od danego poziomu)
+const SKILLS_DB = [
+  { id: 'slash',      name: 'Potężne Cięcie',      classReq: 'all',       reqLvl: 1, shopScrollLvl: null, mp: 10, mult: 1.45, elem: 'weapon',  aoe: false, status: null,      crateOnly: false, desc: 'Silny cios bronią (145% obrażeń).' },
+  { id: 'firebolt',   name: 'Ognisty Pocisk',      classReq: 'all',       reqLvl: 2, shopScrollLvl: 2,    mp: 14, mult: 1.55, elem: 'Ogien',   aoe: false, status: 'burn',    crateOnly: false, desc: 'Zadaje obrażenia od ognia i podpala.' },
+  { id: 'heal_light', name: 'Modlitwa Światła',    classReq: 'Paladyn',   reqLvl: 1, shopScrollLvl: null, mp: 18, mult: 1.20, elem: 'Swiatlo', aoe: false, status: 'heal',    crateOnly: false, desc: 'Leczy bohatera.' },
+  { id: 'judgement',  name: 'Wyrok Niebios',       classReq: 'Paladyn',   reqLvl: 4, shopScrollLvl: 4,    mp: 26, mult: 2.10, elem: 'Swiatlo', aoe: false, status: null,      crateOnly: false, desc: 'Potężny cios Światła w pojedynczy cel.' },
+  { id: 'nova',       name: 'Supernowa Płomieni',  classReq: 'Mag',       reqLvl: 3, shopScrollLvl: 3,    mp: 28, mult: 1.35, elem: 'Ogien',   aoe: true,  status: 'burn',    crateOnly: false, desc: 'Rani WSZYSTKICH przeciwników i podpala!' },
+  { id: 'blizzard',   name: 'Zamieć Arktyczna',    classReq: 'Mag',       reqLvl: 5, shopScrollLvl: 5,    mp: 34, mult: 1.50, elem: 'Mroz',    aoe: true,  status: 'freeze',  crateOnly: false, desc: 'Rani wszystkich wrogów i zamraża ich.' },
+  { id: 'multishot',  name: 'Grad Strzał',         classReq: 'Lowca',     reqLvl: 3, shopScrollLvl: 3,    mp: 22, mult: 1.30, elem: 'weapon',  aoe: true,  status: 'poison',  crateOnly: false, desc: 'Trafia wszystkich wrogów zatrutymi strzałami.' },
+  { id: 'snipe',      name: 'Strzał w Serce',      classReq: 'Lowca',     reqLvl: 5, shopScrollLvl: 5,    mp: 25, mult: 2.35, elem: 'weapon',  aoe: false, status: null,      crateOnly: false, desc: 'Ogromne obrażenia.' },
+  { id: 'whirlwind',  name: 'Młynek Ostrzy',       classReq: 'Wojownik',  reqLvl: 3, shopScrollLvl: 3,    mp: 20, mult: 1.35, elem: 'weapon',  aoe: true,  status: null,      crateOnly: false, desc: 'Atakuje wszystkich wrogów naraz.' },
+  { id: 'drain',      name: 'Wyssanie Duszy',      classReq: 'Nekromanta',reqLvl: 2, shopScrollLvl: 2,    mp: 20, mult: 1.65, elem: 'Mrok',    aoe: false, status: 'lifesteal',crateOnly:false, desc: 'Rani wroga mrokiem i leczy 35% obrażeń.' },
+
+  { id: 'cataclysm',  name: 'Kataklizm Otchłani',  classReq: 'Mag',       reqLvl: 1, shopScrollLvl: 6,    mp: 42, mult: 2.15, elem: 'Mrok',    aoe: true,  status: 'burn',    crateOnly: true,  desc: '[KSIĘGA] Niszczycielska magia na wszystkich wrogów.' },
+  { id: 'divine_wrath',name:'Gniew Archanioła',    classReq: 'Paladyn',   reqLvl: 1, shopScrollLvl: 6,    mp: 35, mult: 2.45, elem: 'Swiatlo', aoe: true,  status: 'heal',    crateOnly: true,  desc: '[KSIĘGA] Uderza wrogów Światłem i leczy.' },
+  { id: 'shadow_volley',name:'Deszcz Cieni',       classReq: 'Lowca',     reqLvl: 1, shopScrollLvl: 6,    mp: 32, mult: 1.95, elem: 'Mrok',    aoe: true,  status: 'poison',  crateOnly: true,  desc: '[KSIĘGA] Salwa mrocznych strzał na całą grupę.' },
+  { id: 'titan_cleave',name:'Rozszczepienie Tytana',classReq:'Wojownik',  reqLvl: 1, shopScrollLvl: 6,    mp: 30, mult: 2.75, elem: 'Ogien',   aoe: false, status: 'burn',    crateOnly: true,  desc: '[KSIĘGA] Miażdżący cios o gigantycznej sile.' },
+  { id: 'army_dead',  name: 'Klątwa Plagi',        classReq: 'Nekromanta',reqLvl: 1, shopScrollLvl: 6,    mp: 36, mult: 1.80, elem: 'Mrok',    aoe: true,  status: 'poison',  crateOnly: true,  desc: '[KSIĘGA] Zatruwa i wysysa życie ze wszystkich wrogów.' }
+];
+
+const SKILL_TREE_BRANCHES = [
+  {
+    id: 'offense',
+    title: '⚔️ Gałąź Miecza i Krytyka',
+    color: '#f87171',
+    nodes: [
+      { id: 'atk_1', name: 'Ostrze Weterana', maxLvl: 5, cost: 6, req: null, desc: '+4 bazowego ATK na poziom.' },
+      { id: 'crit_1', name: 'Sokole Oko', maxLvl: 5, cost: 8, req: 'atk_1', desc: '+4% bazowej szansy na trafienie krytyczne na poziom.' },
+      { id: 'crit_dmg', name: 'Zabójcza Precyzja', maxLvl: 3, cost: 14, req: 'crit_1', desc: '+20% obrażeń krytycznych na poziom.' }
+    ]
+  },
+  {
+    id: 'defense',
+    title: '🛡️ Gałąź Tarczy i Pancerza',
+    color: '#4ade80',
+    nodes: [
+      { id: 'hp_1', name: 'Żelazna Kondycja', maxLvl: 5, cost: 6, req: null, desc: '+25 maksymalnego HP na start każdego runu.' },
+      { id: 'def_1', name: 'Hartowana Stal', maxLvl: 5, cost: 8, req: 'hp_1', desc: '+3 bazowej obrony DEF na poziom.' },
+      { id: 'block_1', name: 'Mistrzostwo Pawęży', maxLvl: 4, cost: 14, req: 'def_1', desc: '+4% szansy na 100% blok ataku na poziom.' }
+    ]
+  },
+  {
+    id: 'magic',
+    title: '🔮 Gałąź Magii i Esencji',
+    color: '#c084fc',
+    nodes: [
+      { id: 'mp_1', name: 'Źródło Many', maxLvl: 5, cost: 6, req: null, desc: '+20 maksymalnego MP na start każdego runu.' },
+      { id: 'spell_1', name: 'Arkanum Otchłani', maxLvl: 4, cost: 10, req: 'mp_1', desc: '+10% mocy wszystkich zaklęć na poziom.' },
+      { id: 'ess_gain', name: 'Żniwiarz Esencji', maxLvl: 3, cost: 16, req: 'spell_1', desc: '+15% więcej Esencji Otchłani z bossów i dropów.' }
+    ]
+  },
+  {
+    id: 'fortune',
+    title: '🐺 Gałąź Kompanów i Łupów',
+    color: '#facc15',
+    nodes: [
+      { id: 'gold_1', name: 'Zmysł Kupca', maxLvl: 5, cost: 6, req: null, desc: '+12% więcej złota po walkach i -4% cen w sklepie.' },
+      { id: 'loot_1', name: 'Poszukiwacz Run', maxLvl: 4, cost: 11, req: 'gold_1', desc: '+3% większa szansa na drop Run i przedmiotów z wrogów.' },
+      { id: 'comp_slot', name: 'Dowódca Drużyny', maxLvl: 1, cost: 22, req: 'loot_1', desc: 'Odblokowuje 2. miejsce na kompana w drużynie!' }
+    ]
+  }
+];
+
+const BIOMES = [
+  {
+    id: 'forest', name: 'Przeklęty Las', sky: '#0f241d', ground: '#1a3a2a', accent: '#4ade80',
+    envText: 'Ciernie lasu ranią lekko co turę.', envDmg: 3,
+    enemies: [
+      { name: 'Leśny Ghul', type: 'Nieumarly', elem: 'Mrok', hp: 62, atk: 10, def: 2, gold: 24, exp: 32 },
+      { name: 'Mglista Zjawa', type: 'Zjawa', elem: 'Mrok', hp: 56, atk: 12, def: 1, gold: 28, exp: 35 },
+      { name: 'Wściekły Wilkołak', type: 'Bestia', elem: 'Natura', hp: 78, atk: 13, def: 4, gold: 32, exp: 40 },
+      { name: 'Prastary Ent', type: 'Golem', elem: 'Natura', hp: 96, atk: 11, def: 7, gold: 38, exp: 48 }
+    ],
+    boss: { name: 'Król Cierni Oberon', type: 'Bestia', elem: 'Natura', hp: 220, atk: 21, def: 8, gold: 130, exp: 160 }
+  },
+  {
+    id: 'volcano', name: 'Wulkaniczny Grzbiet', sky: '#2b100e', ground: '#451814', accent: '#f97316',
+    envText: 'Żar wulkanu parzy walczących co turę.', envDmg: 6,
+    enemies: [
+      { name: 'Popiołowy Szkielet', type: 'Nieumarly', elem: 'Ogien', hp: 70, atk: 13, def: 3, gold: 30, exp: 38 },
+      { name: 'Duch Magmy', type: 'Zjawa', elem: 'Ogien', hp: 64, atk: 15, def: 2, gold: 34, exp: 42 },
+      { name: 'Salamandra Lawowa', type: 'Bestia', elem: 'Ogien', hp: 85, atk: 15, def: 5, gold: 38, exp: 46 },
+      { name: 'Ognisty Ifrit', type: 'Demon', elem: 'Ogien', hp: 102, atk: 17, def: 6, gold: 46, exp: 55 }
+    ],
+    boss: { name: 'Ignis, Władca Lawy', type: 'Smok', elem: 'Ogien', hp: 260, atk: 25, def: 10, gold: 160, exp: 200 }
+  },
+  {
+    id: 'swamp', name: 'Zgnile Bagna', sky: '#162114', ground: '#263621', accent: '#a3e635',
+    envText: 'Toksyczne opary zatruwają krew.', envDmg: 5,
+    enemies: [
+      { name: 'Zgnity Utopiec', type: 'Nieumarly', elem: 'Natura', hp: 74, atk: 12, def: 4, gold: 32, exp: 40 },
+      { name: 'Bagienna Zjawa', type: 'Zjawa', elem: 'Mrok', hp: 66, atk: 14, def: 3, gold: 36, exp: 44 },
+      { name: 'Jadowita Hydra', type: 'Bestia', elem: 'Natura', hp: 94, atk: 16, def: 5, gold: 44, exp: 52 },
+      { name: 'Wiedźma Moczaru', type: 'Demon', elem: 'Mrok', hp: 88, atk: 18, def: 4, gold: 48, exp: 56 }
+    ],
+    boss: { name: 'Lewiatan Zgnilizny', type: 'Bestia', elem: 'Natura', hp: 275, atk: 24, def: 11, gold: 170, exp: 210 }
+  },
+  {
+    id: 'crypt', name: 'Krypta Cieni', sky: '#141124', ground: '#211c3b', accent: '#c084fc',
+    envText: 'Cienie krypty wysysają siły życiowe.', envDmg: 6,
+    enemies: [
+      { name: 'Rycerz Kości', type: 'Nieumarly', elem: 'Fizyczny', hp: 84, atk: 15, def: 6, gold: 38, exp: 46 },
+      { name: 'Więzień Cienia', type: 'Zjawa', elem: 'Mrok', hp: 70, atk: 17, def: 3, gold: 42, exp: 50 },
+      { name: 'Mroźny Gargulec', type: 'Golem', elem: 'Mroz', hp: 98, atk: 14, def: 9, gold: 45, exp: 54 },
+      { name: 'Arcydemon Krypt', type: 'Demon', elem: 'Mrok', hp: 112, atk: 19, def: 7, gold: 55, exp: 65 }
+    ],
+    boss: { name: 'Malakor, Król Licz', type: 'Nieumarly', elem: 'Mrok', hp: 295, atk: 27, def: 12, gold: 195, exp: 240 }
+  }
+];
+
+const COMPANIONS_POOL = [
+  { id: 'c_knight', name: 'Sir Roland (Tarczownik)', hp: 110, atk: 11, def: 9, elem: 'Swiatlo', color: '#facc15' },
+  { id: 'c_archer', name: 'Lyra (Zwiadowczyni)', hp: 85, atk: 16, def: 4, elem: 'Natura', color: '#4ade80' },
+  { id: 'c_pyro',   name: 'Vael (Piromanta)', hp: 80, atk: 18, def: 3, elem: 'Ogien', color: '#f87171' },
+  { id: 'c_wolf',   name: 'Kieł (Widmowy Wilk)', hp: 95, atk: 15, def: 5, elem: 'Mrok', color: '#c084fc' }
+];
+
+let audioCtx = null;
+const settings = { sfx: true, volume: 0.5, fastAnim: false };
+
+function playSfx(type) {
+  if (!settings.sfx || settings.volume <= 0) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    const now = audioCtx.currentTime;
+    const vol = settings.volume * 0.18;
+
+    if (type === 'click') {
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(520, now);
+      osc.frequency.exponentialRampToValueAtTime(720, now + 0.05);
+      gain.gain.setValueAtTime(vol, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+      osc.start(now); osc.stop(now + 0.06);
+    } else if (type === 'hit') {
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(190, now);
+      osc.frequency.exponentialRampToValueAtTime(65, now + 0.14);
+      gain.gain.setValueAtTime(vol * 1.2, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+      osc.start(now); osc.stop(now + 0.15);
+    } else if (type === 'crit') {
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(440, now);
+      osc.frequency.setValueAtTime(660, now + 0.05);
+      osc.frequency.setValueAtTime(880, now + 0.10);
+      gain.gain.setValueAtTime(vol * 1.3, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+      osc.start(now); osc.stop(now + 0.22);
+    } else if (type === 'block') {
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(320, now);
+      osc.frequency.setValueAtTime(640, now + 0.06);
+      gain.gain.setValueAtTime(vol * 1.2, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+      osc.start(now); osc.stop(now + 0.18);
+    } else if (type === 'heal' || type === 'buy' || type === 'level') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(392, now);
+      osc.frequency.setValueAtTime(523, now + 0.08);
+      osc.frequency.setValueAtTime(659, now + 0.16);
+      gain.gain.setValueAtTime(vol * 1.1, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+      osc.start(now); osc.stop(now + 0.28);
+    } else if (type === 'crate') {
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(300 + Math.random() * 400, now);
+      gain.gain.setValueAtTime(vol * 0.7, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+      osc.start(now); osc.stop(now + 0.05);
+    }
+  } catch (e) {}
+}
+
+const STORAGE_KEY = 'kroniki_otchlani_v4_data';
+
+let metaState = {
+  essence: 20,
+  runes: 1,
+  tree: {},
+  unlockedSkills: [],
+  slots: [null, null, null]
+};
+
+let activeSlotIndex = 0;
+let run = null;
+let battle = null;
+let selectedClassId = 'Paladyn';
+let selectedElemId = 'Swiatlo';
+let selectedDiffId = 'normal';
+
+function getDiffConfig(diffId) {
+  return DIFFICULTIES[diffId] || DIFFICULTIES.normal;
+}
+
+function loadStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      metaState = Object.assign(metaState, parsed);
+      if (!Array.isArray(metaState.slots)) metaState.slots = [null, null, null];
+      if (!Array.isArray(metaState.unlockedSkills)) metaState.unlockedSkills = [];
+      if (!metaState.tree) metaState.tree = {};
+    }
+  } catch (e) {}
+  updateTopbar();
+}
+
+function saveStorage() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(metaState));
+  } catch (e) {}
+  updateTopbar();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => { t.style.display = 'none'; }, 3000);
+}
+
+function updateTopbar() {
+  document.getElementById('metaEssence').textContent = metaState.essence;
+  document.getElementById('metaRunes').textContent = metaState.runes;
+}
+
+function getTreeLvl(nodeId) {
+  return metaState.tree[nodeId] || 0;
+}
+
+function showScreen(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+}
+
+function openMainMenu() {
+  playSfx('click');
+  renderSaveSlots();
+  showScreen('screen-start');
+}
+
+function openGlobalTree() {
+  playSfx('click');
+  document.getElementById('treeBackToRunBtn').style.display = 'none';
+  renderSkillTree();
+  showScreen('screen-tree');
+}
+
+function openRunTree() {
+  playSfx('click');
+  document.getElementById('treeBackToRunBtn').style.display = 'inline-block';
+  renderSkillTree();
+  showScreen('screen-tree');
+}
+
+function openGlobalEssenceShop() {
+  playSfx('click');
+  document.getElementById('essenceBackToRunBtn').style.display = 'none';
+  renderEssenceShop();
+  showScreen('screen-essence-shop');
+}
+
+function openRunEssenceShop() {
+  playSfx('click');
+  document.getElementById('essenceBackToRunBtn').style.display = 'inline-block';
+  renderEssenceShop();
+  showScreen('screen-essence-shop');
+}
+
+function openSettings() {
+  playSfx('click');
+  document.getElementById('settingsBackToRunBtn').style.display = run ? 'inline-block' : 'none';
+  showScreen('screen-settings');
+}
+
+function returnToRun() {
+  playSfx('click');
+  if (run) {
+    updateRunHud();
+    showScreen('screen-run');
+  } else {
+    openMainMenu();
+  }
+}
+
+function renderSkillTree() {
+  const container = document.getElementById('treeBranchesContainer');
+  container.innerHTML = '';
+
+  SKILL_TREE_BRANCHES.forEach(branch => {
+    const col = document.createElement('div');
+    col.className = 'branch-col';
+    col.innerHTML = `<div class="branch-title" style="color:${branch.color};">${branch.title}</div>`;
+
+    branch.nodes.forEach(node => {
+      const curLvl = getTreeLvl(node.id);
+      const isMax = curLvl >= node.maxLvl;
+      const reqMet = !node.req || getTreeLvl(node.req) > 0;
+      const nextCost = node.cost + curLvl * Math.ceil(node.cost * 0.5);
+
+      const nodeDiv = document.createElement('div');
+      nodeDiv.className = 'tree-node ' + (isMax ? 'maxed' : (reqMet ? 'unlocked' : 'locked'));
+
+      let btnHtml = '';
+      if (isMax) {
+        btnHtml = `<button disabled style="width:100%;">✅ MAKSYMALNY POZIOM</button>`;
+      } else if (!reqMet) {
+        btnHtml = `<button disabled style="width:100%;">🔒 Wymaga poprzedniego węzła</button>`;
+      } else {
+        const canAfford = metaState.essence >= nextCost;
+        btnHtml = `<button class="essence-btn" style="width:100%;" ${canAfford ? '' : 'disabled'} onclick="upgradeTreeNode('${node.id}', ${nextCost})">Ulepsz (${nextCost} 🔮)</button>`;
+      }
+
+      nodeDiv.innerHTML = `
+        <div class="node-top">
+          <span>${node.name}</span>
+          <span style="color:var(--gold);">${curLvl}/${node.maxLvl}</span>
+        </div>
+        <div class="node-desc">${node.desc}</div>
+        ${btnHtml}
+      `;
+      col.appendChild(nodeDiv);
+    });
+
+    container.appendChild(col);
+  });
+}
+
+function upgradeTreeNode(nodeId, cost) {
+  if (metaState.essence < cost) return;
+  metaState.essence -= cost;
+  metaState.tree[nodeId] = getTreeLvl(nodeId) + 1;
+  saveStorage();
+  playSfx('level');
+  showToast('Ulepszono węzeł w Drzewku Umiejętności!');
+  renderSkillTree();
+  if (run) updateRunHud();
+}
+
+let crateSpinning = false;
+
+function renderEssenceShop() {
+  const grid = document.getElementById('essenceShopItems');
+  grid.innerHTML = '';
+
+  const lockedBooks = SKILLS_DB.filter(s => s.crateOnly && !metaState.unlockedSkills.includes(s.id));
+  lockedBooks.forEach(sk => {
+    const card = document.createElement('div');
+    card.className = 'item-card';
+    card.innerHTML = `
+      <div>
+        <strong style="color:var(--essence);">📘 Księga: ${sk.name}</strong>
+        <div style="font-size:0.78rem; color:var(--gold); margin:3px 0;">Klasa: ${sk.classReq} | Koszt MP: ${sk.mp}</div>
+        <p style="font-size:0.8rem; color:var(--text-dim);">${sk.desc}</p>
+      </div>
+      <button class="essence-btn" ${metaState.essence >= 25 ? '' : 'disabled'} onclick="buySkillBook('${sk.id}', 25)">Odblokuj na stałe (25 🔮)</button>
+    `;
+    grid.appendChild(card);
+  });
+
+  const runBoosts = [
+    { id: 'b_atk', name: 'Eliksir Tytana (Cały Run)', cost: 10, desc: '+8 ATK na cały obecny run.' },
+    { id: 'b_def', name: 'Skóra Golema (Cały Run)', cost: 10, desc: '+7 DEF i +5% Bloku na cały obecny run.' },
+    { id: 'b_hp',  name: 'Serce Smoka (Cały Run)', cost: 10, desc: '+60 Max HP i pełne uleczenie w obecnym runie.' },
+    { id: 'b_comp',name: 'Kontrakt Najemnika (Run)', cost: 14, desc: 'Natychmiast dodaje losowego kompana do drużyny!' }
+  ];
+
+  runBoosts.forEach(b => {
+    const card = document.createElement('div');
+    card.className = 'item-card';
+    const disabled = !run || metaState.essence < b.cost;
+    card.innerHTML = `
+      <div>
+        <strong style="color:var(--gold);">✨ ${b.name}</strong>
+        <p style="font-size:0.8rem; color:var(--text-dim); margin-top:4px;">${b.desc}</p>
+        ${!run ? '<p style="font-size:0.75rem; color:var(--danger); margin-top:4px;">Wymaga aktywnej wyprawy!</p>' : ''}
+      </div>
+      <button class="gold-btn" ${disabled ? 'disabled' : ''} onclick="buyRunBoost('${b.id}', ${b.cost})">Kup na Run (${b.cost} 🔮)</button>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function buySkillBook(skillId, cost) {
+  if (metaState.essence < cost) return;
+  metaState.essence -= cost;
+  if (!metaState.unlockedSkills.includes(skillId)) metaState.unlockedSkills.push(skillId);
+  saveStorage();
+  playSfx('buy');
+  showToast('Odblokowano nową umiejętność klasową na stałe!');
+  renderEssenceShop();
+}
+
+function buyRunBoost(boostId, cost) {
+  if (!run || metaState.essence < cost) return;
+  metaState.essence -= cost;
+  if (boostId === 'b_atk') run.bonusAtk += 8;
+  if (boostId === 'b_def') { run.bonusDef += 7; run.bonusBlock += 5; }
+  if (boostId === 'b_hp')  { run.maxHp += 60; run.hp = run.maxHp; }
+  if (boostId === 'b_comp') recruitRandomCompanion(true);
+  saveCurrentRun(false);
+  saveStorage();
+  playSfx('buy');
+  showToast('Aktywowano błogosławieństwo na obecny run!');
+  renderEssenceShop();
+}
+
+function openLootCrate() {
+  if (crateSpinning) return;
+  if (metaState.essence < 15) {
+    showToast('Za mało Esencji Otchłani (wymagane 15)!');
+    return;
+  }
+
+  metaState.essence -= 15;
+  saveStorage();
+  crateSpinning = true;
+  document.getElementById('openCrateBtn').disabled = true;
+
+  const win = document.getElementById('crateWindow');
+  const poolLabels = [
+    '⚔️ +6 ATK na cały Run',
+    '🛡️ +6 DEF na cały Run',
+    '❤️ +50 Max HP na cały Run',
+    '🔮 Zwrot Esencji Otchłani!',
+    '💠 Rzadkie Runy Kuźni!',
+    '🐺 Najemnik-Kompan na Run!',
+    '📘 Księga Zaklęć Klasowych!'
+  ];
+
+  let ticks = 0;
+  const maxTicks = settings.fastAnim ? 8 : 20;
+  const interval = setInterval(() => {
+    win.textContent = poolLabels[ticks % poolLabels.length];
+    playSfx('crate');
+    ticks++;
+    if (ticks >= maxTicks) {
+      clearInterval(interval);
+      finalizeCrateReward(win);
+      crateSpinning = false;
+      document.getElementById('openCrateBtn').disabled = false;
+      renderEssenceShop();
+    }
+  }, settings.fastAnim ? 50 : 85);
+}
+
+function finalizeCrateReward(winEl) {
+  const diffMult = run ? getDiffConfig(run.difficulty).rewardMult : 1.0;
+  const roll = Math.random();
+  const lockedBooks = SKILLS_DB.filter(s => s.crateOnly && !metaState.unlockedSkills.includes(s.id));
+
+  if (roll < 0.22 && lockedBooks.length > 0) {
+    const book = lockedBooks[Math.floor(Math.random() * lockedBooks.length)];
+    metaState.unlockedSkills.push(book.id);
+    winEl.innerHTML = `<span style="color:var(--essence);">📘 ODBLOKOWANO KSIĘGĘ: ${book.name} (${book.classReq})!</span>`;
+  } else if (roll < 0.42) {
+    const essAmt = Math.max(5, Math.round(22 * diffMult));
+    metaState.essence += essAmt;
+    winEl.innerHTML = `<span style="color:var(--essence);">🔮 Zdobywasz +${essAmt} Esencji Otchłani!</span>`;
+  } else if (roll < 0.58) {
+    const runeAmt = Math.max(1, Math.round(2 * diffMult));
+    metaState.runes += runeAmt;
+    winEl.innerHTML = `<span style="color:var(--rune);">💠 RZADKI ŁUP! Zdobywasz +${runeAmt} Runy Kuźni!</span>`;
+  } else if (roll < 0.75 && run) {
+    recruitRandomCompanion(true);
+    winEl.innerHTML = `<span style="color:var(--hp);">🐺 DOŁĄCZA KOMPAN DO TWOJEJ DRUŻYNY!</span>`;
+  } else {
+    if (run) {
+      run.bonusAtk += 6;
+      run.bonusDef += 5;
+      run.maxHp += 40;
+      run.hp = Math.min(run.maxHp, run.hp + 40);
+      saveCurrentRun(false);
+      winEl.innerHTML = `<span style="color:var(--gold);">✨ BŁOGOSŁAWIEŃSTWO RUNU: +6 ATK, +5 DEF, +40 HP!</span>`;
+    } else {
+      metaState.essence += 18;
+      winEl.innerHTML = `<span style="color:var(--gold);">🔮 Brak aktywnego runu – otrzymujesz +18 Esencji!</span>`;
+    }
+  }
+  saveStorage();
+  playSfx('level');
+}
+
+function renderSaveSlots() {
+  const box = document.getElementById('saveSlotsContainer');
+  box.innerHTML = '';
+
+  for (let i = 0; i < 3; i++) {
+    const s = metaState.slots[i];
+    const card = document.createElement('div');
+    card.className = 'slot-card';
+
+    if (!s) {
+      card.innerHTML = `
+        <div class="slot-header">
+          <strong>Slot ${i + 1} — Pusty</strong>
+          <span style="color:var(--text-dim); font-size:0.8rem;">Wolny</span>
+        </div>
+        <p style="color:var(--text-dim); font-size:0.84rem;">Brak zapisanej wyprawy w tym slocie.</p>
+        <button class="primary" onclick="openCreator(${i})">➕ Utwórz Run w Slocie ${i + 1}</button>
+      `;
+    } else {
+      const biome = BIOMES[s.biomeIdx] || BIOMES[0];
+      card.innerHTML = `
+        <div class="slot-header">
+          <strong style="color:var(--gold);">Slot ${i + 1}: ${s.name}</strong>
+          <span class="badge">${getDiffConfig(s.difficulty).name}</span>
+        </div>
+        <div style="font-size:0.84rem; line-height:1.45;">
+          <div>Klasa: <strong>${s.pClass}</strong> (Poz. ${s.level}) | Żywioł: <strong>${s.element}</strong></div>
+          <div>Kraina: <span style="color:${biome.accent};">${biome.name}</span> | Etap: <strong>${s.stage}/${s.maxStages}</strong></div>
+          <div>HP: <span style="color:var(--hp);">${s.hp}/${s.maxHp}</span> | Złoto: <span style="color:var(--gold);">${s.gold} zl</span></div>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button class="primary" style="flex:1;" onclick="loadSlot(${i})">▶️ Wczytaj Run</button>
+          <button class="danger" onclick="deleteSlot(${i})">🗑️</button>
+        </div>
+      `;
+    }
+    box.appendChild(card);
+  }
+}
+
+function openCreator(slotIdx = 0) {
+  playSfx('click');
+  document.getElementById('targetSlotSelect').value = String(slotIdx);
+
+  const cBox = document.getElementById('classChoices');
+  cBox.innerHTML = CLASSES.map(c => `
+    <div class="choice-card ${c.id === selectedClassId ? 'selected' : ''}" onclick="selectCreatorClass('${c.id}')">
+      <strong style="color:var(--gold);">${c.name}</strong>
+      <div style="font-size:0.76rem; color:var(--hp); margin:3px 0;">HP:${c.hp} MP:${c.mp} ATK:${c.atk} DEF:${c.def}</div>
+      <div style="font-size:0.76rem; color:var(--text-dim);">${c.desc}</div>
+    </div>
+  `).join('');
+
+  const eBox = document.getElementById('elementChoices');
+  eBox.innerHTML = ELEMENTS.map(e => `
+    <div class="choice-card ${e.id === selectedElemId ? 'selected' : ''}" onclick="selectCreatorElem('${e.id}')">
+      <strong style="color:${e.color};">${e.name}</strong>
+      <div style="font-size:0.75rem; color:var(--text-dim); margin-top:3px;">${e.desc}</div>
+    </div>
+  `).join('');
+
+  const dBox = document.getElementById('difficultyChoices');
+  dBox.innerHTML = Object.values(DIFFICULTIES).map(d => `
+    <div class="choice-card ${d.id === selectedDiffId ? 'selected' : ''}" onclick="selectCreatorDiff('${d.id}')">
+      <strong style="color:var(--accent);">${d.name}</strong>
+      <div style="font-size:0.75rem; color:var(--text-dim); margin-top:3px;">${d.desc}</div>
+    </div>
+  `).join('');
+
+  drawPreviewAvatar();
+  showScreen('screen-creator');
+}
+
+function selectCreatorClass(id) { selectedClassId = id; playSfx('click'); openCreator(Number(document.getElementById('targetSlotSelect').value)); }
+function selectCreatorElem(id)  { selectedElemId = id;  playSfx('click'); openCreator(Number(document.getElementById('targetSlotSelect').value)); }
+function selectCreatorDiff(id)  { selectedDiffId = id;  playSfx('click'); openCreator(Number(document.getElementById('targetSlotSelect').value)); }
+
+function drawPixelHero(ctx, x, y, scale, cloakColor, classId) {
+  ctx.save();
+  ctx.imageSmoothingEnabled = false;
+  ctx.translate(x, y);
+  ctx.scale(scale, scale);
+  ctx.fillStyle = 'rgba(0,0,0,0.45)';
+  ctx.fillRect(-10, 22, 20, 4);
+  ctx.fillStyle = cloakColor;
+  ctx.fillRect(-8, -2, 16, 20);
+  ctx.fillStyle = '#f1c27d';
+  ctx.fillRect(-5, -12, 10, 10);
+  ctx.fillStyle = classId === 'Mag' ? '#3b82f6' : '#94a3b8';
+  ctx.fillRect(-6, -14, 12, 4);
+  ctx.fillStyle = '#0f172a';
+  ctx.fillRect(1, -9, 2, 2);
+  ctx.fillStyle = classId === 'Mag' ? '#c084fc' : '#e2e8f0';
+  ctx.fillRect(9, -10, 3, 24);
+  ctx.restore();
+}
+
+function drawPreviewAvatar() {
+  const c = document.getElementById('previewCanvas');
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
+  const color = document.getElementById('charColorSelect').value;
+  drawPixelHero(ctx, 70, 75, 2.6, color, selectedClassId);
+}
+
+function startNewRun() {
+  playSfx('level');
+  activeSlotIndex = Number(document.getElementById('targetSlotSelect').value);
+  const name = document.getElementById('charNameInput').value.trim() || 'Wędrowiec';
+  const cloakColor = document.getElementById('charColorSelect').value;
+  const cls = CLASSES.find(c => c.id === selectedClassId) || CLASSES[0];
+  const diff = getDiffConfig(selectedDiffId);
+
+  const bonusHp = getTreeLvl('hp_1') * 25;
+  const bonusMp = getTreeLvl('mp_1') * 20;
+
+  run = {
+    name,
+    cloakColor,
+    pClass: cls.id,
+    element: selectedElemId,
+    difficulty: selectedDiffId,
+    level: 1,
+    exp: 0,
+    nextExp: 90,
+    stage: 1,
+    maxStages: 30,
+    endless: false,
+    biomeIdx: Math.floor(Math.random() * BIOMES.length),
+    gold: Math.round(130 * diff.runGoldMult),
+    maxHp: cls.hp + bonusHp,
+    hp: cls.hp + bonusHp,
+    maxMp: cls.mp + bonusMp,
+    mp: cls.mp + bonusMp,
+    baseAtk: cls.atk,
+    baseDef: cls.def,
+    baseCrit: cls.crit,
+    spellMult: cls.spellMult,
+    bonusAtk: 0,
+    bonusDef: 0,
+    bonusBlock: 0,
+    equipped: { weapon: 10, shield: null, armor: 30 },
+    upgrades: { weapon: 0, shield: 0, armor: 0 },
+    inventory: [
+      { id: 10, qty: 1 },
+      { id: 30, qty: 1 },
+      { id: 1,  qty: 2 },
+      { id: 4,  qty: 2 }
+    ],
+    learnedScrollSkills: [],
+    companions: [],
+    shopStock: [],
+    rerolls: 0,
+    currentNode: null
+  };
+
+  generateShopStock();
+  generateExploreNode();
+  saveCurrentRun(false);
+  updateRunHud();
+  switchHubView('explore');
+  showScreen('screen-run');
+}
+
+function loadSlot(idx) {
+  if (!metaState.slots[idx]) return;
+  playSfx('click');
+  activeSlotIndex = idx;
+  run = JSON.parse(JSON.stringify(metaState.slots[idx]));
+  if (!Array.isArray(run.learnedScrollSkills)) run.learnedScrollSkills = [];
+  if (!run.currentNode) generateExploreNode();
+  if (!run.shopStock || run.shopStock.length === 0) generateShopStock();
+  updateRunHud();
+  switchHubView('explore');
+  showScreen('screen-run');
+}
+
+function deleteSlot(idx) {
+  playSfx('hit');
+  metaState.slots[idx] = null;
+  saveStorage();
+  renderSaveSlots();
+}
+
+function saveCurrentRun(notify) {
+  if (!run) return;
+  metaState.slots[activeSlotIndex] = JSON.parse(JSON.stringify(run));
+  saveStorage();
+  if (notify) {
+    playSfx('buy');
+    showToast(`Zapisano postęp w Slocie ${activeSlotIndex + 1}!`);
+  }
+}
+
+function getItemById(id) {
+  return ITEMS_CATALOG.find(i => i.id === id) || null;
+}
+
+function getPlayerStats() {
+  const w = getItemById(run.equipped.weapon);
+  const s = getItemById(run.equipped.shield);
+  const a = getItemById(run.equipped.armor);
+
+  const wAtk = w ? (w.atk + run.upgrades.weapon * 4) : 0;
+  const sDef = s ? (s.def + run.upgrades.shield * 3) : 0;
+  const aDef = a ? (a.def + run.upgrades.armor * 3) : 0;
+
+  const treeAtk = getTreeLvl('atk_1') * 4;
+  const treeDef = getTreeLvl('def_1') * 3;
+  const treeCrit = getTreeLvl('crit_1') * 4;
+  const treeBlock = getTreeLvl('block_1') * 4;
+
+  const atk = run.baseAtk + wAtk + treeAtk + run.bonusAtk;
+  const def = run.baseDef + sDef + aDef + treeDef + run.bonusDef;
+  const crit = Math.min(85, run.baseCrit + (w?.critBonus || 0) + (s?.critBonus || 0) + (a?.critBonus || 0) + treeCrit);
+  const block = Math.min(75, (w?.blockChance || 0) + (s?.blockChance || 0) + (a?.blockChance || 0) + treeBlock + run.bonusBlock);
+  const critMult = 1.65 + getTreeLvl('crit_dmg') * 0.20;
+  const totalSpellMult = run.spellMult * (1 + getTreeLvl('spell_1') * 0.10);
+
+  return { atk, def, crit, block, critMult, totalSpellMult, weapon: w, shield: s, armor: a };
+}
+
+function updateRunHud() {
+  if (!run) return;
+  const st = getPlayerStats();
+  const biome = BIOMES[run.biomeIdx] || BIOMES[0];
+
+  document.getElementById('hudName').textContent = run.name;
+  document.getElementById('hudClassBadge').textContent = `${run.pClass} (${run.element})`;
+  document.getElementById('hudBiomeBadge').textContent = `🌍 ${biome.name}`;
+  document.getElementById('hudStageBadge').textContent = run.endless ? `♾️ Etap ${run.stage}` : `🏁 Etap ${run.stage}/${run.maxStages}`;
+  document.getElementById('hudDiffBadge').textContent = getDiffConfig(run.difficulty).name;
+
+  document.getElementById('hudHpText').textContent = `${run.hp}/${run.maxHp}`;
+  document.getElementById('hudHpBar').style.width = `${Math.max(0, Math.min(100, (run.hp / run.maxHp) * 100))}%`;
+
+  document.getElementById('hudMpText').textContent = `${run.mp}/${run.maxMp}`;
+  document.getElementById('hudMpBar').style.width = `${Math.max(0, Math.min(100, (run.mp / run.maxMp) * 100))}%`;
+
+  document.getElementById('hudLvl').textContent = run.level;
+  document.getElementById('hudExpText').textContent = `${run.exp}/${run.nextExp}`;
+  document.getElementById('hudExpBar').style.width = `${Math.max(0, Math.min(100, (run.exp / run.nextExp) * 100))}%`;
+
+  document.getElementById('hudGold').textContent = `${run.gold} zl`;
+  document.getElementById('hudAtk').textContent = `${st.atk} (${st.crit}% kryt)`;
+  document.getElementById('hudDef').textContent = `${st.def} (${st.block}% blok)`;
+
+  const c = document.getElementById('hudAvatarCanvas');
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
+  drawPixelHero(ctx, 48, 52, 1.8, run.cloakColor, run.pClass);
+}
+
+function switchHubView(viewName) {
+  playSfx('click');
+  document.querySelectorAll('.hub-subview').forEach(v => v.classList.remove('active'));
+  document.getElementById('subview-' + viewName).classList.add('active');
+
+  if (viewName === 'explore') renderExploreNode();
+  if (viewName === 'inventory') renderInventory();
+  if (viewName === 'shop') renderGoldShop();
+  if (viewName === 'forge') renderForge();
+}
+
+function drawBiomeBackground(canvasId) {
+  const c = document.getElementById(canvasId);
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+  const biome = BIOMES[run.biomeIdx] || BIOMES[0];
+
+  ctx.fillStyle = biome.sky;
+  ctx.fillRect(0, 0, c.width, c.height);
+
+  ctx.fillStyle = biome.accent;
+  for (let i = 0; i < 28; i++) {
+    const sx = (i * 97 + run.stage * 23) % c.width;
+    const sy = (i * 41) % 130;
+    ctx.fillRect(sx, sy, 4, 4);
+  }
+
+  ctx.fillStyle = 'rgba(0,0,0,0.35)';
+  for (let x = 0; x < c.width; x += 90) {
+    ctx.beginPath();
+    ctx.moveTo(x, 165);
+    ctx.lineTo(x + 45, 95 + (x % 30));
+    ctx.lineTo(x + 90, 165);
+    ctx.fill();
+  }
+
+  ctx.fillStyle = biome.ground;
+  ctx.fillRect(0, 165, c.width, 65);
+  ctx.fillStyle = biome.accent;
+  ctx.fillRect(0, 165, c.width, 4);
+}
+
+function generateExploreNode() {
+  const isBoss = (run.stage % 10 === 0);
+  if (isBoss) {
+    run.currentNode = { type: 'boss' };
+    return;
+  }
+
+  const roll = Math.random();
+  if (roll < 0.58) {
+    const isDuo = run.stage >= 3 && Math.random() < 0.42;
+    run.currentNode = { type: 'combat', isDuo };
+  } else {
+    const diff = getDiffConfig(run.difficulty);
+    const events = [
+      {
+        title: '🐺 Zraniony Najemnik przy Ognisku',
+        desc: 'Napotykasz doświadczonego wojownika, który szuka drużyny w zamian za udział w wyprawie lub niewielką opłatę za opatrunki.',
+        opt1: { label: 'Zrekrutuj kompana (45 zl)', action: () => {
+          if (run.gold < 45) return showToast('Za mało złota (45 zl)!');
+          run.gold -= 45;
+          recruitRandomCompanion(false);
+          advanceAfterEvent();
+        }},
+        opt2: { label: `Opatrz jego rany (+${Math.max(10, Math.round(25 * diff.rewardMult))} EXP)`, action: () => {
+          gainExp(Math.max(10, Math.round(25 * diff.rewardMult)));
+          advanceAfterEvent();
+        }}
+      },
+      {
+        title: '⛩️ Starożytna Kapliczka Krwi i Many',
+        desc: 'Mroczny obelisk pulsuje energią. Możesz złożyć ofiarę z krwi albo pomodlić się o odnowienie sił.',
+        opt1: { label: `Ofiara krwi (-25 HP → +${Math.round(140 * diff.runGoldMult)} zl)`, action: () => {
+          if (run.hp <= 26) return showToast('Masz za mało HP na ofiarę!');
+          run.hp -= 25;
+          const g = Math.round(140 * diff.runGoldMult);
+          run.gold += g;
+          if (Math.random() < (0.55 * diff.dropMult)) {
+            metaState.runes += 1;
+            showToast(`Otrzymano ${g} zl i +1 Runę Kuźni!`);
+          } else {
+            showToast(`Otrzymano ${g} zl (tym razem bez Runy).`);
+          }
+          saveStorage();
+          playSfx('crit');
+          advanceAfterEvent();
+        }},
+        opt2: { label: 'Odpocznij przy kapliczce (+45% HP i MP)', action: () => {
+          run.hp = Math.min(run.maxHp, run.hp + Math.round(run.maxHp * 0.45));
+          run.mp = Math.min(run.maxMp, run.mp + Math.round(run.maxMp * 0.45));
+          playSfx('heal');
+          showToast('Zregenerowano siły!');
+          advanceAfterEvent();
+        }}
+      },
+      {
+        title: '🧪 Wędrowny Alchemik Otchłani',
+        desc: 'Tajemniczy kupiec oferuje eksperymentalną miksturę wzmacniającą lub zestaw eliksirów.',
+        opt1: { label: 'Wypij nieznany wywar (55% +5 ATK na run / -20 HP)', action: () => {
+          if (Math.random() < 0.55) {
+            run.bonusAtk += 5;
+            playSfx('level');
+            showToast('Sukces! +5 ATK na cały run!');
+          } else {
+            run.hp = Math.max(1, run.hp - 20);
+            playSfx('hit');
+            showToast('Wywar był trujący! Tracisz 20 HP.');
+          }
+          advanceAfterEvent();
+        }},
+        opt2: { label: 'Weź darmową Miksturę Zdrowia', action: () => {
+          addItemToBag(1, 1);
+          playSfx('buy');
+          showToast('Otrzymano Miksturę Zdrowia.');
+          advanceAfterEvent();
+        }}
+      }
+    ];
+    const ev = events[Math.floor(Math.random() * events.length)];
+    run.currentNode = { type: 'event', event: ev };
+  }
+}
+
+function advanceAfterEvent() {
+  run.stage++;
+  checkBiomeTransition();
+  generateExploreNode();
+  saveCurrentRun(false);
+  updateRunHud();
+  renderExploreNode();
+}
+
+function checkBiomeTransition() {
+  if (run.stage > 1 && (run.stage - 1) % 10 === 0) {
+    let nextIdx = Math.floor(Math.random() * BIOMES.length);
+    if (nextIdx === run.biomeIdx) nextIdx = (nextIdx + 1) % BIOMES.length;
+    run.biomeIdx = nextIdx;
+    showToast(`🌍 Wkraczasz do nowej krainy: ${BIOMES[nextIdx].name}!`);
+  }
+}
+
+function renderExploreNode() {
+  drawBiomeBackground('sceneCanvas');
+  const c = document.getElementById('sceneCanvas');
+  const ctx = c.getContext('2d');
+  drawPixelHero(ctx, 210, 145, 2.2, run.cloakColor, run.pClass);
+  run.companions.forEach((comp, idx) => {
+    drawPixelHero(ctx, 135 - idx * 55, 148, 1.8, comp.color, 'Wojownik');
+  });
+
+  const card = document.getElementById('exploreCard');
+  const biome = BIOMES[run.biomeIdx];
+  const node = run.currentNode;
+
+  if (node.type === 'boss') {
+    card.innerHTML = `
+      <h3 style="color:var(--danger);">👑 STRAŻNIK KRAINY: ${biome.boss.name} (Etap ${run.stage})</h3>
+      <p style="margin:8px 0; color:var(--text-dim);">Potężny boss strzeże przejścia do kolejnego regionu! Nagroda zależy od trudności runu (${getDiffConfig(run.difficulty).name}).</p>
+      <button class="danger" onclick="startCombat(true, false)">⚔️ Wyzwij Bossa Krainy!</button>
+    `;
+  } else if (node.type === 'combat') {
+    card.innerHTML = `
+      <h3 style="color:var(--gold);">${node.isDuo ? '⚔️ Dwuwalka 2v2 na Szlaku!' : '🗡️ Starcie na Szlaku'} (Etap ${run.stage})</h3>
+      <p style="margin:8px 0; color:var(--text-dim);">Kraina: <strong>${biome.name}</strong> — <em>${biome.envText}</em></p>
+      <button class="primary" onclick="startCombat(false, ${node.isDuo})">⚔️ Rozpocznij Walkę</button>
+    `;
+  } else if (node.type === 'event') {
+    const ev = node.event;
+    card.innerHTML = `
+      <h3 style="color:var(--accent);">${ev.title}</h3>
+      <p style="margin:8px 0; color:var(--text-dim); line-height:1.45;">${ev.desc}</p>
+      <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;">
+        <button class="gold-btn" id="evOpt1Btn">${ev.opt1.label}</button>
+        <button id="evOpt2Btn">${ev.opt2.label}</button>
+      </div>
+    `;
+    document.getElementById('evOpt1Btn').onclick = ev.opt1.action;
+    document.getElementById('evOpt2Btn').onclick = ev.opt2.action;
+  }
+}
+
+function spawnEnemyUnit(isBoss) {
+  const biome = BIOMES[run.biomeIdx];
+  const diff = getDiffConfig(run.difficulty);
+  const scale = (1 + (run.stage - 1) * 0.16) * diff.enemyMult;
+
+  if (isBoss) {
+    const b = biome.boss;
+    return {
+      name: b.name, type: b.type, elem: b.elem, isBoss: true,
+      maxHp: Math.round(b.hp * scale), hp: Math.round(b.hp * scale),
+      atk: Math.round(b.atk * scale), def: Math.round(b.def * (1 + run.stage * 0.06)),
+      gold: Math.round(b.gold * (1 + run.stage * 0.08) * diff.runGoldMult),
+      exp: Math.round(b.exp * (1 + run.stage * 0.08) * diff.rewardMult),
+      burn: 0, poison: 0, freeze: 0
+    };
+  }
+
+  const tpl = biome.enemies[Math.floor(Math.random() * biome.enemies.length)];
+  return {
+    name: tpl.name, type: tpl.type, elem: tpl.elem, isBoss: false,
+    maxHp: Math.round(tpl.hp * scale), hp: Math.round(tpl.hp * scale),
+    atk: Math.round(tpl.atk * scale), def: Math.round(tpl.def * (1 + run.stage * 0.05)),
+    gold: Math.round(tpl.gold * (1 + run.stage * 0.07) * diff.runGoldMult),
+    exp: Math.round(tpl.exp * (1 + run.stage * 0.07) * diff.rewardMult),
+    burn: 0, poison: 0, freeze: 0
+  };
+}
+
+function startCombat(isBoss, isDuo) {
+  playSfx('hit');
+  const enemies = [spawnEnemyUnit(isBoss)];
+  if (isDuo && !isBoss) {
+    enemies.push(spawnEnemyUnit(false));
+  }
+
+  battle = {
+    isBoss,
+    enemies,
+    targetIdx: 0,
+    defending: false,
+    log: isDuo ? 'Dwuwalka! Naprzeciw Ciebie staje dwóch przeciwników!' : `Rozpoczyna się walka z: ${enemies[0].name}!`
+  };
+
+  document.getElementById('hubTabs').style.display = 'none';
+  switchHubView('battle');
+  renderBattleUi();
+}
+
+function getElementMultiplier(atkElem, enemy) {
+  let m = 1.0;
+  if (atkElem === 'Swiatlo' && (enemy.type === 'Nieumarly' || enemy.type === 'Zjawa' || enemy.elem === 'Mrok')) m += 0.45;
+  if (atkElem === 'Ogien'   && (enemy.type === 'Bestia' || enemy.elem === 'Natura' || enemy.elem === 'Mroz')) m += 0.30;
+  if (atkElem === 'Mroz'    && (enemy.elem === 'Ogien' || enemy.type === 'Demon')) m += 0.35;
+  if (atkElem === 'Natura'  && (enemy.type === 'Golem' || enemy.type === 'Bestia')) m += 0.30;
+  if (atkElem === 'Mrok'    && (enemy.type === 'Bestia' || enemy.type === 'Golem')) m += 0.25;
+  return m;
+}
+
+function renderBattleUi() {
+  drawBiomeBackground('battleCanvas');
+  const c = document.getElementById('battleCanvas');
+  const ctx = c.getContext('2d');
+
+  drawPixelHero(ctx, 220, 145, 2.2, run.cloakColor, run.pClass);
+  run.companions.forEach((comp, idx) => {
+    if (comp.hp > 0) drawPixelHero(ctx, 130 - idx * 55, 148, 1.8, comp.color, 'Wojownik');
+  });
+
+  battle.enemies.forEach((en, idx) => {
+    if (en.hp <= 0) return;
+    const ex = 760 + idx * 140;
+    const sc = en.isBoss ? 3.1 : 2.2;
+    drawPixelHero(ctx, ex, 145, sc, en.isBoss ? '#ef4444' : '#64748b', 'Wojownik');
+    if (idx === battle.targetIdx) {
+      ctx.strokeStyle = '#facc15';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(ex - 26, 95, 52, 72);
+    }
+  });
+
+  const alliesBox = document.getElementById('alliesContainer');
+  const st = getPlayerStats();
+  alliesBox.innerHTML = `
+    <div class="unit-card">
+      <div style="display:flex; justify-content:space-between;">
+        <strong>🧙 ${run.name} (Ty)</strong>
+        <span style="color:var(--hp);">${run.hp}/${run.maxHp} HP | ${run.mp}/${run.maxMp} MP</span>
+      </div>
+      <div class="status-badges">
+        <span class="badge">ATK: ${st.atk}</span>
+        <span class="badge">DEF: ${st.def}</span>
+        <span class="badge">Kryt: ${st.crit}%</span>
+        <span class="badge">Blok: ${st.block}%</span>
+        ${battle.defending ? '<span class="badge" style="border-color:var(--hp);">🛡️ Garda (+50% DEF)</span>' : ''}
+      </div>
+    </div>
+  `;
+
+  run.companions.forEach(comp => {
+    alliesBox.innerHTML += `
+      <div class="unit-card" style="opacity:${comp.hp > 0 ? 1 : 0.45};">
+        <div style="display:flex; justify-content:space-between;">
+          <strong style="color:${comp.color};">🐺 ${comp.name}</strong>
+          <span style="color:var(--hp);">${comp.hp}/${comp.maxHp} HP</span>
+        </div>
+        <div style="font-size:0.78rem; color:var(--text-dim);">ATK: ${comp.atk} | Żywioł: ${comp.elem}</div>
+      </div>
+    `;
+  });
+
+  const enemiesBox = document.getElementById('enemiesContainer');
+  enemiesBox.innerHTML = '';
+  battle.enemies.forEach((en, idx) => {
+    const alive = en.hp > 0;
+    const isTarget = idx === battle.targetIdx && alive;
+    enemiesBox.innerHTML += `
+      <div class="unit-card ${isTarget ? 'targeted' : ''}" style="opacity:${alive ? 1 : 0.35}; cursor:${alive ? 'pointer' : 'default'};" onclick="selectEnemyTarget(${idx})">
+        <div style="display:flex; justify-content:space-between;">
+          <strong style="color:${en.isBoss ? 'var(--danger)' : 'var(--text)'};">${isTarget ? '🎯 ' : ''}${en.name}</strong>
+          <span style="color:var(--danger);">${en.hp}/${en.maxHp} HP</span>
+        </div>
+        <div class="status-badges">
+          <span class="badge">${en.type} | ${en.elem}</span>
+          <span class="badge">ATK: ${en.atk} | DEF: ${en.def}</span>
+          ${en.burn > 0 ? `<span class="badge" style="border-color:#f97316;">🔥 Ogień (${en.burn}t)</span>` : ''}
+          ${en.poison > 0 ? `<span class="badge" style="border-color:#4ade80;">☠️ Trucizna (${en.poison}t)</span>` : ''}
+          ${en.freeze > 0 ? `<span class="badge" style="border-color:#38bdf8;">❄️ Mróz (${en.freeze}t)</span>` : ''}
+        </div>
+      </div>
+    `;
+  });
+
+  document.getElementById('battleLog').innerHTML = battle.log;
+  renderBattleActions();
+}
+
+function selectEnemyTarget(idx) {
+  if (battle.enemies[idx] && battle.enemies[idx].hp > 0) {
+    battle.targetIdx = idx;
+    playSfx('click');
+    renderBattleUi();
+  }
+}
+
+function getUnlockedPlayerSkills() {
+  const boughtScrolls = run.learnedScrollSkills || [];
+  return SKILLS_DB.filter(sk => {
+    const classOk = sk.classReq === 'all' || sk.classReq === run.pClass;
+    if (!classOk) return false;
+    if (boughtScrolls.includes(sk.id)) return true;
+    if (sk.crateOnly) return metaState.unlockedSkills.includes(sk.id);
+    return run.level >= sk.reqLvl;
+  });
+}
+
+function renderBattleActions() {
+  const actBox = document.getElementById('battleActions');
+  const skills = getUnlockedPlayerSkills();
+  const potions = run.inventory.filter(slot => {
+    const it = getItemById(slot.id);
+    return it && (it.cat === 'MiksturaHP' || it.cat === 'MiksturaMP' || it.cat === 'Rzucany');
+  });
+
+  let html = `
+    <button class="primary" onclick="playerBattleTurn('attack')">⚔️ Zwykły Atak</button>
+    <button onclick="playerBattleTurn('defend')">🛡️ Obrona (+50% DEF, +8 MP)</button>
+  `;
+
+  skills.forEach(sk => {
+    const canMp = run.mp >= sk.mp;
+    html += `<button class="essence-btn" ${canMp ? '' : 'disabled'} onclick="playerBattleTurn('skill', '${sk.id}')">✨ ${sk.name} (${sk.mp} MP)</button>`;
+  });
+
+  potions.forEach(slot => {
+    const it = getItemById(slot.id);
+    html += `<button class="gold-btn" onclick="playerBattleTurn('item', ${it.id})">🧪 ${it.name} (x${slot.qty})</button>`;
+  });
+
+  if (!battle.isBoss) {
+    html += `<button class="danger" onclick="playerBattleTurn('flee')">🏃 Ucieczka (50%)</button>`;
+  }
+
+  actBox.innerHTML = html;
+}
+
+function playerBattleTurn(actionType, param) {
+  if (!battle) return;
+  if (!battle.enemies[battle.targetIdx] || battle.enemies[battle.targetIdx].hp <= 0) {
+    battle.targetIdx = battle.enemies.findIndex(e => e.hp > 0);
+  }
+  const target = battle.enemies[battle.targetIdx];
+  const st = getPlayerStats();
+  battle.defending = false;
+  let logs = [];
+
+  if (actionType === 'attack') {
+    const atkElem = (st.weapon && st.weapon.elem !== 'Fizyczny') ? st.weapon.elem : run.element;
+    const elemMult = getElementMultiplier(atkElem, target);
+    const isCrit = (Math.random() * 100) < st.crit;
+    let dmg = Math.max(2, Math.round((st.atk * elemMult * (isCrit ? st.critMult : 1.0)) - target.def * 0.45));
+    target.hp = Math.max(0, target.hp - dmg);
+    playSfx(isCrit ? 'crit' : 'hit');
+    logs.push(`Zadajesz <strong>${dmg}</strong> obr. (${atkElem})${isCrit ? ' <span style="color:var(--gold);">[KRYTYK!]</span>' : ''} celowi ${target.name}.`);
+
+    if (st.weapon?.statusEffect === 'burn') { target.burn = 3; logs.push('Broń podpala wroga!'); }
+    if (st.weapon?.statusEffect === 'freeze') { target.freeze = 2; logs.push('Broń zamraża wroga!'); }
+    if (st.weapon?.statusEffect === 'lifesteal') {
+      const steal = Math.max(1, Math.round(dmg * 0.20));
+      run.hp = Math.min(run.maxHp, run.hp + steal);
+      logs.push(`Kradzież życia: +${steal} HP.`);
+    }
+  } else if (actionType === 'defend') {
+    battle.defending = true;
+    const mpGain = Math.min(run.maxMp - run.mp, 8);
+    run.mp += mpGain;
+    playSfx('block');
+    logs.push(`Przyjmujesz postawę obronną (+50% DEF, +${mpGain} MP).`);
+  } else if (actionType === 'skill') {
+    const sk = SKILLS_DB.find(s => s.id === param);
+    if (!sk || run.mp < sk.mp) return;
+    run.mp -= sk.mp;
+    playSfx('crit');
+
+    if (sk.status === 'heal' && !sk.aoe) {
+      const heal = Math.round(45 * st.totalSpellMult + run.level * 6);
+      run.hp = Math.min(run.maxHp, run.hp + heal);
+      logs.push(`${sk.name} leczy Cię o <strong>+${heal} HP</strong>!`);
+    } else {
+      const targets = sk.aoe ? battle.enemies.filter(e => e.hp > 0) : [target];
+      targets.forEach(t => {
+        const elem = sk.elem === 'weapon' ? run.element : sk.elem;
+        const m = getElementMultiplier(elem, t);
+        const dmg = Math.max(3, Math.round(st.atk * sk.mult * st.totalSpellMult * m - t.def * 0.3));
+        t.hp = Math.max(0, t.hp - dmg);
+        if (sk.status === 'burn') t.burn = 3;
+        if (sk.status === 'poison') t.poison = 4;
+        if (sk.status === 'freeze') t.freeze = 2;
+        if (sk.status === 'lifesteal') run.hp = Math.min(run.maxHp, run.hp + Math.round(dmg * 0.35));
+      });
+      if (sk.status === 'heal') {
+        const heal = Math.round(35 * st.totalSpellMult);
+        run.hp = Math.min(run.maxHp, run.hp + heal);
+      }
+      logs.push(`Używasz <strong>${sk.name}</strong>!`);
+    }
+  } else if (actionType === 'item') {
+    const it = getItemById(param);
+    if (!it) return;
+    removeItemFromBag(it.id, 1);
+    if (it.cat === 'MiksturaHP') {
+      run.hp = Math.min(run.maxHp, run.hp + it.val);
+      playSfx('heal');
+      logs.push(`Wypito ${it.name} (+${it.val} HP).`);
+    } else if (it.cat === 'MiksturaMP') {
+      run.mp = Math.min(run.maxMp, run.mp + it.val);
+      playSfx('heal');
+      logs.push(`Wypito ${it.name} (+${it.val} MP).`);
+    } else if (it.cat === 'Rzucany') {
+      const m = getElementMultiplier(it.elem, target);
+      const dmg = Math.round(it.val * m);
+      target.hp = Math.max(0, target.hp - dmg);
+      if (it.statusEffect === 'burn') target.burn = it.turns;
+      if (it.statusEffect === 'poison') target.poison = it.turns;
+      playSfx('hit');
+      logs.push(`Rzucasz ${it.name} zadając ${dmg} obr.!`);
+    }
+  } else if (actionType === 'flee') {
+    if (Math.random() < 0.50) {
+      showToast('Udało się uciec z pola bitwy!');
+      endCombat(false);
+      return;
+    } else {
+      logs.push('Nie udało się uciec!');
+    }
+  }
+
+  run.companions.forEach(comp => {
+    if (comp.hp <= 0) return;
+    const aliveEn = battle.enemies.filter(e => e.hp > 0);
+    if (aliveEn.length === 0) return;
+    const t = aliveEn[0];
+    const dmg = Math.max(2, Math.round(comp.atk * getElementMultiplier(comp.elem, t) - t.def * 0.3));
+    t.hp = Math.max(0, t.hp - dmg);
+    logs.push(`${comp.name} zadaje ${dmg} obr. (${t.name}).`);
+  });
+
+  battle.enemies.forEach(en => {
+    if (en.hp > 0 && en.burn > 0) {
+      const bd = Math.max(4, Math.round(st.atk * 0.35));
+      en.hp = Math.max(0, en.hp - bd);
+      en.burn--;
+      logs.push(`🔥 ${en.name} płonie (-${bd} HP).`);
+    }
+    if (en.hp > 0 && en.poison > 0) {
+      const pd = Math.max(4, Math.round(st.atk * 0.30));
+      en.hp = Math.max(0, en.hp - pd);
+      en.poison--;
+      logs.push(`☠️ Trucizna rani ${en.name} (-${pd} HP).`);
+    }
+  });
+
+  if (battle.enemies.every(e => e.hp <= 0)) {
+    handleBattleVictory();
+    return;
+  }
+
+  battle.enemies.forEach(en => {
+    if (en.hp <= 0) return;
+    const atkMult = en.freeze > 0 ? 0.70 : 1.0;
+    if (en.freeze > 0) en.freeze--;
+
+    if ((Math.random() * 100) < st.block) {
+      playSfx('block');
+      logs.push(`<span style="color:var(--rune);">🛡️ BLOK 100%!</span> Całkowicie zatrzymujesz cios ${en.name}!`);
+      return;
+    }
+
+    const effDef = battle.defending ? Math.round(st.def * 1.5) : st.def;
+    const dmg = Math.max(1, Math.round(en.atk * atkMult - effDef * 0.5));
+    run.hp = Math.max(0, run.hp - dmg);
+    logs.push(`${en.name} zadaje Ci <strong>${dmg}</strong> obr.`);
+  });
+
+  const biome = BIOMES[run.biomeIdx];
+  const envDmg = Math.max(1, biome.envDmg - Math.floor(st.def * 0.15));
+  run.hp = Math.max(0, run.hp - envDmg);
+  logs.push(`<span style="color:${biome.accent};">[${biome.name}] -${envDmg} HP.</span>`);
+
+  if (run.hp <= 0) {
+    handlePlayerDefeat();
+    return;
+  }
+
+  battle.log = logs.join(' ');
+  updateRunHud();
+  renderBattleUi();
+}
+
+function handleBattleVictory() {
+  playSfx('level');
+  const diff = getDiffConfig(run.difficulty);
+  const goldMult = 1 + getTreeLvl('gold_1') * 0.12;
+  const lootBonus = getTreeLvl('loot_1') * 0.03;
+  const essMult = diff.rewardMult * (1 + getTreeLvl('ess_gain') * 0.15);
+
+  let totalGold = 0;
+  let totalExp = 0;
+  let dropLogs = [];
+
+  battle.enemies.forEach(en => {
+    totalGold += Math.round(en.gold * goldMult);
+    totalExp += en.exp;
+
+    if (en.isBoss) {
+      const baseEss = run.endless ? 10 : 18;
+      const gainedEss = Math.max(3, Math.round(baseEss * essMult));
+      metaState.essence += gainedEss;
+      dropLogs.push(`🔮 +${gainedEss} Esencji za Bossa!`);
+    } else if (Math.random() < ((0.07 + lootBonus) * diff.dropMult)) {
+      const gainedEss = Math.max(1, Math.round(2 * essMult));
+      metaState.essence += gainedEss;
+      dropLogs.push(`🔮 +${gainedEss} Esencji!`);
+    }
+
+    const baseRuneChance = en.isBoss ? (0.35 + lootBonus) : (0.035 + lootBonus * 0.6);
+    if (Math.random() < (baseRuneChance * diff.dropMult)) {
+      metaState.runes += 1;
+      dropLogs.push(`💠 +1 Runa Kuźni!`);
+    }
+
+    const baseGearChance = (0.06 + lootBonus) * diff.dropMult;
+    if (Math.random() < baseGearChance) {
+      const eligibleGear = ITEMS_CATALOG.filter(i =>
+        (i.cat === 'Bron' || i.cat === 'Tarcza' || i.cat === 'Pancerz') &&
+        run.level >= (i.reqLvl || 1)
+      );
+      if (eligibleGear.length > 0) {
+        const dropped = eligibleGear[Math.floor(Math.random() * eligibleGear.length)];
+        addItemToBag(dropped.id, 1);
+        dropLogs.push(`🎁 Drop: ${dropped.name}!`);
+      }
+    }
+  });
+
+  run.gold += totalGold;
+  gainExp(totalExp);
+  saveStorage();
+
+  const wasBoss = battle.isBoss;
+  const finishedStage = run.stage;
+  run.stage++;
+  checkBiomeTransition();
+  generateShopStock();
+  generateExploreNode();
+  saveCurrentRun(false);
+
+  showToast(`Zwycięstwo! +${totalGold} zl, +${totalExp} EXP. ${dropLogs.join(' ')}`);
+
+  if (wasBoss && finishedStage >= run.maxStages && !run.endless) {
+    run.endless = true;
+    showToast('🏆 Pokonałeś finałowego Bossa! Odblokowano Tryb Nieskończony!');
+  }
+
+  endCombat(true);
+}
+
+function endCombat(won) {
+  battle = null;
+  document.getElementById('hubTabs').style.display = 'flex';
+  updateRunHud();
+  switchHubView('explore');
+}
+
+function handlePlayerDefeat() {
+  playSfx('hit');
+  showToast('💀 Poległeś w Otchłani! Twoja Esencja i Drzewko Umiejętności zostały zachowane.');
+  metaState.slots[activeSlotIndex] = null;
+  saveStorage();
+  run = null;
+  battle = null;
+  document.getElementById('hubTabs').style.display = 'flex';
+  openMainMenu();
+}
+
+function gainExp(amount) {
+  run.exp += amount;
+  while (run.exp >= run.nextExp) {
+    run.exp -= run.nextExp;
+    run.level++;
+    run.nextExp = Math.round(run.nextExp * 1.28);
+    run.maxHp += 16;
+    run.maxMp += 8;
+    run.baseAtk += 2;
+    run.baseDef += 1;
+    run.hp = run.maxHp;
+    run.mp = run.maxMp;
+    showToast(`⬆️ Awans na Poziom ${run.level}! Sprawdź nowe zaklęcia i przedmioty w sklepie!`);
+  }
+}
+
+function addItemToBag(id, qty) {
+  const existing = run.inventory.find(i => i.id === id);
+  if (existing) existing.qty += qty;
+  else run.inventory.push({ id, qty });
+}
+
+function removeItemFromBag(id, qty) {
+  const idx = run.inventory.findIndex(i => i.id === id);
+  if (idx === -1) return;
+  run.inventory[idx].qty -= qty;
+  if (run.inventory[idx].qty <= 0) run.inventory.splice(idx, 1);
+}
+
+function getMaxCompanions() {
+  return 1 + getTreeLvl('comp_slot');
+}
+
+function recruitRandomCompanion(free) {
+  const maxC = getMaxCompanions();
+  const tpl = COMPANIONS_POOL[Math.floor(Math.random() * COMPANIONS_POOL.length)];
+  const scale = 1 + (run.stage - 1) * 0.12;
+  const newComp = {
+    name: tpl.name,
+    maxHp: Math.round(tpl.hp * scale),
+    hp: Math.round(tpl.hp * scale),
+    atk: Math.round(tpl.atk * scale),
+    def: tpl.def,
+    elem: tpl.elem,
+    color: tpl.color
+  };
+
+  if (run.companions.length >= maxC) {
+    run.companions[0] = newComp;
+    showToast(`Zastąpiono kompana nowym: ${newComp.name}!`);
+  } else {
+    run.companions.push(newComp);
+    showToast(`Dołączył kompan: ${newComp.name}!`);
+  }
+}
+
+function renderInventory() {
+  const eqBox = document.getElementById('equippedSlotsBox');
+  const w = getItemById(run.equipped.weapon);
+  const s = getItemById(run.equipped.shield);
+  const a = getItemById(run.equipped.armor);
+
+  eqBox.innerHTML = `
+    <div style="font-size:0.86rem; line-height:1.7;">
+      <div>🗡️ Broń: <strong>${w ? `${w.name} (+${run.upgrades.weapon})` : 'Brak'}</strong></div>
+      <div>🛡️ Tarcza: <strong>${s ? `${s.name} (+${run.upgrades.shield})` : 'Brak'}</strong></div>
+      <div>🥋 Pancerz: <strong>${a ? `${a.name} (+${run.upgrades.armor})` : 'Brak'}</strong></div>
+    </div>
+  `;
+
+  const compBox = document.getElementById('companionsBox');
+  document.getElementById('compCountLabel').textContent = `${run.companions.length}/${getMaxCompanions()}`;
+  if (run.companions.length === 0) {
+    compBox.innerHTML = `<p style="font-size:0.83rem; color:var(--text-dim);">Brak kompanów. Zrekrutuj ich podczas wydarzeń na szlaku lub zdobądź ze Skrzyni Esencji.</p>`;
+  } else {
+    compBox.innerHTML = run.companions.map(c => `
+      <div style="font-size:0.84rem; margin-bottom:6px; border-bottom:1px solid var(--border); padding-bottom:4px;">
+        <strong style="color:${c.color};">${c.name}</strong> — HP: ${c.hp}/${c.maxHp} | ATK: ${c.atk} (${c.elem})
+      </div>
+    `).join('');
+  }
+
+  const skBox = document.getElementById('learnedSkillsBox');
+  const skills = getUnlockedPlayerSkills();
+  skBox.innerHTML = skills.map(sk => `
+    <div class="item-card">
+      <div>
+        <strong style="color:var(--essence);">${sk.name}</strong> (${sk.mp} MP)
+        <p style="font-size:0.78rem; color:var(--text-dim); margin-top:3px;">${sk.desc}</p>
+      </div>
+    </div>
+  `).join('');
+
+  const bag = document.getElementById('backpackGrid');
+  bag.innerHTML = '';
+  run.inventory.forEach(slot => {
+    const it = getItemById(slot.id);
+    if (!it) return;
+    const isEq = (run.equipped.weapon === it.id || run.equipped.shield === it.id || run.equipped.armor === it.id);
+    const card = document.createElement('div');
+    card.className = 'item-card ' + (isEq ? 'equipped' : '');
+
+    let actionBtn = '';
+    if (it.cat === 'Bron' || it.cat === 'Tarcza' || it.cat === 'Pancerz') {
+      actionBtn = isEq
+        ? `<button disabled>✅ Założono</button>`
+        : `<button class="primary" onclick="equipItem(${it.id})">Załóż</button>`;
+    } else if (it.cat === 'MiksturaHP' || it.cat === 'MiksturaMP') {
+      actionBtn = `<button class="gold-btn" onclick="usePotionOutOfCombat(${it.id})">Wypij</button>`;
+    }
+
+    card.innerHTML = `
+      <div>
+        <strong>${it.name}</strong> <span style="color:var(--gold);">x${slot.qty}</span>
+        <div style="font-size:0.76rem; color:var(--rune);">${it.cat} ${it.subType ? '(' + it.subType + ')' : ''}</div>
+        <p style="font-size:0.78rem; color:var(--text-dim); margin-top:4px;">${it.desc}</p>
+      </div>
+      ${actionBtn}
+    `;
+    bag.appendChild(card);
+  });
+}
+
+function equipItem(id) {
+  const it = getItemById(id);
+  if (!it) return;
+  if (it.cat === 'Bron') run.equipped.weapon = id;
+  if (it.cat === 'Tarcza') run.equipped.shield = id;
+  if (it.cat === 'Pancerz') run.equipped.armor = id;
+  playSfx('click');
+  saveCurrentRun(false);
+  updateRunHud();
+  renderInventory();
+}
+
+function usePotionOutOfCombat(id) {
+  const it = getItemById(id);
+  if (!it) return;
+  if (it.cat === 'MiksturaHP') run.hp = Math.min(run.maxHp, run.hp + it.val);
+  if (it.cat === 'MiksturaMP') run.mp = Math.min(run.maxMp, run.mp + it.val);
+  removeItemFromBag(id, 1);
+  playSfx('heal');
+  saveCurrentRun(false);
+  updateRunHud();
+  renderInventory();
+}
+
+function getShopPriceMultiplier() {
+  const diff = getDiffConfig(run.difficulty);
+  const treeDiscount = Math.max(0.75, 1 - getTreeLvl('gold_1') * 0.04);
+  const stageInflation = 1 + (run.stage - 1) * 0.05;
+  return diff.shopMult * treeDiscount * stageInflation;
+}
+
+function generateShopStock() {
+  const pool = [...ITEMS_CATALOG];
+  const chosenItems = [];
+  while (chosenItems.length < 6 && pool.length > 0) {
+    const idx = Math.floor(Math.random() * pool.length);
+    chosenItems.push(pool.splice(idx, 1)[0].id);
+  }
+
+  // Dodajemy też 2 zwoje umiejętności dla klasy gracza (lub ogólne) z wymaganym poziomem
+  const scrollCandidates = SKILLS_DB.filter(sk =>
+    sk.shopScrollLvl !== null && (sk.classReq === 'all' || sk.classReq === run.pClass)
+  );
+  const chosenScrolls = [];
+  const copyScrolls = [...scrollCandidates];
+  while (chosenScrolls.length < 2 && copyScrolls.length > 0) {
+    const idx = Math.floor(Math.random() * copyScrolls.length);
+    chosenScrolls.push(copyScrolls.splice(idx, 1)[0].id);
+  }
+
+  run.shopStock = { items: chosenItems, scrolls: chosenScrolls };
+}
+
+function rerollShop() {
+  const cost = 35 + run.rerolls * 15;
+  if (run.gold < cost) return showToast('Za mało złota na odświeżenie oferty!');
+  run.gold -= cost;
+  run.rerolls++;
+  generateShopStock();
+  playSfx('click');
+  updateRunHud();
+  renderGoldShop();
+}
+
+function renderGoldShop() {
+  if (!run.shopStock || Array.isArray(run.shopStock)) {
+    generateShopStock();
+  }
+  const mult = getShopPriceMultiplier();
+  const diff = getDiffConfig(run.difficulty);
+  document.getElementById('shopEconomyInfo').textContent =
+    `Twój poziom w runie: Poz. ${run.level} | Trudność: ${diff.name} (Złoto w runie x${diff.runGoldMult}, Dropy/Nagrody x${diff.rewardMult}) | Mnożnik cen: x${mult.toFixed(2)}`;
+  document.getElementById('rerollCostLabel').textContent = 35 + run.rerolls * 15;
+
+  const grid = document.getElementById('goldShopGrid');
+  grid.innerHTML = '';
+
+  // 1. Przedmioty z wymaganym poziomem w runie
+  (run.shopStock.items || []).forEach(id => {
+    const it = getItemById(id);
+    if (!it) return;
+    const reqLvl = it.reqLvl || 1;
+    const lvlUnlocked = run.level >= reqLvl;
+    const price = Math.max(5, Math.round(it.price * mult));
+    const canBuy = lvlUnlocked && run.gold >= price;
+
+    const card = document.createElement('div');
+    card.className = 'item-card ' + (!lvlUnlocked ? 'locked-lvl' : '');
+    card.innerHTML = `
+      <div>
+        <strong>${it.name}</strong>
+        <div style="margin:4px 0;">
+          <span class="badge ${lvlUnlocked ? 'lvl-ok' : 'lvl-lock'}">${lvlUnlocked ? `Wym. Poz. ${reqLvl} (Dostępne)` : `🔒 Wym. Poz. ${reqLvl}`}</span>
+        </div>
+        <div style="font-size:0.76rem; color:var(--rune);">${it.cat} ${it.atk ? `| ATK:+${it.atk}` : ''} ${it.def ? `| DEF:+${it.def}` : ''}</div>
+        <p style="font-size:0.78rem; color:var(--text-dim); margin-top:4px;">${it.desc}</p>
+      </div>
+      <button class="gold-btn" ${canBuy ? '' : 'disabled'} onclick="buyGoldItem(${it.id}, ${price})">
+        ${lvlUnlocked ? `Kup (${price} zl)` : `Odblokuje się na Poz. ${reqLvl}`}
+      </button>
+    `;
+    grid.appendChild(card);
+  });
+
+  // 2. Zwoje umiejętności z wymaganym poziomem w runie
+  (run.shopStock.scrolls || []).forEach(skillId => {
+    const sk = SKILLS_DB.find(s => s.id === skillId);
+    if (!sk) return;
+    const reqLvl = sk.shopScrollLvl || 1;
+    const lvlUnlocked = run.level >= reqLvl;
+    const alreadyKnown = getUnlockedPlayerSkills().some(s => s.id === sk.id);
+    const price = Math.max(40, Math.round((85 + reqLvl * 35) * mult));
+    const canBuy = lvlUnlocked && !alreadyKnown && run.gold >= price;
+
+    const card = document.createElement('div');
+    card.className = 'item-card ' + (!lvlUnlocked ? 'locked-lvl' : '');
+    card.innerHTML = `
+      <div>
+        <strong style="color:var(--essence);">📜 Zwój: ${sk.name}</strong>
+        <div style="margin:4px 0;">
+          <span class="badge ${lvlUnlocked ? 'lvl-ok' : 'lvl-lock'}">${lvlUnlocked ? `Wym. Poz. ${reqLvl} (Dostępne)` : `🔒 Wym. Poz. ${reqLvl}`}</span>
+        </div>
+        <div style="font-size:0.76rem; color:var(--gold);">Umiejętność (${sk.mp} MP)</div>
+        <p style="font-size:0.78rem; color:var(--text-dim); margin-top:4px;">${sk.desc}</p>
+      </div>
+      <button class="essence-btn" ${canBuy ? '' : 'disabled'} onclick="buySkillScroll('${sk.id}', ${price})">
+        ${alreadyKnown ? '✅ Już opanowano' : (lvlUnlocked ? `Naucz się (${price} zl)` : `Odblokuje się na Poz. ${reqLvl}`)}
+      </button>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function buyGoldItem(id, price) {
+  const it = getItemById(id);
+  if (!it || run.level < (it.reqLvl || 1) || run.gold < price) return;
+  run.gold -= price;
+  addItemToBag(id, 1);
+  playSfx('buy');
+  saveCurrentRun(false);
+  updateRunHud();
+  renderGoldShop();
+  showToast(`Zakupiono: ${it.name}!`);
+}
+
+function buySkillScroll(skillId, price) {
+  const sk = SKILLS_DB.find(s => s.id === skillId);
+  if (!sk || run.level < (sk.shopScrollLvl || 1) || run.gold < price) return;
+  if (!Array.isArray(run.learnedScrollSkills)) run.learnedScrollSkills = [];
+  if (run.learnedScrollSkills.includes(skillId)) return;
+  run.gold -= price;
+  run.learnedScrollSkills.push(skillId);
+  playSfx('level');
+  saveCurrentRun(false);
+  updateRunHud();
+  renderGoldShop();
+  showToast(`Opanowano umiejętność: ${sk.name}!`);
+}
+
+function renderForge() {
+  const grid = document.getElementById('forgeGrid');
+  const slots = [
+    { key: 'weapon', label: 'Założona Broń', item: getItemById(run.equipped.weapon), bonusText: '+4 ATK za poziom' },
+    { key: 'shield', label: 'Założona Tarcza', item: getItemById(run.equipped.shield), bonusText: '+3 DEF za poziom' },
+    { key: 'armor',  label: 'Założony Pancerz', item: getItemById(run.equipped.armor), bonusText: '+3 DEF za poziom' }
+  ];
+
+  grid.innerHTML = slots.map(s => {
+    if (!s.item) {
+      return `<div class="item-card"><strong>${s.label}</strong><p style="color:var(--text-dim); font-size:0.82rem;">Brak założonego przedmiotu w tym slocie.</p></div>`;
+    }
+    const curUpg = run.upgrades[s.key] || 0;
+    const runeCost = 1 + Math.floor(curUpg / 2);
+    return `
+      <div class="item-card">
+        <div>
+          <strong style="color:var(--rune);">${s.item.name} (+${curUpg})</strong>
+          <div style="font-size:0.8rem; color:var(--gold); margin:4px 0;">${s.bonusText}</div>
+          <p style="font-size:0.78rem; color:var(--text-dim);">Koszt ulepszenia: ${runeCost} 💠 Run</p>
+        </div>
+        <button class="primary" ${metaState.runes >= runeCost ? '' : 'disabled'} onclick="upgradeGearWithRune('${s.key}', ${runeCost})">Ulepsz (+1)</button>
+      </div>
+    `;
+  }).join('');
+}
+
+function upgradeGearWithRune(slotKey, cost) {
+  if (metaState.runes < cost) return;
+  metaState.runes -= cost;
+  run.upgrades[slotKey] = (run.upgrades[slotKey] || 0) + 1;
+  saveStorage();
+  saveCurrentRun(false);
+  playSfx('level');
+  updateRunHud();
+  renderForge();
+  showToast('Wykuto ulepszenie w Kuźni Runicznej!');
+}
+
+function updateSettings() {
+  settings.sfx = document.getElementById('sfxToggle').checked;
+  settings.volume = Number(document.getElementById('volRange').value) / 100;
+  settings.fastAnim = document.getElementById('fastAnimToggle').checked;
+  document.getElementById('volLabel').textContent = `${Math.round(settings.volume * 100)}%`;
+}
+
+function exportSaveJson() {
+  document.getElementById('jsonSaveBox').value = JSON.stringify(metaState);
+  playSfx('click');
+  showToast('Skopiuj tekst JSON z pola poniżej.');
+}
+
+function importSaveJson() {
+  try {
+    const raw = document.getElementById('jsonSaveBox').value.trim();
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    metaState = Object.assign(metaState, parsed);
+    saveStorage();
+    playSfx('level');
+    showToast('Pomyślnie wczytano zapis JSON!');
+    openMainMenu();
+  } catch (e) {
+    showToast('Błędny format zapisu JSON!');
+  }
+}
+
+function hardResetAll() {
+  if (!confirm('Czy na pewno chcesz usunąć wszystkie zapisy, drzewko i Esencję?')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+}
+
+loadStorage();
+renderSaveSlots();
+</script>
+</body>
+</html>
