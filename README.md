@@ -1,0 +1,2 @@
+# KronikiOtchlani
+moja gra
