@@ -6,16 +6,17 @@
 <title>Kroniki Otchłani</title>
 <style>
   :root {
-    --bg-dark: #0b0d13;
-    --bg-panel: #141824;
-    --bg-card: #1c2233;
-    --border: #2e3854;
-    --border-bright: #4e6094;
-    --text: #e6ecff;
-    --text-dim: #8c98bd;
+    --bg-dark: #090b10;
+    --bg-panel: #121724;
+    --bg-card: #1a2133;
+    --border: #2c3754;
+    --border-bright: #4b6199;
+    --text: #eaf0ff;
+    --text-dim: #95a3c9;
     --gold: #f5c542;
     --essence: #c678ff;
     --rune: #38e8ff;
+    --luck: #34d399;
     --hp: #4ade80;
     --mp: #60a5fa;
     --danger: #f87171;
@@ -31,7 +32,7 @@
   }
 
   body {
-    background: radial-gradient(circle at top, #171d2e 0%, var(--bg-dark) 75%);
+    background: radial-gradient(circle at top, #171e30 0%, var(--bg-dark) 78%);
     color: var(--text);
     min-height: 100vh;
     display: flex;
@@ -42,16 +43,16 @@
 
   #app {
     width: 100%;
-    max-width: 1120px;
+    max-width: 1180px;
     background: var(--bg-panel);
     border: 3px solid var(--border);
-    box-shadow: 0 0 35px rgba(0, 0, 0, 0.85), inset 0 0 0 2px #090b10;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.88), inset 0 0 0 2px #080a0f;
     border-radius: 6px;
     overflow: hidden;
   }
 
   .topbar {
-    background: #0e121c;
+    background: #0c101a;
     border-bottom: 3px solid var(--border);
     padding: 10px 16px;
     display: flex;
@@ -72,7 +73,7 @@
   .meta-currencies {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
   }
 
@@ -81,74 +82,73 @@
     border: 2px solid var(--border);
     padding: 4px 10px;
     border-radius: 4px;
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     font-weight: bold;
   }
 
   .pill.essence { color: var(--essence); border-color: #6b3899; }
-  .pill.gold { color: var(--gold); border-color: #8a6d1b; }
   .pill.rune { color: var(--rune); border-color: #1c788a; }
 
   button {
-    background: #232b42;
+    background: #212940;
     color: var(--text);
     border: 2px solid var(--border-bright);
-    padding: 8px 14px;
-    font-size: 0.9rem;
+    padding: 8px 13px;
+    font-size: 0.86rem;
     font-weight: bold;
     cursor: pointer;
     border-radius: 4px;
-    box-shadow: 0 3px 0 #090b10;
+    box-shadow: 0 3px 0 #080a0f;
     transition: transform 0.06s, background 0.12s, border-color 0.12s;
   }
 
   button:hover:not(:disabled) {
-    background: #2f3b5c;
+    background: #2c3857;
     border-color: var(--gold);
   }
 
   button:active:not(:disabled) {
     transform: translateY(2px);
-    box-shadow: 0 1px 0 #090b10;
+    box-shadow: 0 1px 0 #080a0f;
   }
 
   button:disabled {
-    opacity: 0.45;
+    opacity: 0.42;
     cursor: not-allowed;
   }
 
-  button.primary { background: #2c4a34; border-color: var(--hp); color: #d8ffe4; }
-  button.primary:hover:not(:disabled) { background: #386143; }
+  button.primary { background: #264530; border-color: var(--hp); color: #dcffe6; }
+  button.primary:hover:not(:disabled) { background: #31593e; }
 
-  button.essence-btn { background: #3c2357; border-color: var(--essence); color: #f4e3ff; }
-  button.essence-btn:hover:not(:disabled) { background: #502e75; }
+  button.essence-btn { background: #392154; border-color: var(--essence); color: #f4e3ff; }
+  button.essence-btn:hover:not(:disabled) { background: #4c2c70; }
 
-  button.danger { background: #522226; border-color: var(--danger); color: #ffe0e0; }
-  button.danger:hover:not(:disabled) { background: #6e2c32; }
+  button.spell-btn { background: #1e3559; border-color: var(--mp); color: #dbeafe; }
+  button.spell-btn:hover:not(:disabled) { background: #284675; }
 
-  button.gold-btn { background: #4f3d16; border-color: var(--gold); color: #fff4cc; }
-  button.gold-btn:hover:not(:disabled) { background: #6b521d; }
+  button.buff-btn { background: #163d35; border-color: var(--luck); color: #d1fae5; }
+  button.buff-btn:hover:not(:disabled) { background: #1e5247; }
 
-  .screen {
-    display: none;
-    padding: 18px;
-  }
+  button.danger { background: #4d1f24; border-color: var(--danger); color: #ffe2e2; }
+  button.danger:hover:not(:disabled) { background: #66282f; }
 
-  .screen.active {
-    display: block;
-  }
+  button.gold-btn { background: #4a3914; border-color: var(--gold); color: #fff4cc; }
+  button.gold-btn:hover:not(:disabled) { background: #634c1b; }
+
+  .screen { display: none; padding: 18px; }
+  .screen.active { display: block; }
 
   .start-hero {
     text-align: center;
-    padding: 24px 12px 18px;
-    background: linear-gradient(180deg, rgba(35,43,66,0.45) 0%, rgba(14,18,28,0.2) 100%);
+    padding: 22px 14px 18px;
+    background: linear-gradient(180deg, rgba(35,44,69,0.5) 0%, rgba(12,16,26,0.25) 100%);
     border: 2px solid var(--border);
     border-radius: 6px;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
 
   .start-hero h1 {
-    font-size: 2rem;
+    font-size: 1.95rem;
     color: var(--gold);
     text-shadow: 3px 3px 0 #000;
     margin-bottom: 8px;
@@ -156,41 +156,28 @@
 
   .start-hero p {
     color: var(--text-dim);
-    max-width: 680px;
+    max-width: 760px;
     margin: 0 auto 14px;
-    font-size: 0.92rem;
+    font-size: 0.9rem;
     line-height: 1.45;
   }
 
   .start-nav-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
     gap: 12px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
   }
 
   .nav-tile {
     background: var(--bg-card);
     border: 2px solid var(--border);
     border-radius: 6px;
-    padding: 16px;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 10px;
+    padding: 14px;
   }
 
-  .nav-tile h3 {
-    color: var(--gold);
-    font-size: 1.05rem;
-  }
-
-  .nav-tile p {
-    color: var(--text-dim);
-    font-size: 0.84rem;
-    line-height: 1.4;
-  }
+  .nav-tile h3 { color: var(--gold); font-size: 1rem; margin-bottom: 6px; }
+  .nav-tile p { color: var(--text-dim); font-size: 0.83rem; line-height: 1.4; }
 
   .slots-grid {
     display: grid;
@@ -242,35 +229,32 @@
     padding-bottom: 6px;
   }
 
-  .form-row {
-    margin-bottom: 12px;
-  }
-
+  .form-row { margin-bottom: 12px; }
   .form-row label {
     display: block;
-    font-size: 0.85rem;
+    font-size: 0.84rem;
     color: var(--text-dim);
     margin-bottom: 4px;
   }
 
   input[type="text"], select, textarea {
     width: 100%;
-    background: #0e121c;
+    background: #0c101a;
     color: var(--text);
     border: 2px solid var(--border);
     padding: 8px;
     border-radius: 4px;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
   }
 
   .choice-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 8px;
   }
 
   .choice-card {
-    background: #121622;
+    background: #111624;
     border: 2px solid var(--border);
     padding: 10px;
     border-radius: 4px;
@@ -279,12 +263,12 @@
 
   .choice-card.selected {
     border-color: var(--gold);
-    background: #222940;
+    background: #202840;
   }
 
   .tree-branches {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
     gap: 14px;
     margin-top: 12px;
   }
@@ -300,7 +284,7 @@
   }
 
   .branch-title {
-    font-size: 1rem;
+    font-size: 0.98rem;
     font-weight: bold;
     padding-bottom: 6px;
     border-bottom: 2px solid var(--border);
@@ -308,49 +292,39 @@
   }
 
   .tree-node {
-    background: #111521;
+    background: #101420;
     border: 2px solid var(--border);
     border-radius: 5px;
     padding: 10px;
-    position: relative;
   }
 
-  .tree-node.maxed {
-    border-color: var(--gold);
-    background: #242016;
-  }
-
-  .tree-node.unlocked {
-    border-color: var(--essence);
-  }
-
-  .tree-node.locked {
-    opacity: 0.6;
-  }
+  .tree-node.maxed { border-color: var(--gold); background: #211d14; }
+  .tree-node.unlocked { border-color: var(--essence); }
+  .tree-node.locked { opacity: 0.56; }
 
   .node-top {
     display: flex;
     justify-content: space-between;
     font-weight: bold;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     margin-bottom: 4px;
   }
 
   .node-desc {
-    font-size: 0.8rem;
+    font-size: 0.79rem;
     color: var(--text-dim);
     margin-bottom: 8px;
     line-height: 1.35;
   }
 
   .run-hud {
-    background: #0e121c;
+    background: #0c101a;
     border: 2px solid var(--border);
     border-radius: 6px;
     padding: 12px;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
     display: grid;
-    grid-template-columns: 110px 1fr auto;
+    grid-template-columns: 104px 1fr auto;
     gap: 14px;
     align-items: center;
   }
@@ -361,17 +335,17 @@
 
   .bars-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
     gap: 8px;
-    margin-top: 6px;
+    margin-top: 8px;
   }
 
   .bar-wrap {
-    background: #181e2e;
+    background: #161c2c;
     border: 1px solid var(--border);
     border-radius: 4px;
-    padding: 4px 8px;
-    font-size: 0.82rem;
+    padding: 5px 8px;
+    font-size: 0.8rem;
   }
 
   .bar-fill {
@@ -394,13 +368,8 @@
     padding-bottom: 10px;
   }
 
-  .hub-subview {
-    display: none;
-  }
-
-  .hub-subview.active {
-    display: block;
-  }
+  .hub-subview { display: none; }
+  .hub-subview.active { display: block; }
 
   .battle-canvas-wrap {
     border: 3px solid var(--border);
@@ -408,12 +377,11 @@
     overflow: hidden;
     background: #07090e;
     margin-bottom: 12px;
-    position: relative;
   }
 
   canvas#sceneCanvas, canvas#battleCanvas {
     width: 100%;
-    height: 230px;
+    height: 235px;
     display: block;
   }
 
@@ -438,62 +406,77 @@
 
   .unit-card.targeted {
     border-color: var(--gold);
-    box-shadow: 0 0 10px rgba(245, 197, 66, 0.25);
+    box-shadow: 0 0 12px rgba(245, 197, 66, 0.25);
   }
 
   .status-badges {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
-    margin-top: 5px;
+    margin-top: 6px;
   }
 
   .badge {
-    font-size: 0.74rem;
+    font-size: 0.73rem;
     padding: 2px 6px;
     border-radius: 3px;
-    background: #262f47;
+    background: #232c44;
     border: 1px solid var(--border-bright);
   }
 
-  .badge.lvl-lock {
-    background: #33191e;
-    border-color: var(--danger);
-    color: #fca5a5;
+  .badge.rare-tag {
+    background: #132c28;
+    border-color: var(--luck);
+    color: #a7f3d0;
   }
 
-  .badge.lvl-ok {
-    background: #172e22;
-    border-color: var(--hp);
-    color: #86efac;
+  .badge.class-tag {
+    background: #1d2238;
+    border-color: var(--gold);
+    color: #fde68a;
   }
 
   .battle-log-box {
-    background: #0c0f17;
+    background: #0b0e16;
     border: 2px solid var(--border);
     padding: 10px 12px;
     border-radius: 5px;
-    min-height: 56px;
+    min-height: 58px;
     margin-bottom: 12px;
-    font-size: 0.88rem;
-    line-height: 1.4;
+    font-size: 0.87rem;
+    line-height: 1.42;
     color: #dbeafe;
+  }
+
+  .action-section-title {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    margin: 10px 0 6px;
+    font-weight: bold;
   }
 
   .actions-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
     gap: 8px;
+  }
+
+  .action-btn-sub {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: normal;
+    color: #cbd5e1;
+    margin-top: 3px;
   }
 
   .items-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 10px;
   }
 
   .item-card {
-    background: #121622;
+    background: #101420;
     border: 2px solid var(--border);
     border-radius: 5px;
     padding: 10px;
@@ -505,17 +488,16 @@
 
   .item-card.equipped {
     border-color: var(--hp);
-    background: #14241c;
+    background: #12211a;
   }
 
-  .item-card.locked-lvl {
-    border-color: #5a2830;
-    background: #191117;
-    opacity: 0.82;
+  .item-card.rare-find {
+    border-color: var(--luck);
+    background: #102420;
   }
 
   .crate-roller {
-    background: #0b0e17;
+    background: #0a0d15;
     border: 3px solid var(--essence);
     border-radius: 6px;
     padding: 18px;
@@ -524,14 +506,14 @@
   }
 
   .crate-window {
-    font-size: 1.15rem;
+    font-size: 1.12rem;
     font-weight: bold;
     padding: 16px;
-    background: #181d2e;
+    background: #161b2b;
     border: 2px dashed var(--gold);
     border-radius: 5px;
     margin: 12px auto;
-    max-width: 520px;
+    max-width: 540px;
     min-height: 62px;
     display: flex;
     align-items: center;
@@ -542,15 +524,16 @@
     position: fixed;
     bottom: 16px;
     right: 16px;
-    background: #1b2236;
+    background: #192136;
     border: 2px solid var(--gold);
     color: var(--text);
     padding: 10px 16px;
     border-radius: 5px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.75);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.8);
     z-index: 999;
-    font-size: 0.88rem;
+    font-size: 0.87rem;
     display: none;
+    max-width: 440px;
   }
 </style>
 </head>
@@ -559,10 +542,11 @@
   <div class="topbar">
     <div class="game-logo">⚔️ KRONIKI OTCHŁANI</div>
     <div class="meta-currencies">
-      <div class="pill essence" title="Waluta premium za bossów i trudnych wrogów">🔮 Esencja: <span id="metaEssence">0</span></div>
-      <div class="pill rune" title="Rzadkie runy do ulepszania ekwipunku w Kuźni">💠 Runy: <span id="metaRunes">0</span></div>
+      <div class="pill essence" title="Waluta za bossów i trudnych wrogów (Drzewko i Sklep Esencji w menu)">🔮 Esencja: <span id="metaEssence">0</span></div>
+      <div class="pill rune" title="Waluta zachowana pod kolejne aktualizacje">💠 Runy: <span id="metaRunes">0</span></div>
       <button onclick="openMainMenu()">🏠 Menu Główne</button>
-      <button onclick="openGlobalTree()">🌳 Drzewko</button>
+      <button class="essence-btn" onclick="openGlobalTree()">🌳 Drzewko (6 Gałęzi)</button>
+      <button class="gold-btn" onclick="openGlobalEssenceShop()">🔮 Sklep Esencji</button>
       <button onclick="openSettings()">⚙️ Ustawienia</button>
     </div>
   </div>
@@ -571,31 +555,31 @@
   <div id="screen-start" class="screen active">
     <div class="start-hero">
       <h1>KRONIKI OTCHŁANI</h1>
-      <p>Taktyczne RPG roguelike w stylu pixel-art. Przemierzaj losowe biomy co 10 etapów, walcz u boku kompanów w dwuwalkach, zdobywaj rzadkie Runy i Esencję Otchłani, otwieraj skrzynie i rozwijaj 4-gałęziowe drzewko umiejętności.</p>
+      <p>Taktyczne RPG roguelike w stylu pixel-art. Każda klasa posiada własny, spójny zestaw broni, pancerzy, zaklęć, buffów, debuffów i ataków AoE, a rozbudowane 6-gałęziowe drzewko umiejętności wzmacnia każdy styl gry.</p>
       <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
         <button class="primary" onclick="openCreator()">➕ Nowa Wyprawa (Run)</button>
-        <button class="essence-btn" onclick="openGlobalTree()">🌳 Drzewko Umiejętności (4 Gałęzie)</button>
+        <button class="essence-btn" onclick="openGlobalTree()">🌳 Drzewko Umiejętności (24 Węzły)</button>
         <button class="gold-btn" onclick="openGlobalEssenceShop()">🔮 Sklep Esencji & Skrzynie</button>
-        <button onclick="openSettings()">⚙️ Ustawienia & Poradnik GitHub</button>
+        <button onclick="openSettings()">⚙️ Ustawienia & Poradnik</button>
       </div>
     </div>
 
     <div class="start-nav-grid">
       <div class="nav-tile">
-        <h3>🌲 Losowe Biomy & Trudności</h3>
-        <p>Co 10 etapów trafiasz do nowej krainy z unikalnymi wrogami i efektami terenu. Wybierz poziom trudności runu: Łatwy (0.75x), Normalny (1x), Trudny (1.25x) lub Szalony (1.75x).</p>
+        <h3>🧙 Spójny Ekwipunek Klas</h3>
+        <p>Mag i Nekromanta korzystają z kosturów, ksiąg i szat arkana, Paladyn ze świętych tarcz i płyt, Łowca z łuków i skór, a Wojownik z ciężkiego oręża.</p>
       </div>
       <div class="nav-tile">
-        <h3>🛡️ Tarcze, Efekty & Kuźnia</h3>
-        <p>Miecze, włócznie, łuki, kostury i tarcze z szansą na 100% blok, kryt lub podpalenie. Część sprzętu i umiejętności odblokowuje się wraz z poziomem w runie.</p>
+        <h3>✨ Buffy, Debuffy & AoE</h3>
+        <p>Nakładaj tarcze many, furię, unik i pakt krwi, a wrogów osłabiaj podpaleniem, zatruciem, krwawieniem, zamrożeniem i rozbiciem pancerza.</p>
       </div>
       <div class="nav-tile">
-        <h3>🐺 Kompani & Dwuwalki 2v2</h3>
-        <p>Rekrutuj towarzyszy w wydarzeniach lub ze skrzynek i staw czoła duetom przeciwników w taktycznych starciach turowych.</p>
+        <h3>🌳 6 Gałęzi Drzewka</h3>
+        <p>Rozwijaj Oręż, Pancerz, Arkana, Statusy i Żywioły, Buffy i Taktykę oraz Szczęście i Fortuny w menu głównym.</p>
       </div>
       <div class="nav-tile">
-        <h3>💾 3 Sloty Zapisu + Chmura JSON</h3>
-        <p>Prowadź do 3 niezależnych wypraw jednocześnie. Twój postęp metaprogresji zapisuje się lokalnie i można go wyeksportować.</p>
+        <h3>🍀 Szczęście & Czysty Sklep</h3>
+        <p>Targ Złota pokazuje tylko przedmioty i zaklęcia pasujące do Twojej klasy i poziomu, a Reroll ze Szczęściem daje szansę na rzadkie okazy.</p>
       </div>
     </div>
 
@@ -603,7 +587,7 @@
     <div id="saveSlotsContainer" class="slots-grid"></div>
   </div>
 
-  <!-- EKRAN 2: KREATOR POSTACI I RUNU -->
+  <!-- EKRAN 2: KREATOR POSTACI -->
   <div id="screen-creator" class="screen">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
       <h2 style="color:var(--gold);">🧙 Kreator Bohatera i Parametry Runu</h2>
@@ -613,7 +597,7 @@
     <div class="creator-grid">
       <div class="panel-box" style="text-align:center;">
         <h3>Podgląd Postaci</h3>
-        <canvas id="previewCanvas" width="140" height="140" style="background:#0b0e17; border:2px solid var(--border); border-radius:6px; margin:8px auto; display:block;"></canvas>
+        <canvas id="previewCanvas" width="150" height="150" style="background:#0a0d16; border:2px solid var(--border); border-radius:6px; margin:8px auto; display:block;"></canvas>
         <div class="form-row" style="text-align:left; margin-top:10px;">
           <label>Imię bohatera:</label>
           <input type="text" id="charNameInput" value="Wędrowiec" maxlength="18">
@@ -640,7 +624,7 @@
       </div>
 
       <div class="panel-box">
-        <h3>1. Wybierz Klasę Postaci</h3>
+        <h3>1. Wybierz Klasę Postaci (Określa dostępny sprzęt i zaklęcia)</h3>
         <div id="classChoices" class="choice-cards" style="margin-bottom:14px;"></div>
 
         <h3>2. Wybierz Wrodzony Żywioł</h3>
@@ -654,47 +638,40 @@
     </div>
   </div>
 
-  <!-- EKRAN 3: DRZEWKO UMIEJĘTNOŚCI -->
+  <!-- EKRAN 3: DRZEWKO UMIEJĘTNOŚCI (6 Gałęzi - tylko w Menu) -->
   <div id="screen-tree" class="screen">
     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
       <div>
-        <h2 style="color:var(--essence);">🌳 Drzewko Umiejętności Otchłani</h2>
-        <p style="color:var(--text-dim); font-size:0.86rem;">Stałe ulepszenia aktywne we wszystkich wyprawach. Ulepszaj za Esencję Otchłani zdobywaną z bossów (etapy 10, 20, 30...).</p>
+        <h2 style="color:var(--essence);">🌳 Rozbudowane Drzewko Umiejętności (6 Gałęzi / 24 Węzły)</h2>
+        <p style="color:var(--text-dim); font-size:0.86rem;">Dostępne wyłącznie w menu. Stałe ulepszenia aktywne we wszystkich wyprawach – rozwijasz je za Esencję Otchłani.</p>
       </div>
-      <div style="display:flex; gap:8px;">
-        <button id="treeBackToRunBtn" class="primary" style="display:none;" onclick="returnToRun()">← Wróć do Wyprawy</button>
-        <button onclick="openMainMenu()">🏠 Menu Główne</button>
-      </div>
+      <button onclick="openMainMenu()">🏠 Powrót do Menu Głównego</button>
     </div>
-
     <div id="treeBranchesContainer" class="tree-branches"></div>
   </div>
 
-  <!-- EKRAN 4: SKLEP ESENCJI & SKRZYNIE LOSU -->
+  <!-- EKRAN 4: SKLEP ESENCJI & SKRZYNIE (Tylko w Menu) -->
   <div id="screen-essence-shop" class="screen">
     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
       <div>
         <h2 style="color:var(--essence);">🔮 Sklep Esencji Otchłani & Skrzynie Losu</h2>
-        <p style="color:var(--text-dim); font-size:0.86rem;">Wydawaj walutę premium na animowane skrzynie, księgi odblokowujące zaklęcia klasowe oraz błogosławieństwa na aktywny run.</p>
+        <p style="color:var(--text-dim); font-size:0.86rem;">Dostępne wyłącznie w menu. Odblokowuj rzadkie księgi klasowe, otwieraj skrzynie i wzmacniaj aktywne wyprawy.</p>
       </div>
-      <div style="display:flex; gap:8px;">
-        <button id="essenceBackToRunBtn" class="primary" style="display:none;" onclick="returnToRun()">← Wróć do Wyprawy</button>
-        <button onclick="openMainMenu()">🏠 Menu Główne</button>
-      </div>
+      <button onclick="openMainMenu()">🏠 Powrót do Menu Głównego</button>
     </div>
 
     <div class="crate-roller">
       <h3 style="color:var(--gold);">🎁 Skrzynia Przeznaczenia (Koszt: 15 Esencji)</h3>
-      <p style="color:var(--text-dim); font-size:0.84rem; margin-top:4px;">Nagrody: Odblokowanie zamkniętych zaklęć/ataków klasowych, jednorazowy kompan na run, stały boost statystyk na cały run lub zwrot Esencji!</p>
+      <p style="color:var(--text-dim); font-size:0.84rem; margin-top:4px;">Nagrody: Księgi potężnych zaklęć/AoE dla klas, kompan do drużyny, Szczęście i statystyki na run lub zwrot Esencji.</p>
       <div id="crateWindow" class="crate-window">Kliknij przycisk poniżej, aby otworzyć skrzynię!</div>
       <button id="openCrateBtn" class="essence-btn" onclick="openLootCrate()">🎲 Otwórz Skrzynię (15 🔮)</button>
     </div>
 
-    <h3 style="color:var(--gold); margin:14px 0 8px;">📜 Błogosławieństwa na Aktywny Run i Księgi Umiejętności</h3>
+    <h3 style="color:var(--gold); margin:14px 0 8px;">📜 Rzadkie Księgi Klasowe i Błogosławieństwa Runów</h3>
     <div id="essenceShopItems" class="items-grid"></div>
   </div>
 
-  <!-- EKRAN 5: USTAWIENIA & PORADNIK GITHUB -->
+  <!-- EKRAN 5: USTAWIENIA -->
   <div id="screen-settings" class="screen">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
       <h2 style="color:var(--gold);">⚙️ Ustawienia Gry i Zarządzanie Danymi</h2>
@@ -708,35 +685,33 @@
       <div class="panel-box">
         <h3>🔊 Dźwięk i Interfejs</h3>
         <div class="form-row">
-          <label><input type="checkbox" id="sfxToggle" checked onchange="updateSettings()"> Włącz efekty dźwiękowe (Retro Web Audio)</label>
+          <label><input type="checkbox" id="sfxToggle" checked onchange="updateSettings()"> Włącz efekty dźwiękowe (Web Audio)</label>
         </div>
         <div class="form-row">
           <label>Głośność efektów: <span id="volLabel">50%</span></label>
           <input type="range" id="volRange" min="0" max="100" value="50" style="width:100%;" oninput="updateSettings()">
         </div>
         <div class="form-row">
-          <label><input type="checkbox" id="fastAnimToggle" onchange="updateSettings()"> Szybkie animacje skrzynek i walki</label>
+          <label><input type="checkbox" id="fastAnimToggle" onchange="updateSettings()"> Szybsze animacje skrzynek</label>
         </div>
 
         <h3 style="margin-top:16px;">💾 Eksport / Import Zapisu (JSON)</h3>
-        <p style="font-size:0.82rem; color:var(--text-dim); margin-bottom:8px;">Przenieś swoje drzewko, Esencję i 3 sloty runów między przeglądarkami lub urządzeniami.</p>
         <div style="display:flex; gap:8px; margin-bottom:8px;">
           <button onclick="exportSaveJson()">📤 Eksportuj kod zapisu</button>
           <button onclick="importSaveJson()">📥 Wczytaj z pola poniżej</button>
         </div>
-        <textarea id="jsonSaveBox" rows="4" placeholder="Tutaj pojawi się wyeksportowany zapis lub wklej swój zapis JSON..."></textarea>
+        <textarea id="jsonSaveBox" rows="4" placeholder="Wklej lub skopiuj zapis JSON..."></textarea>
         <div style="margin-top:12px;">
           <button class="danger" onclick="hardResetAll()">🗑️ Wyczyść wszystkie dane gry</button>
         </div>
       </div>
 
       <div class="panel-box">
-        <h3>🛠️ Jak samemu edytować grę na GitHubie?</h3>
+        <h3>🛠️ Szybka Edycja Gry</h3>
         <div style="font-size:0.83rem; color:var(--text-dim); line-height:1.5;">
-          <p style="margin-bottom:8px;"><strong style="color:var(--text);">1. Hosting na GitHub Pages:</strong> Wrzuć ten plik jako <code>index.html</code> do repozytorium na GitHubie i włącz <em>Settings → Pages</em>. Gra działa w 100% po stronie przeglądarki (<code>localStorage</code>).</p>
-          <p style="margin-bottom:8px;"><strong style="color:var(--text);">2. Dodawanie broni, tarcz i zbroi:</strong> Odszukaj w kodzie tablicę <code>const ITEMS_CATALOG = [</code>. Skopiuj dowolny wiersz, nadaj nowe <code>id</code> i ustaw wymagany poziom w runie (<code>reqLvl</code>) oraz statystyki: <code>atk</code>, <code>def</code>, <code>critBonus</code> (% na kryt), <code>blockChance</code> (% na 100% blok) lub <code>statusEffect</code> (<code>'burn'</code>, <code>'poison'</code>, <code>'freeze'</code>).</p>
-          <p style="margin-bottom:8px;"><strong style="color:var(--text);">3. Dodawanie zaklęć i ataków klas:</strong> Odszukaj <code>const SKILLS_DB = [</code>. Możesz dodać nowe umiejętności z wymaganym poziomem (<code>reqLvl</code>) lub zablokowane do zdobycia ze skrzynki (<code>crateOnly: true</code>).</p>
-          <p style="margin-bottom:8px;"><strong style="color:var(--text);">4. Mnożniki trudności:</strong> Edytuj obiekt <code>DIFFICULTIES</code>, aby dopasować mnożniki wrogów, złota podczas runu oraz nagród i dropów (<code>0.75x</code>, <code>1x</code>, <code>1.25x</code>, <code>1.75x</code>).</p>
+          <p style="margin-bottom:8px;"><strong style="color:var(--text);">1. Spójność klasowa sprzętu:</strong> W <code>ITEMS_CATALOG</code> pole <code>classes: ['Mag', 'Nekromanta']</code> określa, kto może kupić i założyć dany przedmiot.</p>
+          <p style="margin-bottom:8px;"><strong style="color:var(--text);">2. Zaklęcia, Buffy, Debuffy i AoE:</strong> W <code>SKILLS_DB</code> pole <code>kind</code> przyjmuje wartości <code>'skill'</code>, <code>'spell'</code> lub <code>'buff'</code>, a <code>aoe: true</code> oznacza atak obszarowy.</p>
+          <p style="margin-bottom:8px;"><strong style="color:var(--text);">3. Kuźnia i Runy:</strong> Kuźnia ulepsza sprzęt wyłącznie za złoto, a Runy (💠) zbierają się pod kolejne aktualizacje.</p>
         </div>
       </div>
     </div>
@@ -749,9 +724,9 @@
       <div>
         <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
           <strong id="hudName" style="font-size:1.1rem; color:var(--gold);">Bohater</strong>
-          <span id="hudClassBadge" class="badge">Klasa</span>
+          <span id="hudClassBadge" class="badge class-tag">Klasa</span>
           <span id="hudBiomeBadge" class="badge" style="border-color:var(--hp);">Biom</span>
-          <span id="hudStageBadge" class="badge" style="border-color:var(--gold);">Etap 1/30</span>
+          <span id="hudStageBadge" class="badge" style="border-color:var(--gold);">Etap 1</span>
           <span id="hudDiffBadge" class="badge">Normalny</span>
         </div>
         <div class="bars-grid">
@@ -768,7 +743,7 @@
             <div class="bar-wrap" style="padding:0; border:none;"><div id="hudExpBar" class="bar-fill exp" style="width:0%"></div></div>
           </div>
           <div class="bar-wrap">
-            💰 Złoto: <strong id="hudGold" style="color:var(--gold);">0</strong> | ⚔️ <span id="hudAtk">10</span> 🛡️ <span id="hudDef">5</span>
+            💰 <strong id="hudGold" style="color:var(--gold);">0</strong> | ⚔️ <span id="hudAtk">10</span> 🛡️ <span id="hudDef">5</span> | 🍀 <strong id="hudLuck" style="color:var(--luck);">5</strong>
           </div>
         </div>
       </div>
@@ -780,38 +755,36 @@
 
     <div id="hubTabs" class="hub-tabs">
       <button onclick="switchHubView('explore')">🗺️ Wyprawa & Wydarzenia</button>
-      <button onclick="switchHubView('inventory')">🎒 Ekwipunek & Kompani</button>
-      <button onclick="switchHubView('shop')">🏪 Targ Złota (Sklep Runu)</button>
-      <button onclick="switchHubView('forge')">⚒️ Kuźnia Runiczna</button>
-      <button class="essence-btn" onclick="openRunEssenceShop()">🔮 Sklep Esencji & Skrzynie</button>
-      <button class="essence-btn" onclick="openRunTree()">🌳 Drzewko</button>
+      <button onclick="switchHubView('inventory')">🎒 Ekwipunek, Czary & Buffy</button>
+      <button class="gold-btn" onclick="switchHubView('shop')">🏪 Targ Złota (<span id="shopTabClassLabel">Klasa</span>)</button>
+      <button onclick="switchHubView('forge')">⚒️ Kuźnia (Za Monety)</button>
     </div>
 
     <div id="subview-explore" class="hub-subview active">
       <div class="battle-canvas-wrap">
-        <canvas id="sceneCanvas" width="1060" height="230"></canvas>
+        <canvas id="sceneCanvas" width="1120" height="235"></canvas>
       </div>
       <div id="exploreCard" class="panel-box"></div>
     </div>
 
     <div id="subview-battle" class="hub-subview">
       <div class="battle-canvas-wrap">
-        <canvas id="battleCanvas" width="1060" height="230"></canvas>
+        <canvas id="battleCanvas" width="1120" height="235"></canvas>
       </div>
 
       <div class="combatants-row">
         <div>
-          <h4 style="color:var(--hp); margin-bottom:6px;">🛡️ Twoja Drużyna (Gracz + Kompani)</h4>
+          <h4 style="color:var(--hp); margin-bottom:6px;">🛡️ Twoja Drużyna & Aktywne Buffy</h4>
           <div id="alliesContainer"></div>
         </div>
         <div>
-          <h4 style="color:var(--danger); margin-bottom:6px;">👹 Przeciwnicy (Kliknij wroga, aby wybrać cel)</h4>
+          <h4 style="color:var(--danger); margin-bottom:6px;">👹 Przeciwnicy & Debuffy (Kliknij wroga, aby wybrać cel)</h4>
           <div id="enemiesContainer"></div>
         </div>
       </div>
 
       <div id="battleLog" class="battle-log-box">Walka rozpoczęta!</div>
-      <div id="battleActions" class="actions-grid"></div>
+      <div id="battleActions"></div>
     </div>
 
     <div id="subview-inventory" class="hub-subview">
@@ -827,7 +800,7 @@
       </div>
 
       <div class="panel-box" style="margin-bottom:14px;">
-        <h3>📖 Odblokowane Umiejętności i Zaklęcia Klasy</h3>
+        <h3>✨ Poznane Umiejętności, Zaklęcia, Buffy i AoE</h3>
         <div id="learnedSkillsBox" class="items-grid"></div>
       </div>
 
@@ -841,18 +814,18 @@
       <div class="panel-box">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
           <div>
-            <h3>🏪 Targ Złota (Ekonomia Progresywna i Wymagania Poziomu)</h3>
+            <h3>🏪 Targ Złota — Ekwipunek i Zwoje dla Twojej Klasy</h3>
             <p id="shopEconomyInfo" style="font-size:0.83rem; color:var(--text-dim);"></p>
           </div>
-          <button onclick="rerollShop()">🔄 Odśwież ofertę (<span id="rerollCostLabel">35</span> zl)</button>
+          <button class="gold-btn" onclick="rerollShop()">🔄 Reroll oferty (<span id="rerollCostLabel">25</span> zl)</button>
         </div>
         <div id="goldShopGrid" class="items-grid"></div>
       </div>
     </div>
 
     <div id="subview-forge" class="hub-subview panel-box">
-      <h3>⚒️ Kuźnia Runiczna (Ulepszanie za rzadkie Runy 💠)</h3>
-      <p style="font-size:0.84rem; color:var(--text-dim); margin-bottom:12px;">Runy wypadają z potworów zgodnie z mnożnikiem trudności i szansą dropu. Każdy poziom ulepszenia wzmacnia bazowe statystyki założonej broni, tarczy lub pancerza.</p>
+      <h3>⚒️ Kuźnia (Ulepszanie wyłącznie za Monety / Złoto)</h3>
+      <p style="font-size:0.84rem; color:var(--text-dim); margin-bottom:12px;">Wykuj wyższe poziomy założonego sprzętu za złoto. Runy (💠) pozostają nietknięte pod kolejne aktualizacje.</p>
       <div id="forgeGrid" class="items-grid"></div>
     </div>
   </div>
@@ -862,209 +835,259 @@
 
 <script>
 const DIFFICULTIES = {
-  easy: {
-    id: 'easy', name: 'Łatwy (0.75x)',
-    desc: 'Słabsi wrogowie i więcej złota (+35%) podczas runu, ale tylko 0.75x nagród rzadkich, Esencji i szans na drop.',
-    enemyMult: 0.78,
-    runGoldMult: 1.35,
-    rewardMult: 0.75,
-    dropMult: 0.75,
-    shopMult: 0.90
-  },
-  normal: {
-    id: 'normal', name: 'Normalny (1x)',
-    desc: 'Standardowa siła wrogów oraz 1x złota, nagród i szans na drop.',
-    enemyMult: 1.0,
-    runGoldMult: 1.0,
-    rewardMult: 1.0,
-    dropMult: 1.0,
-    shopMult: 1.0
-  },
-  hard: {
-    id: 'hard', name: 'Trudny (1.25x)',
-    desc: 'Silniejsi wrogowie (+32% HP/ATK) oraz 1.25x nagród (złoto, EXP, Esencja) i 1.25x szans na drop.',
-    enemyMult: 1.32,
-    runGoldMult: 1.25,
-    rewardMult: 1.25,
-    dropMult: 1.25,
-    shopMult: 1.15
-  },
-  madness: {
-    id: 'madness', name: 'Szalony (1.75x)',
-    desc: 'Bardzo ciężcy wrogowie (+75% HP/ATK), ale aż 1.75x nagród (złoto, EXP, Esencja) i 1.75x szans na drop!',
-    enemyMult: 1.75,
-    runGoldMult: 1.75,
-    rewardMult: 1.75,
-    dropMult: 1.75,
-    shopMult: 1.30
-  }
+  easy:    { id: 'easy',    name: 'Łatwy (0.75x)',   desc: 'Słabsi wrogowie i więcej złota (+30%), lecz 0.75x nagród i dropów.', enemyMult: 0.76, runGoldMult: 1.30, rewardMult: 0.75, dropMult: 0.75, shopMult: 0.90 },
+  normal:  { id: 'normal',  name: 'Normalny (1x)',   desc: 'Standardowy balans wrogów, złota i nagród.', enemyMult: 1.0, runGoldMult: 1.0, rewardMult: 1.0, dropMult: 1.0, shopMult: 1.0 },
+  hard:    { id: 'hard',    name: 'Trudny (1.25x)',  desc: 'Silniejsi wrogowie, ale 1.25x nagród i szans na drop.', enemyMult: 1.28, runGoldMult: 1.25, rewardMult: 1.25, dropMult: 1.25, shopMult: 1.12 },
+  madness: { id: 'madness', name: 'Szalony (1.75x)', desc: 'Bardzo groźni wrogowie oraz aż 1.75x nagród i dropów!', enemyMult: 1.65, runGoldMult: 1.75, rewardMult: 1.75, dropMult: 1.75, shopMult: 1.25 }
 };
 
 const CLASSES = [
-  { id: 'Paladyn',  name: 'Paladyn',  hp: 150, mp: 75,  atk: 12, def: 8,  crit: 8,  spellMult: 0.85, desc: 'Mistrz tarczy i Światła. Wysoka obrona, silny przeciw Nieumarłym.' },
-  { id: 'Mag',      name: 'Mag',      hp: 105, mp: 135, atk: 9,  def: 4,  crit: 10, spellMult: 1.40, desc: 'Potężne zaklęcia obszarowe i żywioły. Niska obrona fizyczna.' },
-  { id: 'Lowca',    name: 'Łowca',    hp: 125, mp: 85,  atk: 14, def: 6,  crit: 20, spellMult: 0.75, desc: 'Wysoka szansa na trafienie krytyczne z łuków i włóczni.' },
-  { id: 'Wojownik', name: 'Wojownik', hp: 165, mp: 60,  atk: 15, def: 7,  crit: 12, spellMult: 0.65, desc: 'Potężny atak wręcz i duża pula zdrowia.' },
-  { id: 'Nekromanta',name:'Nekromanta',hp:115, mp: 120, atk: 10, def: 5,  crit: 11, spellMult: 1.30, desc: 'Wysysa życie i nakłada klątwy osłabiające wrogów.' }
+  { id: 'Paladyn',   name: 'Paladyn',   hp: 155, mp: 85,  atk: 12, def: 8, crit: 8,  luck: 6,  spellMult: 1.00, startWep: 10, startArmor: 30, desc: 'Rycerz Światła. Nosi ciężkie zbroje, tarcze i buzdygany/miecze.' },
+  { id: 'Mag',       name: 'Mag',       hp: 110, mp: 150, atk: 9,  def: 4, crit: 10, luck: 8,  spellMult: 1.48, startWep: 13, startArmor: 33, desc: 'Mistrz żywiołów. Nosi szaty arkana, kostury, różdżki i magiczne fokusy.' },
+  { id: 'Lowca',     name: 'Łowca',     hp: 130, mp: 90,  atk: 14, def: 6, crit: 20, luck: 12, spellMult: 0.85, startWep: 16, startArmor: 36, desc: 'Strzelec i tropiciel. Używa łuków, włóczni, sztyletów i skórzanych zbroi.' },
+  { id: 'Wojownik',  name: 'Wojownik',  hp: 170, mp: 65,  atk: 15, def: 7, crit: 12, luck: 5,  spellMult: 0.75, startWep: 19, startArmor: 39, desc: 'Mistrz broni białej. Walczy toporami, mieczami dwuręcznymi i ciężką stalą.' },
+  { id: 'Nekromanta',name: 'Nekromanta',hp: 120, mp: 140, atk: 10, def: 5, crit: 11, luck: 9,  spellMult: 1.40, startWep: 22, startArmor: 42, desc: 'Władca cieni i klątw. Nosi szaty nekromancji, kosy, kostury mroku i czaszki.' }
 ];
 
 const ELEMENTS = [
   { id: 'Swiatlo', name: 'Światło', color: '#facc15', desc: '+45% obrażeń przeciw Nieumarłym, Zjawom i Mrokowi.' },
   { id: 'Ogien',   name: 'Ogień',   color: '#f87171', desc: '+30% przeciw Bestiom i Naturze. Szansa na podpalenie.' },
   { id: 'Mroz',    name: 'Mróz',    color: '#38bdf8', desc: '+35% przeciw Ogniowi i Demonom. Spowalnia wrogów.' },
-  { id: 'Mrok',    name: 'Mrok',    color: '#c084fc', desc: '+25% przeciw żywym istotom i Gołemom.' },
+  { id: 'Mrok',    name: 'Mrok',    color: '#c084fc', desc: '+25% przeciw Bestiom i Gołemom.' },
   { id: 'Natura',  name: 'Natura',  color: '#4ade80', desc: '+30% przeciw Gołemom i Bestiom. Trucizna.' }
 ];
 
-// reqLvl = wymagany poziom bohatera w danym runie, aby kupić/użyć przedmiotu w sklepie
+// Duży katalog przedmiotów ściśle powiązanych z klasami (classes: [...])
 const ITEMS_CATALOG = [
-  { id: 1,  name: 'Mikstura Zdrowia',           cat: 'MiksturaHP', subType: 'potion', reqLvl: 1, val: 70,  price: 28,  desc: 'Przywraca 70 HP.' },
-  { id: 2,  name: 'Wielki Eliksir Życia',       cat: 'MiksturaHP', subType: 'potion', reqLvl: 3, val: 155, price: 65,  desc: 'Przywraca 155 HP. (Wym. Poz. 3)' },
-  { id: 3,  name: 'Nektar Feniksa',            cat: 'MiksturaHP', subType: 'potion', reqLvl: 6, val: 280, price: 125, desc: 'Przywraca 280 HP. (Wym. Poz. 6)' },
-  { id: 4,  name: 'Mikstura Many',              cat: 'MiksturaMP', subType: 'potion', reqLvl: 1, val: 60,  price: 28,  desc: 'Przywraca 60 MP.' },
-  { id: 5,  name: 'Esencja Astralna',           cat: 'MiksturaMP', subType: 'potion', reqLvl: 4, val: 135, price: 68,  desc: 'Przywraca 135 MP. (Wym. Poz. 4)' },
+  // Mikstury i przedmioty rzucane (dla wszystkich klas)
+  { id: 1,  name: 'Słaba Mikstura Zdrowia',     cat: 'MiksturaHP', classes: ['all'], reqLvl: 1, val: 70,  price: 22,  luckBonus: 0, desc: 'Przywraca 70 HP.' },
+  { id: 2,  name: 'Mikstura Zdrowia',           cat: 'MiksturaHP', classes: ['all'], reqLvl: 2, val: 135, price: 42,  luckBonus: 0, desc: 'Przywraca 135 HP.' },
+  { id: 3,  name: 'Eliksir Odrodzenia',          cat: 'MiksturaHP', classes: ['all'], reqLvl: 5, val: 260, price: 85,  luckBonus: 1, desc: 'Przywraca 260 HP i daje +1 Szczęścia.' },
+  { id: 4,  name: 'Słaba Mikstura Many',        cat: 'MiksturaMP', classes: ['all'], reqLvl: 1, val: 60,  price: 22,  luckBonus: 0, desc: 'Przywraca 60 MP.' },
+  { id: 5,  name: 'Eliksir Czystej Many',        cat: 'MiksturaMP', classes: ['all'], reqLvl: 3, val: 125, price: 48,  luckBonus: 0, desc: 'Przywraca 125 MP.' },
+  { id: 6,  name: 'Fiolka Płynnego Ognia',       cat: 'Rzucany', classes: ['all'], elem: 'Ogien',  reqLvl: 1, val: 30, turns: 3, statusEffect: 'burn',   price: 36, luckBonus: 0, desc: 'Zadaje 30 obr. ognia i podpala na 3 tury.' },
+  { id: 7,  name: 'Bomby Kwasu i Jadu',          cat: 'Rzucany', classes: ['all'], elem: 'Natura', reqLvl: 2, val: 34, turns: 4, statusEffect: 'poison', price: 44, luckBonus: 0, desc: 'Zadaje 34 obr. natury i zatruwa na 4 tury.' },
+  { id: 8,  name: 'Kwasowy Granat Alchemika',    cat: 'Rzucany', classes: ['all'], elem: 'Natura', reqLvl: 3, val: 25, turns: 3, statusEffect: 'armor_break', price: 50, luckBonus: 0, desc: 'Rozbija pancerz wroga (-45% DEF na 3 tury).' },
 
-  { id: 6,  name: 'Fiolka Ognia Alchemika',     cat: 'Rzucany', subType: 'bomb', elem: 'Ogien',  reqLvl: 2, val: 32, turns: 3, statusEffect: 'burn',   price: 48, desc: 'Podpala na 3 tury. (Wym. Poz. 2)' },
-  { id: 7,  name: 'Bomba Jadu Żmii',            cat: 'Rzucany', subType: 'bomb', elem: 'Natura', reqLvl: 2, val: 26, turns: 4, statusEffect: 'poison', price: 46, desc: 'Zatruwa na 4 tury. (Wym. Poz. 2)' },
-  { id: 8,  name: 'Święcona Woda Otchłani',     cat: 'Rzucany', subType: 'bomb', elem: 'Swiatlo',reqLvl: 4, val: 55, turns: 1, statusEffect: null,     price: 58, desc: 'Silne obrażenia Światła. (Wym. Poz. 4)' },
+  // --- PALADYN (Światło, Młoty, Miecze Święte, Ciężkie Płyty i Tarcze) ---
+  { id: 10, name: 'Ćwiczebny Buzdygan Zakonu',   cat: 'Bron', subType: 'Buzdygan', classes: ['Paladyn'], elem: 'Swiatlo', reqLvl: 1, atk: 6,  critBonus: 2,  blockChance: 4,  luckBonus: 1, spellBonus: 4,  statusEffect: null,       price: 32,  desc: 'Broń Paladyna: +4% blok, +4 mocy czarów Światła.' },
+  { id: 11, name: 'Młot Świtu',                  cat: 'Bron', subType: 'Młot',     classes: ['Paladyn'], elem: 'Swiatlo', reqLvl: 3, atk: 14, critBonus: 6,  blockChance: 8,  luckBonus: 2, spellBonus: 10, statusEffect: 'weakness', price: 115, desc: 'Osłabia trafionego wroga (-25% ATK/DEF na 2 tury).' },
+  { id: 12, name: 'Słoneczny Miecz Archanioła',  cat: 'Bron', subType: 'Miecz',    classes: ['Paladyn'], elem: 'Swiatlo', reqLvl: 6, atk: 25, critBonus: 12, blockChance: 14, luckBonus: 5, spellBonus: 18, statusEffect: 'burn',     price: 255, desc: 'Potężne ostrze Światła: +14% blok i święty ogień.' },
 
-  { id: 10, name: 'Zardzewiały Miecz',          cat: 'Bron', subType: 'Miecz',    elem: 'Fizyczny', reqLvl: 1, atk: 8,  critBonus: 0,  blockChance: 0,  statusEffect: null,      price: 45,  desc: 'Prosty miecz bez efektów.' },
-  { id: 11, name: 'Żelazna Włócznia',           cat: 'Bron', subType: 'Włócznia', elem: 'Fizyczny', reqLvl: 2, atk: 12, critBonus: 8,  blockChance: 5,  statusEffect: null,      price: 85,  desc: '+8% kryt, +5% blok. (Wym. Poz. 2)' },
-  { id: 12, name: 'Łuk Myśliwego',              cat: 'Bron', subType: 'Łuk',      elem: 'Natura',   reqLvl: 3, atk: 14, critBonus: 16, blockChance: 0,  statusEffect: null,      price: 115, desc: '+16% kryt. (Wym. Poz. 3)' },
-  { id: 13, name: 'Ognisty Miecz Żaru',         cat: 'Bron', subType: 'Miecz',    elem: 'Ogien',    reqLvl: 4, atk: 18, critBonus: 6,  blockChance: 0,  statusEffect: 'burn',    price: 175, desc: 'Podpala przy ataku! (Wym. Poz. 4)' },
-  { id: 14, name: 'Kostur Wiecznej Zimy',       cat: 'Bron', subType: 'Kostur',   elem: 'Mroz',     reqLvl: 5, atk: 17, critBonus: 10, blockChance: 0,  statusEffect: 'freeze',  price: 190, desc: 'Zamraża cel (-30% ATK). (Wym. Poz. 5)' },
-  { id: 15, name: 'Włócznia Złotego Blasku',    cat: 'Bron', subType: 'Włócznia', elem: 'Swiatlo',  reqLvl: 6, atk: 23, critBonus: 12, blockChance: 10, statusEffect: null,      price: 245, desc: '+12% kryt, +10% blok. (Wym. Poz. 6)' },
-  { id: 16, name: 'Klinga Wampirzego Mroku',    cat: 'Bron', subType: 'Miecz',    elem: 'Mrok',     reqLvl: 7, atk: 26, critBonus: 14, blockChance: 0,  statusEffect: 'lifesteal',price:295, desc: 'Kradnie 20% obr. jako HP. (Wym. Poz. 7)' },
-  { id: 17, name: 'Smoczy Łuk Zagłady',         cat: 'Bron', subType: 'Łuk',      elem: 'Ogien',    reqLvl: 8, atk: 32, critBonus: 24, blockChance: 0,  statusEffect: 'burn',    price: 380, desc: '+24% kryt i podpalenie. (Wym. Poz. 8)' },
-  { id: 18, name: 'Miecz Bastionu (100% Blok)', cat: 'Bron', subType: 'Miecz',    elem: 'Swiatlo',  reqLvl: 8, atk: 29, critBonus: 8,  blockChance: 18, statusEffect: null,      price: 360, desc: '+18% szansy na 100% blok! (Wym. Poz. 8)' },
+  // --- MAG (Kostury, Różdżki, Szaty Arkana, Księgi) ---
+  { id: 13, name: 'Drewniany Kostur Ucznia',     cat: 'Bron', subType: 'Kostur',   classes: ['Mag'], elem: 'Ogien',   reqLvl: 1, atk: 5,  critBonus: 4,  blockChance: 0,  luckBonus: 2, spellBonus: 10, statusEffect: null,       price: 32,  desc: 'Kostur Maga: +10% mocy zaklęć i żywiołów.' },
+  { id: 14, name: 'Różdżka Błękitnego Mrozu',    cat: 'Bron', subType: 'Różdżka',  classes: ['Mag'], elem: 'Mroz',    reqLvl: 3, atk: 11, critBonus: 10, blockChance: 0,  luckBonus: 4, spellBonus: 22, statusEffect: 'freeze',   price: 115, desc: '+22% mocy zaklęć i zamrożenie przy ataku.' },
+  { id: 15, name: 'Berło Astralnej Burzy',       cat: 'Bron', subType: 'Kostur',   classes: ['Mag'], elem: 'Ogien',   reqLvl: 6, atk: 19, critBonus: 16, blockChance: 0,  luckBonus: 7, spellBonus: 38, statusEffect: 'burn',     price: 260, desc: '+38% mocy zaklęć! Podpala przy każdym ciosie.' },
 
-  { id: 20, name: 'Drewniana Puklerz-Tarcza',   cat: 'Tarcza', subType: 'Tarcza', elem: 'Fizyczny', reqLvl: 1, def: 4,  blockChance: 12, critBonus: 0, price: 55,  desc: '12% szansy na 100% blok ataku.' },
-  { id: 21, name: 'Stalowa Tarcza Rycerska',    cat: 'Tarcza', subType: 'Tarcza', elem: 'Fizyczny', reqLvl: 3, def: 9,  blockChance: 20, critBonus: 0, price: 125, desc: '20% szansy na 100% blok. (Wym. Poz. 3)' },
-  { id: 22, name: 'Pawęż Świętego Strażnika',   cat: 'Tarcza', subType: 'Tarcza', elem: 'Swiatlo',  reqLvl: 6, def: 15, blockChance: 28, critBonus: 0, price: 230, desc: '28% szansy na 100% blok. (Wym. Poz. 6)' },
-  { id: 23, name: 'Egida Otchłani',             cat: 'Tarcza', subType: 'Tarcza', elem: 'Mrok',     reqLvl: 8, def: 21, blockChance: 35, critBonus: 5, price: 340, desc: '35% szansy na 100% blok. (Wym. Poz. 8)' },
+  // --- ŁOWCA (Łuki, Włócznie, Sztylety, Skórzane Pancerze) ---
+  { id: 16, name: 'Krótki Łuk Myśliwski',        cat: 'Bron', subType: 'Łuk',      classes: ['Lowca'], elem: 'Fizyczny',reqLvl: 1, atk: 7,  critBonus: 8,  blockChance: 0,  luckBonus: 2, spellBonus: 0,  statusEffect: null,       price: 32,  desc: 'Szybki łuk Łowcy: +8% kryt, +2 Szczęścia.' },
+  { id: 17, name: 'Zatrute Ostrza Tropu',        cat: 'Bron', subType: 'Sztylety', classes: ['Lowca'], elem: 'Natura',  reqLvl: 3, atk: 15, critBonus: 16, blockChance: 3,  luckBonus: 5, spellBonus: 0,  statusEffect: 'poison',   price: 120, desc: '+16% kryt i zatrucie wroga na 3 tury.' },
+  { id: 18, name: 'Łuk Cichej Śmierci',          cat: 'Bron', subType: 'Łuk',      classes: ['Lowca'], elem: 'Natura',  reqLvl: 6, atk: 27, critBonus: 24, blockChance: 0,  luckBonus: 9, spellBonus: 0,  statusEffect: 'bleed',    price: 260, desc: '+24% kryt, +9 Szczęścia, wywołuje krwawienie.' },
 
-  { id: 30, name: 'Przeszywanica Wędrowca',     cat: 'Pancerz', subType: 'Zbroja', elem: 'Fizyczny', reqLvl: 1, def: 6,  blockChance: 0, critBonus: 0, price: 50,  desc: 'Podstawowa ochrona.' },
-  { id: 31, name: 'Kolczuga Straży',            cat: 'Pancerz', subType: 'Zbroja', elem: 'Fizyczny', reqLvl: 2, def: 11, blockChance: 4, critBonus: 0, price: 105, desc: 'Solidna kolczuga (+4% blok). (Wym. Poz. 2)' },
-  { id: 32, name: 'Szata Arcymaga Mrozu',       cat: 'Pancerz', subType: 'Zbroja', elem: 'Mroz',     reqLvl: 4, def: 14, blockChance: 0, critBonus: 8, price: 165, desc: '+8% szansy na kryt. (Wym. Poz. 4)' },
-  { id: 33, name: 'Zbroja Płytowa Królestwa',   cat: 'Pancerz', subType: 'Zbroja', elem: 'Swiatlo',  reqLvl: 6, def: 20, blockChance: 8, critBonus: 0, price: 245, desc: 'Ciężka płyta (+8% blok). (Wym. Poz. 6)' },
-  { id: 34, name: 'Smoczy Pancerz Łuskowy',     cat: 'Pancerz', subType: 'Zbroja', elem: 'Ogien',    reqLvl: 8, def: 27, blockChance: 10,critBonus: 6, price: 355, desc: 'Potężna zbroja mistrzów. (Wym. Poz. 8)' }
+  // --- WOJOWNIK (Topory, Miecze Dwuręczne, Buzdygany) ---
+  { id: 19, name: 'Wyszczerbiony Topór Bojowy',  cat: 'Bron', subType: 'Topór',    classes: ['Wojownik'], elem: 'Fizyczny',reqLvl: 1, atk: 8,  critBonus: 4,  blockChance: 2,  luckBonus: 1, spellBonus: 0,  statusEffect: null,       price: 32,  desc: 'Ciężki topór Wojownika o wysokim bazowym ATK.' },
+  { id: 20, name: 'Zębaty Miecz Dwuręczny',      cat: 'Bron', subType: 'Miecz 2R', classes: ['Wojownik'], elem: 'Fizyczny',reqLvl: 3, atk: 17, critBonus: 10, blockChance: 4,  luckBonus: 2, spellBonus: 0,  statusEffect: 'bleed',    price: 120, desc: 'Rozrywa pancerz i wywołuje krwawienie (3 tury).' },
+  { id: 21, name: 'Katowski Topór Krwi',         cat: 'Bron', subType: 'Topór',    classes: ['Wojownik'], elem: 'Ogien',   reqLvl: 6, atk: 30, critBonus: 16, blockChance: 5,  luckBonus: 4, spellBonus: 0,  statusEffect: 'armor_break',price: 265, desc: 'Miażdżący topór łamiący pancerz wroga (-45% DEF).' },
+
+  // --- NEKROMANTA (Kosy, Kostury Mroku, Sztylety Rytualne) ---
+  { id: 22, name: 'Kościana Różdżka Cienia',     cat: 'Bron', subType: 'Różdżka',  classes: ['Nekromanta'], elem: 'Mrok', reqLvl: 1, atk: 5,  critBonus: 4,  blockChance: 0,  luckBonus: 2, spellBonus: 10, statusEffect: null,       price: 32,  desc: 'Różdżka Nekromanty: +10% mocy czarów Mroku.' },
+  { id: 23, name: 'Rytualna Kosa Grobowca',      cat: 'Bron', subType: 'Kosa',     classes: ['Nekromanta'], elem: 'Mrok', reqLvl: 3, atk: 13, critBonus: 10, blockChance: 0,  luckBonus: 4, spellBonus: 20, statusEffect: 'lifesteal',price: 118, desc: '+20% mocy zaklęć i wysysanie 20% życia.' },
+  { id: 24, name: 'Kostur Władcy Plagi',          cat: 'Bron', subType: 'Kostur',   classes: ['Nekromanta'], elem: 'Mrok', reqLvl: 6, atk: 21, critBonus: 14, blockChance: 0,  luckBonus: 6, spellBonus: 36, statusEffect: 'poison',   price: 260, desc: '+36% mocy zaklęć oraz śmiertelna zaraza.' },
+
+  // --- TARCZE I FOKUSY KLASOWE ---
+  { id: 25, name: 'Tarcza Nowicjusza Zakonu',    cat: 'Tarcza', subType: 'Tarcza',   classes: ['Paladyn', 'Wojownik'], elem: 'Fizyczny', reqLvl: 1, def: 4,  blockChance: 12, critBonus: 0, luckBonus: 1, spellBonus: 0,  price: 34, desc: '12% szansy na 100% blok ataku.' },
+  { id: 26, name: 'Święta Pawęż Bastionu',       cat: 'Tarcza', subType: 'Pawęż',    classes: ['Paladyn'],             elem: 'Swiatlo',  reqLvl: 4, def: 13, blockChance: 26, critBonus: 0, luckBonus: 3, spellBonus: 10, price: 155, desc: '26% szansy na 100% blok i +10% mocy zaklęć.' },
+  { id: 27, name: 'Żelazny Puklerz Fechmistrza', cat: 'Tarcza', subType: 'Puklerz',  classes: ['Wojownik', 'Lowca'],   elem: 'Fizyczny', reqLvl: 3, def: 8,  blockChance: 18, critBonus: 6, luckBonus: 3, spellBonus: 0,  price: 110, desc: '18% bloku i +6% szansy na trafienie krytyczne.' },
+  { id: 28, name: 'Kula Żywiołów Arkana',        cat: 'Tarcza', subType: 'Fokus',    classes: ['Mag'],                 elem: 'Ogien',    reqLvl: 2, def: 4,  blockChance: 6,  critBonus: 6, luckBonus: 4, spellBonus: 18, price: 85,  desc: 'Fokus Maga: +18% mocy zaklęć i +4 Szczęścia.' },
+  { id: 29, name: 'Czaszka Szeptów Otchłani',    cat: 'Tarcza', subType: 'Relikt',   classes: ['Nekromanta'],          elem: 'Mrok',     reqLvl: 2, def: 5,  blockChance: 6,  critBonus: 5, luckBonus: 4, spellBonus: 18, price: 85,  desc: 'Relikt Nekromanty: +18% mocy klątw i mroku.' },
+
+  // --- ZBROJE ŚCIŚLE DOPASOWANE DO KLAS ---
+  // Paladyn
+  { id: 30, name: 'Kolczuga Akolity Światła',    cat: 'Pancerz', subType: 'Kolczuga', classes: ['Paladyn'], elem: 'Swiatlo', reqLvl: 1, def: 5,  blockChance: 3,  critBonus: 0, luckBonus: 1, spellBonus: 4,  price: 34,  desc: 'Pancerz Paladyna: solidna obrona i +3% blok.' },
+  { id: 31, name: 'Zbroja Płytowa Świtu',        cat: 'Pancerz', subType: 'Płyta',    classes: ['Paladyn'], elem: 'Swiatlo', reqLvl: 4, def: 15, blockChance: 8,  critBonus: 0, luckBonus: 3, spellBonus: 10, price: 155, desc: 'Poświęcona zbroja płytowa (+8% blok).' },
+  { id: 32, name: 'Święty Pancerz Serafina',     cat: 'Pancerz', subType: 'Płyta',    classes: ['Paladyn'], elem: 'Swiatlo', reqLvl: 7, def: 25, blockChance: 14, critBonus: 4, luckBonus: 6, spellBonus: 16, price: 305, desc: 'Najwyższy pancerz Zakonu Światła.' },
+
+  // Mag
+  { id: 33, name: 'Szata Adepta Arkana',         cat: 'Pancerz', subType: 'Szata',    classes: ['Mag'], elem: 'Mroz',    reqLvl: 1, def: 3,  blockChance: 0,  critBonus: 3, luckBonus: 2, spellBonus: 12, price: 34,  desc: 'Szata Maga: +12% mocy zaklęć i +2 Szczęścia.' },
+  { id: 34, name: 'Płaszcz Żywiołomistrza',       cat: 'Pancerz', subType: 'Szata',    classes: ['Mag'], elem: 'Ogien',   reqLvl: 4, def: 9,  blockChance: 2,  critBonus: 8, luckBonus: 5, spellBonus: 24, price: 155, desc: '+24% mocy zaklęć i +8% szansy na krytyk.' },
+  { id: 35, name: 'Astralna Szata Arcymaga',     cat: 'Pancerz', subType: 'Szata',    classes: ['Mag'], elem: 'Mroz',    reqLvl: 7, def: 16, blockChance: 5,  critBonus: 12,luckBonus: 8, spellBonus: 38, price: 305, desc: 'Potężna szata zwiększająca moc czarów o 38%.' },
+
+  // Łowca
+  { id: 36, name: 'Skórzany Kaftan Zwiadowcy',   cat: 'Pancerz', subType: 'Skóra',    classes: ['Lowca'], elem: 'Natura', reqLvl: 1, def: 4,  blockChance: 2,  critBonus: 5, luckBonus: 3, spellBonus: 0,  price: 34,  desc: 'Lekki strój Łowcy: +5% kryt, +3 Szczęścia.' },
+  { id: 37, name: 'Płaszcz Leśnego Cienia',      cat: 'Pancerz', subType: 'Skóra',    classes: ['Lowca'], elem: 'Natura', reqLvl: 4, def: 11, blockChance: 6,  critBonus: 12,luckBonus: 7, spellBonus: 0,  price: 155, desc: '+12% kryt, +7 Szczęścia, wysoka mobilność.' },
+  { id: 38, name: 'Zbroja Łowcy Smoków',         cat: 'Pancerz', subType: 'Łuska',    classes: ['Lowca'], elem: 'Natura', reqLvl: 7, def: 19, blockChance: 10, critBonus: 18,luckBonus: 11,spellBonus: 0,  price: 305, desc: '+18% kryt i aż +11 do Szczęścia!' },
+
+  // Wojownik
+  { id: 39, name: 'Ćwiekowana Skóra Najemnika',  cat: 'Pancerz', subType: 'Zbroja',   classes: ['Wojownik'], elem: 'Fizyczny', reqLvl: 1, def: 5,  blockChance: 2,  critBonus: 2, luckBonus: 1, spellBonus: 0, price: 34,  desc: 'Wytrzymały pancerz Wojownika.' },
+  { id: 40, name: 'Stalowy Kirys Weterana',      cat: 'Pancerz', subType: 'Płyta',    classes: ['Wojownik'], elem: 'Fizyczny', reqLvl: 4, def: 16, blockChance: 6,  critBonus: 4, luckBonus: 2, spellBonus: 0, price: 155, desc: 'Gruby stalowy kirys pochłaniający ciosy.' },
+  { id: 41, name: 'Pancerz Niezłomnego Tytana',  cat: 'Pancerz', subType: 'Płyta',    classes: ['Wojownik'], elem: 'Ogien',    reqLvl: 7, def: 27, blockChance: 10, critBonus: 8, luckBonus: 4, spellBonus: 0, price: 310, desc: 'Najwyższa obrona fizyczna dla Wojownika.' },
+
+  // Nekromanta
+  { id: 42, name: 'Kaptur i Szata Akolity Cienia',cat: 'Pancerz', subType: 'Szata',   classes: ['Nekromanta'], elem: 'Mrok', reqLvl: 1, def: 3,  blockChance: 0,  critBonus: 3, luckBonus: 2, spellBonus: 12, price: 34,  desc: 'Szata Nekromanty: +12% mocy zaklęć Mroku.' },
+  { id: 43, name: 'Szata Kościanego Kultysty',   cat: 'Pancerz', subType: 'Szata',    classes: ['Nekromanta'], elem: 'Mrok', reqLvl: 4, def: 10, blockChance: 3,  critBonus: 7, luckBonus: 5, spellBonus: 24, price: 155, desc: '+24% mocy klątw i mrocznych zaklęć.' },
+  { id: 44, name: 'Całun Arcylisza Otchłani',    cat: 'Pancerz', subType: 'Szata',    classes: ['Nekromanta'], elem: 'Mrok', reqLvl: 7, def: 17, blockChance: 6,  critBonus: 11,luckBonus: 8, spellBonus: 38, price: 305, desc: 'Mroczny całun wzmacniający magię o 38%.' }
 ];
 
-// Umiejętności z reqLvl (odblokowywane poziomem w runie) lub shopScrollLvl (możliwość nauki zwoju w sklepie od danego poziomu)
+// Rozbudowana baza umiejętności bojowych (skill), zaklęć (spell) i buffów (buff) z efektami AoE i debuffami
 const SKILLS_DB = [
-  { id: 'slash',      name: 'Potężne Cięcie',      classReq: 'all',       reqLvl: 1, shopScrollLvl: null, mp: 10, mult: 1.45, elem: 'weapon',  aoe: false, status: null,      crateOnly: false, desc: 'Silny cios bronią (145% obrażeń).' },
-  { id: 'firebolt',   name: 'Ognisty Pocisk',      classReq: 'all',       reqLvl: 2, shopScrollLvl: 2,    mp: 14, mult: 1.55, elem: 'Ogien',   aoe: false, status: 'burn',    crateOnly: false, desc: 'Zadaje obrażenia od ognia i podpala.' },
-  { id: 'heal_light', name: 'Modlitwa Światła',    classReq: 'Paladyn',   reqLvl: 1, shopScrollLvl: null, mp: 18, mult: 1.20, elem: 'Swiatlo', aoe: false, status: 'heal',    crateOnly: false, desc: 'Leczy bohatera.' },
-  { id: 'judgement',  name: 'Wyrok Niebios',       classReq: 'Paladyn',   reqLvl: 4, shopScrollLvl: 4,    mp: 26, mult: 2.10, elem: 'Swiatlo', aoe: false, status: null,      crateOnly: false, desc: 'Potężny cios Światła w pojedynczy cel.' },
-  { id: 'nova',       name: 'Supernowa Płomieni',  classReq: 'Mag',       reqLvl: 3, shopScrollLvl: 3,    mp: 28, mult: 1.35, elem: 'Ogien',   aoe: true,  status: 'burn',    crateOnly: false, desc: 'Rani WSZYSTKICH przeciwników i podpala!' },
-  { id: 'blizzard',   name: 'Zamieć Arktyczna',    classReq: 'Mag',       reqLvl: 5, shopScrollLvl: 5,    mp: 34, mult: 1.50, elem: 'Mroz',    aoe: true,  status: 'freeze',  crateOnly: false, desc: 'Rani wszystkich wrogów i zamraża ich.' },
-  { id: 'multishot',  name: 'Grad Strzał',         classReq: 'Lowca',     reqLvl: 3, shopScrollLvl: 3,    mp: 22, mult: 1.30, elem: 'weapon',  aoe: true,  status: 'poison',  crateOnly: false, desc: 'Trafia wszystkich wrogów zatrutymi strzałami.' },
-  { id: 'snipe',      name: 'Strzał w Serce',      classReq: 'Lowca',     reqLvl: 5, shopScrollLvl: 5,    mp: 25, mult: 2.35, elem: 'weapon',  aoe: false, status: null,      crateOnly: false, desc: 'Ogromne obrażenia.' },
-  { id: 'whirlwind',  name: 'Młynek Ostrzy',       classReq: 'Wojownik',  reqLvl: 3, shopScrollLvl: 3,    mp: 20, mult: 1.35, elem: 'weapon',  aoe: true,  status: null,      crateOnly: false, desc: 'Atakuje wszystkich wrogów naraz.' },
-  { id: 'drain',      name: 'Wyssanie Duszy',      classReq: 'Nekromanta',reqLvl: 2, shopScrollLvl: 2,    mp: 20, mult: 1.65, elem: 'Mrok',    aoe: false, status: 'lifesteal',crateOnly:false, desc: 'Rani wroga mrokiem i leczy 35% obrażeń.' },
+  // Wspólne umiejętności i zaklęcia
+  { id: 'slash',        kind: 'skill', name: 'Szybkie Cięcie',          classReq: 'all', reqLvl: 1, shopLvl: 1, mp: 8,  mult: 1.40, elem: 'weapon',  aoe: false, debuff: null,          buff: null,        crateOnly: false, desc: 'Atak bronią: 140% ATK w pojedynczy cel.' },
+  { id: 'sweep_aoe',    kind: 'skill', name: 'Szeroki Zamach (AoE)',    classReq: 'all', reqLvl: 2, shopLvl: 2, mp: 16, mult: 1.15, elem: 'weapon',  aoe: true,  debuff: null,          buff: null,        crateOnly: false, desc: 'Atak AoE: uderza WSZYSTKICH wrogów (115% ATK).' },
+  { id: 'mana_shield',  kind: 'buff',  name: 'Buff: Bariera Arkana',    classReq: 'all', reqLvl: 1, shopLvl: 1, mp: 14, mult: 0,    elem: 'Swiatlo', aoe: false, debuff: null,          buff: 'barrier',   crateOnly: false, desc: 'Buff (3 tury): +50% DEF i +15% szansy na 100% blok.' },
+  { id: 'war_focus',    kind: 'buff',  name: 'Buff: Bojowe Skupienie',  classReq: 'all', reqLvl: 2, shopLvl: 2, mp: 15, mult: 0,    elem: 'Ogien',   aoe: false, debuff: null,          buff: 'might',     crateOnly: false, desc: 'Buff (3 tury): +35% ATK i +15% szansy na krytyk.' },
 
-  { id: 'cataclysm',  name: 'Kataklizm Otchłani',  classReq: 'Mag',       reqLvl: 1, shopScrollLvl: 6,    mp: 42, mult: 2.15, elem: 'Mrok',    aoe: true,  status: 'burn',    crateOnly: true,  desc: '[KSIĘGA] Niszczycielska magia na wszystkich wrogów.' },
-  { id: 'divine_wrath',name:'Gniew Archanioła',    classReq: 'Paladyn',   reqLvl: 1, shopScrollLvl: 6,    mp: 35, mult: 2.45, elem: 'Swiatlo', aoe: true,  status: 'heal',    crateOnly: true,  desc: '[KSIĘGA] Uderza wrogów Światłem i leczy.' },
-  { id: 'shadow_volley',name:'Deszcz Cieni',       classReq: 'Lowca',     reqLvl: 1, shopScrollLvl: 6,    mp: 32, mult: 1.95, elem: 'Mrok',    aoe: true,  status: 'poison',  crateOnly: true,  desc: '[KSIĘGA] Salwa mrocznych strzał na całą grupę.' },
-  { id: 'titan_cleave',name:'Rozszczepienie Tytana',classReq:'Wojownik',  reqLvl: 1, shopScrollLvl: 6,    mp: 30, mult: 2.75, elem: 'Ogien',   aoe: false, status: 'burn',    crateOnly: true,  desc: '[KSIĘGA] Miażdżący cios o gigantycznej sile.' },
-  { id: 'army_dead',  name: 'Klątwa Plagi',        classReq: 'Nekromanta',reqLvl: 1, shopScrollLvl: 6,    mp: 36, mult: 1.80, elem: 'Mrok',    aoe: true,  status: 'poison',  crateOnly: true,  desc: '[KSIĘGA] Zatruwa i wysysa życie ze wszystkich wrogów.' }
+  // PALADYN
+  { id: 'pal_heal',     kind: 'spell', name: 'Zaklęcie: Dotyk Światła', classReq: 'Paladyn', reqLvl: 1, shopLvl: 1, mp: 16, mult: 1.30, elem: 'Swiatlo', aoe: false, debuff: null,          buff: 'heal',      crateOnly: false, desc: 'Leczy bohatera i oczyszcza rany.' },
+  { id: 'pal_nova',     kind: 'spell', name: 'Zaklęcie: Blask Zakonu (AoE)',classReq:'Paladyn',reqLvl:2, shopLvl: 2, mp: 24, mult: 1.45, elem: 'Swiatlo', aoe: true,  debuff: 'weakness',    buff: 'heal_small',crateOnly: false, desc: 'AoE Światła: rani wszystkich wrogów, osłabia ich i leczy Cię.' },
+  { id: 'pal_aegis',    kind: 'buff',  name: 'Buff: Bastion Niebios',   classReq: 'Paladyn', reqLvl: 3, shopLvl: 3, mp: 22, mult: 0,    elem: 'Swiatlo', aoe: false, debuff: null,          buff: 'bastion',   crateOnly: false, desc: 'Buff (3 tury): +70% DEF, +25% Bloku i regeneracja HP co turę.' },
+  { id: 'pal_judgement',kind: 'spell', name: 'Zaklęcie: Wyrok Niebios', classReq: 'Paladyn', reqLvl: 4, shopLvl: 4, mp: 28, mult: 2.35, elem: 'Swiatlo', aoe: false, debuff: 'armor_break', buff: null,        crateOnly: false, desc: 'Potężny cios Światła rozbijający pancerz (-45% DEF).' },
+
+  // MAG
+  { id: 'mag_fireball', kind: 'spell', name: 'Zaklęcie: Kula Ognia',    classReq: 'Mag', reqLvl: 1, shopLvl: 1, mp: 14, mult: 1.75, elem: 'Ogien',   aoe: false, debuff: 'burn',        buff: null,        crateOnly: false, desc: 'Zaklęcie Ognia: 175% mocy + podpalenie na 3 tury.' },
+  { id: 'mag_blizzard', kind: 'spell', name: 'Zaklęcie: Zamieć (AoE)',  classReq: 'Mag', reqLvl: 2, shopLvl: 2, mp: 24, mult: 1.45, elem: 'Mroz',    aoe: true,  debuff: 'freeze',      buff: null,        crateOnly: false, desc: 'AoE Mrozu: rani wszystkich wrogów i zamraża ich (-30% ATK).' },
+  { id: 'mag_inferno',  kind: 'spell', name: 'Zaklęcie: Supernowa (AoE)',classReq:'Mag', reqLvl: 4, shopLvl: 4, mp: 32, mult: 1.85, elem: 'Ogien',   aoe: true,  debuff: 'burn',        buff: null,        crateOnly: false, desc: 'Potężne AoE Ognia: spopiela całą grupę wrogów i podpala.' },
+  { id: 'mag_flow',     kind: 'buff',  name: 'Buff: Przypływ Arkana',   classReq: 'Mag', reqLvl: 3, shopLvl: 3, mp: 16, mult: 0,    elem: 'Mroz',    aoe: false, debuff: null,          buff: 'arcane_flow',crateOnly:false, desc: 'Buff (3 tury): +40% mocy zaklęć i +14 MP co turę.' },
+
+  // ŁOWCA
+  { id: 'hun_poison',   kind: 'skill', name: 'Zatruta Strzała',         classReq: 'Lowca', reqLvl: 1, shopLvl: 1, mp: 12, mult: 1.50, elem: 'Natura',  aoe: false, debuff: 'poison',      buff: null,        crateOnly: false, desc: '150% ATK + silna trucizna na 4 tury.' },
+  { id: 'hun_volley',   kind: 'skill', name: 'Salwa Strzał (AoE)',      classReq: 'Lowca', reqLvl: 2, shopLvl: 2, mp: 20, mult: 1.40, elem: 'weapon',  aoe: true,  debuff: 'bleed',       buff: null,        crateOnly: false, desc: 'AoE Łowcy: trafia wszystkich wrogów i wywołuje krwawienie.' },
+  { id: 'hun_evasion',  kind: 'buff',  name: 'Buff: Instynkt Łowcy',    classReq: 'Lowca', reqLvl: 3, shopLvl: 3, mp: 16, mult: 0,    elem: 'Natura',  aoe: false, debuff: null,          buff: 'evasion',   crateOnly: false, desc: 'Buff (3 tury): +30% uniku/bloku i +25% szansy na krytyk.' },
+  { id: 'hun_snipe',    kind: 'skill', name: 'Strzał Przebijający',     classReq: 'Lowca', reqLvl: 4, shopLvl: 4, mp: 24, mult: 2.40, elem: 'weapon',  aoe: false, debuff: 'armor_break', buff: null,        crateOnly: false, desc: '240% ATK i rozbicie pancerza celu (-45% DEF).' },
+
+  // WOJOWNIK
+  { id: 'war_rend',     kind: 'skill', name: 'Rozcięcie Tętnicy',       classReq: 'Wojownik', reqLvl: 1, shopLvl: 1, mp: 12, mult: 1.55, elem: 'Fizyczny',aoe: false, debuff: 'bleed',       buff: null,        crateOnly: false, desc: '155% ATK + krwawienie przez 3 tury.' },
+  { id: 'war_whirl',    kind: 'skill', name: 'Młynek Ostrzy (AoE)',     classReq: 'Wojownik', reqLvl: 2, shopLvl: 2, mp: 20, mult: 1.50, elem: 'weapon',  aoe: true,  debuff: 'armor_break', buff: null,        crateOnly: false, desc: 'AoE Wojownika: rani wszystkich wrogów i kruszy ich pancerz.' },
+  { id: 'war_rage',     kind: 'buff',  name: 'Buff: Furia Berserkera',  classReq: 'Wojownik', reqLvl: 3, shopLvl: 3, mp: 16, mult: 0,    elem: 'Ogien',   aoe: false, debuff: null,          buff: 'berserk',   crateOnly: false, desc: 'Buff (3 tury): +55% ATK oraz kradzież 20% HP z ciosów.' },
+  { id: 'war_execute',  kind: 'skill', name: 'Egzekucja Tytana',        classReq: 'Wojownik', reqLvl: 4, shopLvl: 4, mp: 25, mult: 2.55, elem: 'weapon',  aoe: false, debuff: 'weakness',    buff: null,        crateOnly: false, desc: '255% ATK i osłabienie przeciwnika.' },
+
+  // NEKROMANTA
+  { id: 'nec_drain',    kind: 'spell', name: 'Zaklęcie: Wyssanie Życia',classReq: 'Nekromanta', reqLvl: 1, shopLvl: 1, mp: 15, mult: 1.65, elem: 'Mrok', aoe: false, debuff: 'weakness',    buff: 'lifesteal', crateOnly: false, desc: '165% mocy Mroku, osłabia wroga i leczy Cię o 40% obr.' },
+  { id: 'nec_plague',   kind: 'spell', name: 'Zaklęcie: Fala Zarazy (AoE)',classReq:'Nekromanta',reqLvl:2, shopLvl: 2, mp: 24, mult: 1.40, elem: 'Mrok', aoe: true,  debuff: 'poison',      buff: null,        crateOnly: false, desc: 'AoE Mroku: zatruwa i rani całą grupę przeciwników.' },
+  { id: 'nec_pact',     kind: 'buff',  name: 'Buff: Pakt Wampirzy',     classReq: 'Nekromanta', reqLvl: 3, shopLvl: 3, mp: 18, mult: 0,    elem: 'Mrok', aoe: false, debuff: null,          buff: 'vampire',   crateOnly: false, desc: 'Buff (3 tury): +35% mocy zaklęć i 30% kradzieży życia.' },
+  { id: 'nec_abyss',    kind: 'spell', name: 'Zaklęcie: Otchłań Dusz (AoE)',classReq:'Nekromanta',reqLvl:4, shopLvl: 4, mp: 32, mult: 1.80, elem: 'Mrok', aoe: true,  debuff: 'weakness',    buff: 'lifesteal', crateOnly: false, desc: 'Potężne AoE Mroku: rani wszystkich, osłabia i leczy.' },
+
+  // Rzadkie Księgi ze Skrzyni Esencji / Rzadkich okazji (przypisane do klas)
+  { id: 'book_pal',     kind: 'spell', name: 'Księga: Gniew Archanioła (AoE)', classReq: 'Paladyn',    reqLvl: 1, shopLvl: 5, mp: 34, mult: 2.15, elem: 'Swiatlo', aoe: true, debuff: 'armor_break', buff: 'heal_small', crateOnly: true, desc: '[KSIĘGA PALADYNA] AoE Światła: niszczy pancerze i leczy.' },
+  { id: 'book_mag',     kind: 'spell', name: 'Księga: Kataklizm Meteorów (AoE)',classReq:'Mag',       reqLvl: 1, shopLvl: 5, mp: 38, mult: 2.35, elem: 'Ogien',   aoe: true, debuff: 'burn',        buff: null,         crateOnly: true, desc: '[KSIĘGA MAGA] Niszczycielskie AoE Ognia na wszystkich wrogów.' },
+  { id: 'book_hun',     kind: 'skill', name: 'Księga: Burza Tysiąca Strzał (AoE)',classReq:'Lowca',   reqLvl: 1, shopLvl: 5, mp: 30, mult: 2.10, elem: 'Natura',  aoe: true, debuff: 'poison',      buff: null,         crateOnly: true, desc: '[KSIĘGA ŁOWCY] AoE zatruwające i krwawiące wszystkich wrogów.' },
+  { id: 'book_war',     kind: 'skill', name: 'Księga: Wstrząs Ziemi (AoE)',    classReq: 'Wojownik',   reqLvl: 1, shopLvl: 5, mp: 28, mult: 2.20, elem: 'Fizyczny',aoe: true, debuff: 'weakness',    buff: null,         crateOnly: true, desc: '[KSIĘGA WOJOWNIKA] Potężne AoE miażdżące całą grupę.' },
+  { id: 'book_nec',     kind: 'spell', name: 'Księga: Apokalipsa Umarłych (AoE)',classReq:'Nekromanta',reqLvl: 1, shopLvl: 5, mp: 36, mult: 2.25, elem: 'Mrok',   aoe: true, debuff: 'poison',      buff: 'lifesteal',  crateOnly: true, desc: '[KSIĘGA NEKROMANTY] AoE Mroku wysysające życie z każdego wroga.' }
 ];
 
+// MEGA ROZBUDOWANE DRZEWKO UMIEJĘTNOŚCI (6 Gałęzi, 24 Węzły)
 const SKILL_TREE_BRANCHES = [
   {
     id: 'offense',
-    title: '⚔️ Gałąź Miecza i Krytyka',
+    title: '⚔️ 1. Gałąź Oręża i Krytyka',
     color: '#f87171',
     nodes: [
-      { id: 'atk_1', name: 'Ostrze Weterana', maxLvl: 5, cost: 6, req: null, desc: '+4 bazowego ATK na poziom.' },
-      { id: 'crit_1', name: 'Sokole Oko', maxLvl: 5, cost: 8, req: 'atk_1', desc: '+4% bazowej szansy na trafienie krytyczne na poziom.' },
-      { id: 'crit_dmg', name: 'Zabójcza Precyzja', maxLvl: 3, cost: 14, req: 'crit_1', desc: '+20% obrażeń krytycznych na poziom.' }
+      { id: 'atk_1',     name: 'Ostrze Weterana',     maxLvl: 5, cost: 5,  req: null,        desc: '+4 bazowego ATK na poziom.' },
+      { id: 'crit_1',    name: 'Sokola Precyzja',     maxLvl: 5, cost: 7,  req: 'atk_1',     desc: '+4% szansy na trafienie krytyczne na poziom.' },
+      { id: 'armor_pen', name: 'Przebicie Pancerza',  maxLvl: 4, cost: 9,  req: 'crit_1',    desc: 'Ignoruje +10% pancerza DEF przeciwnika na poziom.' },
+      { id: 'crit_dmg',  name: 'Zabójcza Egzekucja',  maxLvl: 4, cost: 12, req: 'armor_pen', desc: '+22% obrażeń krytycznych na poziom.' }
     ]
   },
   {
     id: 'defense',
-    title: '🛡️ Gałąź Tarczy i Pancerza',
+    title: '🛡️ 2. Gałąź Pancerza i Bastionu',
     color: '#4ade80',
     nodes: [
-      { id: 'hp_1', name: 'Żelazna Kondycja', maxLvl: 5, cost: 6, req: null, desc: '+25 maksymalnego HP na start każdego runu.' },
-      { id: 'def_1', name: 'Hartowana Stal', maxLvl: 5, cost: 8, req: 'hp_1', desc: '+3 bazowej obrony DEF na poziom.' },
-      { id: 'block_1', name: 'Mistrzostwo Pawęży', maxLvl: 4, cost: 14, req: 'def_1', desc: '+4% szansy na 100% blok ataku na poziom.' }
+      { id: 'hp_1',      name: 'Żelazna Kondycja',    maxLvl: 5, cost: 5,  req: null,        desc: '+28 maksymalnego HP na start każdego runu.' },
+      { id: 'def_1',     name: 'Hartowana Stal',      maxLvl: 5, cost: 7,  req: 'hp_1',      desc: '+3 bazowej obrony DEF na poziom.' },
+      { id: 'block_1',   name: 'Mistrzostwo Bloku',   maxLvl: 4, cost: 9,  req: 'def_1',     desc: '+4% szansy na 100% blok ataku na poziom.' },
+      { id: 'regen_1',   name: 'Odnowa Witalna',      maxLvl: 4, cost: 12, req: 'block_1',   desc: 'Leczy +10 HP i +5 MP po każdej wygranej walce na poziom.' }
     ]
   },
   {
-    id: 'magic',
-    title: '🔮 Gałąź Magii i Esencji',
+    id: 'arcane',
+    title: '✨ 3. Gałąź Arkana i Zaklęć',
+    color: '#60a5fa',
+    nodes: [
+      { id: 'mp_1',      name: 'Źródło Many',         maxLvl: 5, cost: 5,  req: null,        desc: '+22 maksymalnego MP na start każdego runu.' },
+      { id: 'spell_1',   name: 'Potęga Zaklęć',       maxLvl: 5, cost: 7,  req: 'mp_1',      desc: '+12% mocy wszystkich zaklęć i czarów na poziom.' },
+      { id: 'mana_cost', name: 'Oszczędna Inkanacja', maxLvl: 4, cost: 9,  req: 'spell_1',   desc: '-8% kosztu MP wszystkich zaklęć i buffów na poziom.' },
+      { id: 'aoe_boost', name: 'Kataklizm AoE',       maxLvl: 4, cost: 12, req: 'mana_cost', desc: '+14% obrażeń wszystkich ataków i zaklęć AoE na poziom.' }
+    ]
+  },
+  {
+    id: 'statuses',
+    title: '🔥 4. Gałąź Statusów i Debuffów',
+    color: '#fb923c',
+    nodes: [
+      { id: 'dot_dmg',   name: 'Żrący Ogień i Jad',   maxLvl: 5, cost: 6,  req: null,        desc: '+20% obrażeń od podpalenia, trucizny i krwawienia na poziom.' },
+      { id: 'debuff_dur',name: 'Wieczna Klątwa',      maxLvl: 3, cost: 8,  req: 'dot_dmg',   desc: '+1 dodatkowa tura działania wszystkich debuffów na poziom.' },
+      { id: 'lifesteal_n',name:'Wampirzy Głód',       maxLvl: 4, cost: 10, req: 'debuff_dur',desc: '+4% pasywnej kradzieży życia z ataków i czarów na poziom.' },
+      { id: 'elem_mast', name: 'Mistrzostwo Żywiołów',maxLvl: 4, cost: 13, req: 'lifesteal_n',desc:'+12% dodatkowych obrażeń przy przewadze żywiołu na poziom.' }
+    ]
+  },
+  {
+    id: 'tactics',
+    title: '⏳ 5. Gałąź Buffów i Taktyki',
     color: '#c084fc',
     nodes: [
-      { id: 'mp_1', name: 'Źródło Many', maxLvl: 5, cost: 6, req: null, desc: '+20 maksymalnego MP na start każdego runu.' },
-      { id: 'spell_1', name: 'Arkanum Otchłani', maxLvl: 4, cost: 10, req: 'mp_1', desc: '+10% mocy wszystkich zaklęć na poziom.' },
-      { id: 'ess_gain', name: 'Żniwiarz Esencji', maxLvl: 3, cost: 16, req: 'spell_1', desc: '+15% więcej Esencji Otchłani z bossów i dropów.' }
+      { id: 'buff_dur',  name: 'Trwałe Błogosławieństwo',maxLvl: 3, cost: 6, req: null,       desc: '+1 dodatkowa tura trwania wszystkich Twoich buffów na poziom.' },
+      { id: 'guard_mp',  name: 'Medytacja w Gardzie', maxLvl: 4, cost: 8,  req: 'buff_dur',  desc: 'Obrona przywraca dodatkowo +5 MP i leczy +6 HP na poziom.' },
+      { id: 'start_buff',name: 'Gotowość Bojowa',    maxLvl: 3, cost: 10, req: 'guard_mp',  desc: 'Zaczynasz każdą walkę z buffem Bariera (+DEF/Blok) na 1 turę/poziom.' },
+      { id: 'ess_gain',  name: 'Żniwiarz Otchłani',   maxLvl: 4, cost: 13, req: 'start_buff',desc: '+15% więcej Esencji Otchłani z bossów i dropów na poziom.' }
     ]
   },
   {
     id: 'fortune',
-    title: '🐺 Gałąź Kompanów i Łupów',
-    color: '#facc15',
+    title: '🍀 6. Gałąź Szczęścia i Fortuny',
+    color: '#34d399',
     nodes: [
-      { id: 'gold_1', name: 'Zmysł Kupca', maxLvl: 5, cost: 6, req: null, desc: '+12% więcej złota po walkach i -4% cen w sklepie.' },
-      { id: 'loot_1', name: 'Poszukiwacz Run', maxLvl: 4, cost: 11, req: 'gold_1', desc: '+3% większa szansa na drop Run i przedmiotów z wrogów.' },
-      { id: 'comp_slot', name: 'Dowódca Drużyny', maxLvl: 1, cost: 22, req: 'loot_1', desc: 'Odblokowuje 2. miejsce na kompana w drużynie!' }
+      { id: 'luck_1',    name: 'Uśmiech Losu',        maxLvl: 5, cost: 5,  req: null,        desc: '+4 do statystyki Szczęścia na poziom.' },
+      { id: 'gold_1',    name: 'Złoty Szlak',         maxLvl: 5, cost: 7,  req: 'luck_1',    desc: '+12% złota z walk i -4% cen w sklepie na poziom.' },
+      { id: 'reroll_1',  name: 'Szczęśliwy Reroll',   maxLvl: 4, cost: 10, req: 'gold_1',    desc: '+15% szansy na rzadki łup przy rerollu w sklepie na poziom.' },
+      { id: 'comp_slot', name: 'Dowódca Drużyny',     maxLvl: 1, cost: 18, req: 'reroll_1',  desc: 'Odblokowuje 2. miejsce na kompana w drużynie!' }
     ]
   }
 ];
 
 const BIOMES = [
-  {
-    id: 'forest', name: 'Przeklęty Las', sky: '#0f241d', ground: '#1a3a2a', accent: '#4ade80',
-    envText: 'Ciernie lasu ranią lekko co turę.', envDmg: 3,
+  { id: 'forest',  name: 'Przeklęty Las',    sky: '#0f241d', ground: '#1a3a2a', accent: '#4ade80', envText: 'Ciernie lasu ranią lekko co turę.', envDmg: 2,
     enemies: [
-      { name: 'Leśny Ghul', type: 'Nieumarly', elem: 'Mrok', hp: 62, atk: 10, def: 2, gold: 24, exp: 32 },
-      { name: 'Mglista Zjawa', type: 'Zjawa', elem: 'Mrok', hp: 56, atk: 12, def: 1, gold: 28, exp: 35 },
-      { name: 'Wściekły Wilkołak', type: 'Bestia', elem: 'Natura', hp: 78, atk: 13, def: 4, gold: 32, exp: 40 },
-      { name: 'Prastary Ent', type: 'Golem', elem: 'Natura', hp: 96, atk: 11, def: 7, gold: 38, exp: 48 }
+      { name: 'Leśny Ghul',       type: 'Nieumarly', elem: 'Mrok',    hp: 58, atk: 9,  def: 2, gold: 24, exp: 32 },
+      { name: 'Mglista Zjawa',      type: 'Zjawa',     elem: 'Mrok',    hp: 52, atk: 11, def: 1, gold: 28, exp: 35 },
+      { name: 'Wściekły Wilkołak',  type: 'Bestia',    elem: 'Natura',  hp: 74, atk: 12, def: 4, gold: 32, exp: 40 },
+      { name: 'Prastary Ent',       type: 'Golem',     elem: 'Natura',  hp: 90, atk: 10, def: 6, gold: 38, exp: 48 }
     ],
-    boss: { name: 'Król Cierni Oberon', type: 'Bestia', elem: 'Natura', hp: 220, atk: 21, def: 8, gold: 130, exp: 160 }
+    boss: { name: 'Król Cierni Oberon', type: 'Bestia', elem: 'Natura', hp: 210, atk: 19, def: 8, gold: 135, exp: 165 }
   },
-  {
-    id: 'volcano', name: 'Wulkaniczny Grzbiet', sky: '#2b100e', ground: '#451814', accent: '#f97316',
-    envText: 'Żar wulkanu parzy walczących co turę.', envDmg: 6,
+  { id: 'volcano', name: 'Wulkaniczny Grzbiet',sky: '#2b100e', ground: '#451814', accent: '#f97316', envText: 'Żar wulkanu parzy lekko co turę.', envDmg: 4,
     enemies: [
-      { name: 'Popiołowy Szkielet', type: 'Nieumarly', elem: 'Ogien', hp: 70, atk: 13, def: 3, gold: 30, exp: 38 },
-      { name: 'Duch Magmy', type: 'Zjawa', elem: 'Ogien', hp: 64, atk: 15, def: 2, gold: 34, exp: 42 },
-      { name: 'Salamandra Lawowa', type: 'Bestia', elem: 'Ogien', hp: 85, atk: 15, def: 5, gold: 38, exp: 46 },
-      { name: 'Ognisty Ifrit', type: 'Demon', elem: 'Ogien', hp: 102, atk: 17, def: 6, gold: 46, exp: 55 }
+      { name: 'Popiołowy Szkielet', type: 'Nieumarly', elem: 'Ogien',   hp: 66, atk: 12, def: 3, gold: 30, exp: 38 },
+      { name: 'Duch Magmy',         type: 'Zjawa',     elem: 'Ogien',   hp: 60, atk: 14, def: 2, gold: 34, exp: 42 },
+      { name: 'Salamandra Lawowa',  type: 'Bestia',    elem: 'Ogien',   hp: 80, atk: 14, def: 4, gold: 38, exp: 46 },
+      { name: 'Ognisty Ifrit',      type: 'Demon',     elem: 'Ogien',   hp: 96, atk: 15, def: 5, gold: 46, exp: 55 }
     ],
-    boss: { name: 'Ignis, Władca Lawy', type: 'Smok', elem: 'Ogien', hp: 260, atk: 25, def: 10, gold: 160, exp: 200 }
+    boss: { name: 'Ignis, Władca Lawy', type: 'Smok', elem: 'Ogien', hp: 250, atk: 22, def: 9, gold: 165, exp: 205 }
   },
-  {
-    id: 'swamp', name: 'Zgnile Bagna', sky: '#162114', ground: '#263621', accent: '#a3e635',
-    envText: 'Toksyczne opary zatruwają krew.', envDmg: 5,
+  { id: 'swamp',   name: 'Zgnile Bagna',      sky: '#162114', ground: '#263621', accent: '#a3e635', envText: 'Gęsta mgła bagienna.', envDmg: 3,
     enemies: [
-      { name: 'Zgnity Utopiec', type: 'Nieumarly', elem: 'Natura', hp: 74, atk: 12, def: 4, gold: 32, exp: 40 },
-      { name: 'Bagienna Zjawa', type: 'Zjawa', elem: 'Mrok', hp: 66, atk: 14, def: 3, gold: 36, exp: 44 },
-      { name: 'Jadowita Hydra', type: 'Bestia', elem: 'Natura', hp: 94, atk: 16, def: 5, gold: 44, exp: 52 },
-      { name: 'Wiedźma Moczaru', type: 'Demon', elem: 'Mrok', hp: 88, atk: 18, def: 4, gold: 48, exp: 56 }
+      { name: 'Zgnity Utopiec',     type: 'Nieumarly', elem: 'Natura',  hp: 70, atk: 11, def: 3, gold: 32, exp: 40 },
+      { name: 'Bagienna Zjawa',     type: 'Zjawa',     elem: 'Mrok',    hp: 62, atk: 13, def: 2, gold: 36, exp: 44 },
+      { name: 'Jadowita Hydra',     type: 'Bestia',    elem: 'Natura',  hp: 88, atk: 14, def: 5, gold: 44, exp: 52 },
+      { name: 'Wiedźma Moczaru',    type: 'Demon',     elem: 'Mrok',    hp: 84, atk: 16, def: 4, gold: 48, exp: 56 }
     ],
-    boss: { name: 'Lewiatan Zgnilizny', type: 'Bestia', elem: 'Natura', hp: 275, atk: 24, def: 11, gold: 170, exp: 210 }
+    boss: { name: 'Lewiatan Zgnilizny', type: 'Bestia', elem: 'Natura', hp: 265, atk: 22, def: 10, gold: 175, exp: 215 }
   },
-  {
-    id: 'crypt', name: 'Krypta Cieni', sky: '#141124', ground: '#211c3b', accent: '#c084fc',
-    envText: 'Cienie krypty wysysają siły życiowe.', envDmg: 6,
+  { id: 'crypt',   name: 'Krypta Cieni',      sky: '#141124', ground: '#211c3b', accent: '#c084fc', envText: 'Chłód podziemi.', envDmg: 4,
     enemies: [
-      { name: 'Rycerz Kości', type: 'Nieumarly', elem: 'Fizyczny', hp: 84, atk: 15, def: 6, gold: 38, exp: 46 },
-      { name: 'Więzień Cienia', type: 'Zjawa', elem: 'Mrok', hp: 70, atk: 17, def: 3, gold: 42, exp: 50 },
-      { name: 'Mroźny Gargulec', type: 'Golem', elem: 'Mroz', hp: 98, atk: 14, def: 9, gold: 45, exp: 54 },
-      { name: 'Arcydemon Krypt', type: 'Demon', elem: 'Mrok', hp: 112, atk: 19, def: 7, gold: 55, exp: 65 }
+      { name: 'Rycerz Kości',       type: 'Nieumarly', elem: 'Fizyczny',hp: 78, atk: 13, def: 5, gold: 38, exp: 46 },
+      { name: 'Więzień Cienia',     type: 'Zjawa',     elem: 'Mrok',    hp: 66, atk: 15, def: 3, gold: 42, exp: 50 },
+      { name: 'Mroźny Gargulec',    type: 'Golem',     elem: 'Mroz',    hp: 92, atk: 13, def: 8, gold: 45, exp: 54 },
+      { name: 'Arcydemon Krypt',    type: 'Demon',     elem: 'Mrok',    hp: 104,atk: 17, def: 6, gold: 55, exp: 65 }
     ],
-    boss: { name: 'Malakor, Król Licz', type: 'Nieumarly', elem: 'Mrok', hp: 295, atk: 27, def: 12, gold: 195, exp: 240 }
+    boss: { name: 'Malakor, Król Licz', type: 'Nieumarly', elem: 'Mrok', hp: 280, atk: 24, def: 11, gold: 200, exp: 245 }
   }
 ];
 
 const COMPANIONS_POOL = [
-  { id: 'c_knight', name: 'Sir Roland (Tarczownik)', hp: 110, atk: 11, def: 9, elem: 'Swiatlo', color: '#facc15' },
-  { id: 'c_archer', name: 'Lyra (Zwiadowczyni)', hp: 85, atk: 16, def: 4, elem: 'Natura', color: '#4ade80' },
-  { id: 'c_pyro',   name: 'Vael (Piromanta)', hp: 80, atk: 18, def: 3, elem: 'Ogien', color: '#f87171' },
-  { id: 'c_wolf',   name: 'Kieł (Widmowy Wilk)', hp: 95, atk: 15, def: 5, elem: 'Mrok', color: '#c084fc' }
+  { id: 'c_knight', name: 'Sir Roland (Tarczownik)', hp: 115, atk: 11, def: 9, elem: 'Swiatlo', color: '#facc15' },
+  { id: 'c_archer', name: 'Lyra (Zwiadowczyni)',   hp: 90,  atk: 16, def: 4, elem: 'Natura',  color: '#4ade80' },
+  { id: 'c_pyro',   name: 'Vael (Piromanta)',      hp: 85,  atk: 18, def: 3, elem: 'Ogien',   color: '#f87171' },
+  { id: 'c_wolf',   name: 'Kieł (Widmowy Wilk)',   hp: 100, atk: 15, def: 5, elem: 'Mrok',    color: '#c084fc' }
 ];
 
 let audioCtx = null;
@@ -1075,66 +1098,41 @@ function playSfx(type) {
   try {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     if (audioCtx.state === 'suspended') audioCtx.resume();
-
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.connect(gain);
     gain.connect(audioCtx.destination);
-
     const now = audioCtx.currentTime;
-    const vol = settings.volume * 0.18;
+    const vol = settings.volume * 0.16;
 
     if (type === 'click') {
-      osc.type = 'square';
-      osc.frequency.setValueAtTime(520, now);
-      osc.frequency.exponentialRampToValueAtTime(720, now + 0.05);
-      gain.gain.setValueAtTime(vol, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+      osc.type = 'square'; osc.frequency.setValueAtTime(520, now); osc.frequency.exponentialRampToValueAtTime(720, now + 0.05);
+      gain.gain.setValueAtTime(vol, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
       osc.start(now); osc.stop(now + 0.06);
     } else if (type === 'hit') {
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(190, now);
-      osc.frequency.exponentialRampToValueAtTime(65, now + 0.14);
-      gain.gain.setValueAtTime(vol * 1.2, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+      osc.type = 'sawtooth'; osc.frequency.setValueAtTime(190, now); osc.frequency.exponentialRampToValueAtTime(65, now + 0.14);
+      gain.gain.setValueAtTime(vol * 1.2, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
       osc.start(now); osc.stop(now + 0.15);
-    } else if (type === 'crit') {
-      osc.type = 'square';
-      osc.frequency.setValueAtTime(440, now);
-      osc.frequency.setValueAtTime(660, now + 0.05);
-      osc.frequency.setValueAtTime(880, now + 0.10);
-      gain.gain.setValueAtTime(vol * 1.3, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
-      osc.start(now); osc.stop(now + 0.22);
-    } else if (type === 'block') {
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(320, now);
-      osc.frequency.setValueAtTime(640, now + 0.06);
-      gain.gain.setValueAtTime(vol * 1.2, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+    } else if (type === 'crit' || type === 'spell') {
+      osc.type = 'triangle'; osc.frequency.setValueAtTime(420, now); osc.frequency.exponentialRampToValueAtTime(860, now + 0.16);
+      gain.gain.setValueAtTime(vol * 1.3, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
       osc.start(now); osc.stop(now + 0.18);
     } else if (type === 'heal' || type === 'buy' || type === 'level') {
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(392, now);
-      osc.frequency.setValueAtTime(523, now + 0.08);
-      osc.frequency.setValueAtTime(659, now + 0.16);
-      gain.gain.setValueAtTime(vol * 1.1, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
-      osc.start(now); osc.stop(now + 0.28);
+      osc.type = 'sine'; osc.frequency.setValueAtTime(392, now); osc.frequency.setValueAtTime(523, now + 0.08); osc.frequency.setValueAtTime(659, now + 0.16);
+      gain.gain.setValueAtTime(vol * 1.1, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+      osc.start(now); osc.stop(now + 0.25);
     } else if (type === 'crate') {
-      osc.type = 'square';
-      osc.frequency.setValueAtTime(300 + Math.random() * 400, now);
-      gain.gain.setValueAtTime(vol * 0.7, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+      osc.type = 'square'; osc.frequency.setValueAtTime(300 + Math.random() * 400, now);
+      gain.gain.setValueAtTime(vol * 0.7, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
       osc.start(now); osc.stop(now + 0.05);
     }
   } catch (e) {}
 }
 
-const STORAGE_KEY = 'kroniki_otchlani_v4_data';
+const STORAGE_KEY = 'kroniki_otchlani_v6_data';
 
 let metaState = {
-  essence: 20,
+  essence: 24,
   runes: 1,
   tree: {},
   unlockedSkills: [],
@@ -1178,7 +1176,7 @@ function showToast(msg) {
   t.textContent = msg;
   t.style.display = 'block';
   clearTimeout(t._timer);
-  t._timer = setTimeout(() => { t.style.display = 'none'; }, 3000);
+  t._timer = setTimeout(() => { t.style.display = 'none'; }, 3500);
 }
 
 function updateTopbar() {
@@ -1203,28 +1201,12 @@ function openMainMenu() {
 
 function openGlobalTree() {
   playSfx('click');
-  document.getElementById('treeBackToRunBtn').style.display = 'none';
-  renderSkillTree();
-  showScreen('screen-tree');
-}
-
-function openRunTree() {
-  playSfx('click');
-  document.getElementById('treeBackToRunBtn').style.display = 'inline-block';
   renderSkillTree();
   showScreen('screen-tree');
 }
 
 function openGlobalEssenceShop() {
   playSfx('click');
-  document.getElementById('essenceBackToRunBtn').style.display = 'none';
-  renderEssenceShop();
-  showScreen('screen-essence-shop');
-}
-
-function openRunEssenceShop() {
-  playSfx('click');
-  document.getElementById('essenceBackToRunBtn').style.display = 'inline-block';
   renderEssenceShop();
   showScreen('screen-essence-shop');
 }
@@ -1258,7 +1240,7 @@ function renderSkillTree() {
       const curLvl = getTreeLvl(node.id);
       const isMax = curLvl >= node.maxLvl;
       const reqMet = !node.req || getTreeLvl(node.req) > 0;
-      const nextCost = node.cost + curLvl * Math.ceil(node.cost * 0.5);
+      const nextCost = node.cost + curLvl * Math.ceil(node.cost * 0.45);
 
       const nodeDiv = document.createElement('div');
       nodeDiv.className = 'tree-node ' + (isMax ? 'maxed' : (reqMet ? 'unlocked' : 'locked'));
@@ -1267,7 +1249,7 @@ function renderSkillTree() {
       if (isMax) {
         btnHtml = `<button disabled style="width:100%;">✅ MAKSYMALNY POZIOM</button>`;
       } else if (!reqMet) {
-        btnHtml = `<button disabled style="width:100%;">🔒 Wymaga poprzedniego węzła</button>`;
+        btnHtml = `<button disabled style="width:100%;">🔒 Wymaga węzła wyżej</button>`;
       } else {
         const canAfford = metaState.essence >= nextCost;
         btnHtml = `<button class="essence-btn" style="width:100%;" ${canAfford ? '' : 'disabled'} onclick="upgradeTreeNode('${node.id}', ${nextCost})">Ulepsz (${nextCost} 🔮)</button>`;
@@ -1311,20 +1293,20 @@ function renderEssenceShop() {
     card.className = 'item-card';
     card.innerHTML = `
       <div>
-        <strong style="color:var(--essence);">📘 Księga: ${sk.name}</strong>
+        <strong style="color:var(--essence);">📘 ${sk.name}</strong>
         <div style="font-size:0.78rem; color:var(--gold); margin:3px 0;">Klasa: ${sk.classReq} | Koszt MP: ${sk.mp}</div>
         <p style="font-size:0.8rem; color:var(--text-dim);">${sk.desc}</p>
       </div>
-      <button class="essence-btn" ${metaState.essence >= 25 ? '' : 'disabled'} onclick="buySkillBook('${sk.id}', 25)">Odblokuj na stałe (25 🔮)</button>
+      <button class="essence-btn" ${metaState.essence >= 22 ? '' : 'disabled'} onclick="buySkillBook('${sk.id}', 22)">Odblokuj na stałe (22 🔮)</button>
     `;
     grid.appendChild(card);
   });
 
   const runBoosts = [
-    { id: 'b_atk', name: 'Eliksir Tytana (Cały Run)', cost: 10, desc: '+8 ATK na cały obecny run.' },
-    { id: 'b_def', name: 'Skóra Golema (Cały Run)', cost: 10, desc: '+7 DEF i +5% Bloku na cały obecny run.' },
-    { id: 'b_hp',  name: 'Serce Smoka (Cały Run)', cost: 10, desc: '+60 Max HP i pełne uleczenie w obecnym runie.' },
-    { id: 'b_comp',name: 'Kontrakt Najemnika (Run)', cost: 14, desc: 'Natychmiast dodaje losowego kompana do drużyny!' }
+    { id: 'b_luck', name: 'Talizman Szczęścia (+8 🍀 Run)', cost: 10, desc: '+8 Szczęścia na cały obecny run.' },
+    { id: 'b_atk',  name: 'Eliksir Siły (+8 ATK Run)', cost: 10, desc: '+8 ATK na cały obecny run.' },
+    { id: 'b_def',  name: 'Hart Pancerza (+7 DEF Run)', cost: 10, desc: '+7 DEF i +5% Bloku na cały obecny run.' },
+    { id: 'b_comp', name: 'Najemnik do Drużyny (Run)', cost: 14, desc: 'Dodaje losowego kompana na obecny run!' }
   ];
 
   runBoosts.forEach(b => {
@@ -1335,9 +1317,9 @@ function renderEssenceShop() {
       <div>
         <strong style="color:var(--gold);">✨ ${b.name}</strong>
         <p style="font-size:0.8rem; color:var(--text-dim); margin-top:4px;">${b.desc}</p>
-        ${!run ? '<p style="font-size:0.75rem; color:var(--danger); margin-top:4px;">Wymaga aktywnej wyprawy!</p>' : ''}
+        ${!run ? '<p style="font-size:0.75rem; color:var(--danger); margin-top:4px;">Uruchom lub wczytaj run, aby użyć.</p>' : ''}
       </div>
-      <button class="gold-btn" ${disabled ? 'disabled' : ''} onclick="buyRunBoost('${b.id}', ${b.cost})">Kup na Run (${b.cost} 🔮)</button>
+      <button class="gold-btn" ${disabled ? 'disabled' : ''} onclick="buyRunBoost('${b.id}', ${b.cost})">Zastosuj w Runie (${b.cost} 🔮)</button>
     `;
     grid.appendChild(card);
   });
@@ -1349,21 +1331,21 @@ function buySkillBook(skillId, cost) {
   if (!metaState.unlockedSkills.includes(skillId)) metaState.unlockedSkills.push(skillId);
   saveStorage();
   playSfx('buy');
-  showToast('Odblokowano nową umiejętność klasową na stałe!');
+  showToast('Odblokowano nową księgę klasową na stałe!');
   renderEssenceShop();
 }
 
 function buyRunBoost(boostId, cost) {
   if (!run || metaState.essence < cost) return;
   metaState.essence -= cost;
-  if (boostId === 'b_atk') run.bonusAtk += 8;
-  if (boostId === 'b_def') { run.bonusDef += 7; run.bonusBlock += 5; }
-  if (boostId === 'b_hp')  { run.maxHp += 60; run.hp = run.maxHp; }
+  if (boostId === 'b_luck') run.bonusLuck += 8;
+  if (boostId === 'b_atk')  run.bonusAtk += 8;
+  if (boostId === 'b_def')  { run.bonusDef += 7; run.bonusBlock += 5; }
   if (boostId === 'b_comp') recruitRandomCompanion(true);
   saveCurrentRun(false);
   saveStorage();
   playSfx('buy');
-  showToast('Aktywowano błogosławieństwo na obecny run!');
+  showToast('Zastosowano wzmocnienie na obecny run!');
   renderEssenceShop();
 }
 
@@ -1373,7 +1355,6 @@ function openLootCrate() {
     showToast('Za mało Esencji Otchłani (wymagane 15)!');
     return;
   }
-
   metaState.essence -= 15;
   saveStorage();
   crateSpinning = true;
@@ -1381,17 +1362,16 @@ function openLootCrate() {
 
   const win = document.getElementById('crateWindow');
   const poolLabels = [
-    '⚔️ +6 ATK na cały Run',
-    '🛡️ +6 DEF na cały Run',
-    '❤️ +50 Max HP na cały Run',
+    '🍀 +6 Szczęścia na Run',
+    '⚔️ +6 ATK na Run',
     '🔮 Zwrot Esencji Otchłani!',
-    '💠 Rzadkie Runy Kuźni!',
-    '🐺 Najemnik-Kompan na Run!',
-    '📘 Księga Zaklęć Klasowych!'
+    '💠 Runy pod przyszłe update',
+    '🐺 Kompan do drużyny',
+    '📘 Księga Klasowa AoE!'
   ];
 
   let ticks = 0;
-  const maxTicks = settings.fastAnim ? 8 : 20;
+  const maxTicks = settings.fastAnim ? 8 : 18;
   const interval = setInterval(() => {
     win.textContent = poolLabels[ticks % poolLabels.length];
     playSfx('crate');
@@ -1403,41 +1383,34 @@ function openLootCrate() {
       document.getElementById('openCrateBtn').disabled = false;
       renderEssenceShop();
     }
-  }, settings.fastAnim ? 50 : 85);
+  }, settings.fastAnim ? 50 : 80);
 }
 
 function finalizeCrateReward(winEl) {
-  const diffMult = run ? getDiffConfig(run.difficulty).rewardMult : 1.0;
   const roll = Math.random();
   const lockedBooks = SKILLS_DB.filter(s => s.crateOnly && !metaState.unlockedSkills.includes(s.id));
 
-  if (roll < 0.22 && lockedBooks.length > 0) {
+  if (roll < 0.24 && lockedBooks.length > 0) {
     const book = lockedBooks[Math.floor(Math.random() * lockedBooks.length)];
     metaState.unlockedSkills.push(book.id);
-    winEl.innerHTML = `<span style="color:var(--essence);">📘 ODBLOKOWANO KSIĘGĘ: ${book.name} (${book.classReq})!</span>`;
-  } else if (roll < 0.42) {
-    const essAmt = Math.max(5, Math.round(22 * diffMult));
-    metaState.essence += essAmt;
-    winEl.innerHTML = `<span style="color:var(--essence);">🔮 Zdobywasz +${essAmt} Esencji Otchłani!</span>`;
-  } else if (roll < 0.58) {
-    const runeAmt = Math.max(1, Math.round(2 * diffMult));
-    metaState.runes += runeAmt;
-    winEl.innerHTML = `<span style="color:var(--rune);">💠 RZADKI ŁUP! Zdobywasz +${runeAmt} Runy Kuźni!</span>`;
-  } else if (roll < 0.75 && run) {
+    winEl.innerHTML = `<span style="color:var(--essence);">📘 ODBLOKOWANO: ${book.name}!</span>`;
+  } else if (roll < 0.45) {
+    metaState.essence += 20;
+    winEl.innerHTML = `<span style="color:var(--essence);">🔮 Zdobywasz +20 Esencji Otchłani!</span>`;
+  } else if (roll < 0.60) {
+    metaState.runes += 2;
+    winEl.innerHTML = `<span style="color:var(--rune);">💠 Otrzymujesz +2 Runy (na kolejne update'y)!</span>`;
+  } else if (roll < 0.78 && run) {
     recruitRandomCompanion(true);
     winEl.innerHTML = `<span style="color:var(--hp);">🐺 DOŁĄCZA KOMPAN DO TWOJEJ DRUŻYNY!</span>`;
+  } else if (run) {
+    run.bonusLuck += 6;
+    run.bonusAtk += 5;
+    saveCurrentRun(false);
+    winEl.innerHTML = `<span style="color:var(--luck);">🍀 +6 Szczęścia i +5 ATK na cały obecny run!</span>`;
   } else {
-    if (run) {
-      run.bonusAtk += 6;
-      run.bonusDef += 5;
-      run.maxHp += 40;
-      run.hp = Math.min(run.maxHp, run.hp + 40);
-      saveCurrentRun(false);
-      winEl.innerHTML = `<span style="color:var(--gold);">✨ BŁOGOSŁAWIEŃSTWO RUNU: +6 ATK, +5 DEF, +40 HP!</span>`;
-    } else {
-      metaState.essence += 18;
-      winEl.innerHTML = `<span style="color:var(--gold);">🔮 Brak aktywnego runu – otrzymujesz +18 Esencji!</span>`;
-    }
+    metaState.essence += 18;
+    winEl.innerHTML = `<span style="color:var(--gold);">🔮 Brak aktywnego runu – otrzymujesz +18 Esencji!</span>`;
   }
   saveStorage();
   playSfx('level');
@@ -1470,7 +1443,7 @@ function renderSaveSlots() {
         </div>
         <div style="font-size:0.84rem; line-height:1.45;">
           <div>Klasa: <strong>${s.pClass}</strong> (Poz. ${s.level}) | Żywioł: <strong>${s.element}</strong></div>
-          <div>Kraina: <span style="color:${biome.accent};">${biome.name}</span> | Etap: <strong>${s.stage}/${s.maxStages}</strong></div>
+          <div>Kraina: <span style="color:${biome.accent};">${biome.name}</span> | Etap: <strong>${s.stage}</strong></div>
           <div>HP: <span style="color:var(--hp);">${s.hp}/${s.maxHp}</span> | Złoto: <span style="color:var(--gold);">${s.gold} zl</span></div>
         </div>
         <div style="display:flex; gap:8px;">
@@ -1487,25 +1460,22 @@ function openCreator(slotIdx = 0) {
   playSfx('click');
   document.getElementById('targetSlotSelect').value = String(slotIdx);
 
-  const cBox = document.getElementById('classChoices');
-  cBox.innerHTML = CLASSES.map(c => `
+  document.getElementById('classChoices').innerHTML = CLASSES.map(c => `
     <div class="choice-card ${c.id === selectedClassId ? 'selected' : ''}" onclick="selectCreatorClass('${c.id}')">
       <strong style="color:var(--gold);">${c.name}</strong>
-      <div style="font-size:0.76rem; color:var(--hp); margin:3px 0;">HP:${c.hp} MP:${c.mp} ATK:${c.atk} DEF:${c.def}</div>
-      <div style="font-size:0.76rem; color:var(--text-dim);">${c.desc}</div>
+      <div style="font-size:0.75rem; color:var(--hp); margin:3px 0;">HP:${c.hp} MP:${c.mp} ATK:${c.atk} 🍀:${c.luck}</div>
+      <div style="font-size:0.75rem; color:var(--text-dim);">${c.desc}</div>
     </div>
   `).join('');
 
-  const eBox = document.getElementById('elementChoices');
-  eBox.innerHTML = ELEMENTS.map(e => `
+  document.getElementById('elementChoices').innerHTML = ELEMENTS.map(e => `
     <div class="choice-card ${e.id === selectedElemId ? 'selected' : ''}" onclick="selectCreatorElem('${e.id}')">
       <strong style="color:${e.color};">${e.name}</strong>
       <div style="font-size:0.75rem; color:var(--text-dim); margin-top:3px;">${e.desc}</div>
     </div>
   `).join('');
 
-  const dBox = document.getElementById('difficultyChoices');
-  dBox.innerHTML = Object.values(DIFFICULTIES).map(d => `
+  document.getElementById('difficultyChoices').innerHTML = Object.values(DIFFICULTIES).map(d => `
     <div class="choice-card ${d.id === selectedDiffId ? 'selected' : ''}" onclick="selectCreatorDiff('${d.id}')">
       <strong style="color:var(--accent);">${d.name}</strong>
       <div style="font-size:0.75rem; color:var(--text-dim); margin-top:3px;">${d.desc}</div>
@@ -1520,23 +1490,73 @@ function selectCreatorClass(id) { selectedClassId = id; playSfx('click'); openCr
 function selectCreatorElem(id)  { selectedElemId = id;  playSfx('click'); openCreator(Number(document.getElementById('targetSlotSelect').value)); }
 function selectCreatorDiff(id)  { selectedDiffId = id;  playSfx('click'); openCreator(Number(document.getElementById('targetSlotSelect').value)); }
 
-function drawPixelHero(ctx, x, y, scale, cloakColor, classId) {
+function drawDetailedSprite(ctx, x, y, scale, options) {
+  const { color, role, isEnemy, isBoss, phase = 0 } = options;
+  const bob = Math.sin(phase) * (isEnemy ? 2.2 : 1.6);
+
   ctx.save();
   ctx.imageSmoothingEnabled = false;
-  ctx.translate(x, y);
+  ctx.translate(x, y + bob);
   ctx.scale(scale, scale);
-  ctx.fillStyle = 'rgba(0,0,0,0.45)';
-  ctx.fillRect(-10, 22, 20, 4);
-  ctx.fillStyle = cloakColor;
-  ctx.fillRect(-8, -2, 16, 20);
-  ctx.fillStyle = '#f1c27d';
-  ctx.fillRect(-5, -12, 10, 10);
-  ctx.fillStyle = classId === 'Mag' ? '#3b82f6' : '#94a3b8';
-  ctx.fillRect(-6, -14, 12, 4);
-  ctx.fillStyle = '#0f172a';
-  ctx.fillRect(1, -9, 2, 2);
-  ctx.fillStyle = classId === 'Mag' ? '#c084fc' : '#e2e8f0';
-  ctx.fillRect(9, -10, 3, 24);
+
+  ctx.fillStyle = 'rgba(0,0,0,0.48)';
+  ctx.fillRect(-13, 21, 26, 5);
+
+  ctx.fillStyle = '#1e293b';
+  ctx.fillRect(-7, 11, 5, 11);
+  ctx.fillRect(2, 11, 5, 11);
+  ctx.fillStyle = '#475569';
+  ctx.fillRect(-8, 19, 6, 3);
+  ctx.fillRect(2, 19, 6, 3);
+
+  ctx.fillStyle = color;
+  ctx.fillRect(-9, -2, 18, 14);
+  ctx.fillStyle = 'rgba(255,255,255,0.16)';
+  ctx.fillRect(-7, -1, 4, 12);
+
+  ctx.fillStyle = isBoss ? '#facc15' : '#94a3b8';
+  ctx.fillRect(-12, -3, 5, 6);
+  ctx.fillRect(7, -3, 5, 6);
+
+  ctx.fillStyle = isEnemy ? '#cbd5e1' : '#f1c27d';
+  ctx.fillRect(-6, -13, 12, 10);
+
+  if (isBoss) {
+    ctx.fillStyle = '#facc15';
+    ctx.fillRect(-7, -18, 14, 5);
+    ctx.fillRect(-7, -21, 3, 3);
+    ctx.fillRect(-1, -22, 3, 4);
+    ctx.fillRect(4, -21, 3, 3);
+  } else if (role === 'Mag' || role === 'Nekromanta') {
+    ctx.fillStyle = role === 'Mag' ? '#3b82f6' : '#7e22ce';
+    ctx.fillRect(-7, -16, 14, 4);
+    ctx.fillRect(-4, -20, 8, 4);
+  } else {
+    ctx.fillStyle = '#94a3b8';
+    ctx.fillRect(-7, -16, 14, 4);
+    ctx.fillRect(-1, -19, 2, 3);
+  }
+
+  ctx.fillStyle = isEnemy ? '#ef4444' : '#0f172a';
+  if (isEnemy) {
+    ctx.fillRect(-4, -9, 2, 2);
+    ctx.fillRect(1, -9, 2, 2);
+  } else {
+    ctx.fillRect(1, -9, 2, 2);
+  }
+
+  if (role === 'Mag' || role === 'Nekromanta') {
+    ctx.fillStyle = '#a855f7';
+    ctx.fillRect(11, -14, 3, 33);
+    ctx.fillStyle = '#38e8ff';
+    ctx.fillRect(10, -18, 5, 4);
+  } else {
+    ctx.fillStyle = '#cbd5e1';
+    ctx.fillRect(11, -13, 3, 22);
+    ctx.fillStyle = '#f5c542';
+    ctx.fillRect(8, 5, 9, 2);
+  }
+
   ctx.restore();
 }
 
@@ -1545,7 +1565,7 @@ function drawPreviewAvatar() {
   const ctx = c.getContext('2d');
   ctx.clearRect(0, 0, c.width, c.height);
   const color = document.getElementById('charColorSelect').value;
-  drawPixelHero(ctx, 70, 75, 2.6, color, selectedClassId);
+  drawDetailedSprite(ctx, 75, 82, 2.5, { color, role: selectedClassId, isEnemy: false, phase: 0.4 });
 }
 
 function startNewRun() {
@@ -1556,8 +1576,8 @@ function startNewRun() {
   const cls = CLASSES.find(c => c.id === selectedClassId) || CLASSES[0];
   const diff = getDiffConfig(selectedDiffId);
 
-  const bonusHp = getTreeLvl('hp_1') * 25;
-  const bonusMp = getTreeLvl('mp_1') * 20;
+  const bonusHp = getTreeLvl('hp_1') * 28;
+  const bonusMp = getTreeLvl('mp_1') * 22;
 
   run = {
     name,
@@ -1567,12 +1587,10 @@ function startNewRun() {
     difficulty: selectedDiffId,
     level: 1,
     exp: 0,
-    nextExp: 90,
+    nextExp: 85,
     stage: 1,
-    maxStages: 30,
-    endless: false,
     biomeIdx: Math.floor(Math.random() * BIOMES.length),
-    gold: Math.round(130 * diff.runGoldMult),
+    gold: Math.round(145 * diff.runGoldMult),
     maxHp: cls.hp + bonusHp,
     hp: cls.hp + bonusHp,
     maxMp: cls.mp + bonusMp,
@@ -1580,26 +1598,28 @@ function startNewRun() {
     baseAtk: cls.atk,
     baseDef: cls.def,
     baseCrit: cls.crit,
+    baseLuck: cls.luck,
     spellMult: cls.spellMult,
     bonusAtk: 0,
     bonusDef: 0,
     bonusBlock: 0,
-    equipped: { weapon: 10, shield: null, armor: 30 },
+    bonusLuck: 0,
+    equipped: { weapon: cls.startWep, shield: null, armor: cls.startArmor },
     upgrades: { weapon: 0, shield: 0, armor: 0 },
     inventory: [
-      { id: 10, qty: 1 },
-      { id: 30, qty: 1 },
-      { id: 1,  qty: 2 },
-      { id: 4,  qty: 2 }
+      { id: cls.startWep, qty: 1 },
+      { id: cls.startArmor, qty: 1 },
+      { id: 1, qty: 2 },
+      { id: 4, qty: 2 }
     ],
     learnedScrollSkills: [],
     companions: [],
-    shopStock: [],
+    shopStock: null,
     rerolls: 0,
     currentNode: null
   };
 
-  generateShopStock();
+  generateShopStock(false);
   generateExploreNode();
   saveCurrentRun(false);
   updateRunHud();
@@ -1613,8 +1633,10 @@ function loadSlot(idx) {
   activeSlotIndex = idx;
   run = JSON.parse(JSON.stringify(metaState.slots[idx]));
   if (!Array.isArray(run.learnedScrollSkills)) run.learnedScrollSkills = [];
+  if (typeof run.bonusLuck !== 'number') run.bonusLuck = 0;
+  if (typeof run.baseLuck !== 'number') run.baseLuck = 6;
   if (!run.currentNode) generateExploreNode();
-  if (!run.shopStock || run.shopStock.length === 0) generateShopStock();
+  if (!run.shopStock) generateShopStock(false);
   updateRunHud();
   switchHubView('explore');
   showScreen('screen-run');
@@ -1641,6 +1663,11 @@ function getItemById(id) {
   return ITEMS_CATALOG.find(i => i.id === id) || null;
 }
 
+function canClassUseItem(item, pClass) {
+  if (!item || !Array.isArray(item.classes)) return true;
+  return item.classes.includes('all') || item.classes.includes(pClass);
+}
+
 function getPlayerStats() {
   const w = getItemById(run.equipped.weapon);
   const s = getItemById(run.equipped.shield);
@@ -1654,15 +1681,23 @@ function getPlayerStats() {
   const treeDef = getTreeLvl('def_1') * 3;
   const treeCrit = getTreeLvl('crit_1') * 4;
   const treeBlock = getTreeLvl('block_1') * 4;
+  const treeLuck = getTreeLvl('luck_1') * 4;
 
+  const gearSpellBonus = ((w?.spellBonus || 0) + (s?.spellBonus || 0) + (a?.spellBonus || 0)) / 100;
+  const luck = Math.max(1, run.baseLuck + run.bonusLuck + treeLuck + (run.level - 1) + (w?.luckBonus || 0) + (s?.luckBonus || 0) + (a?.luckBonus || 0));
   const atk = run.baseAtk + wAtk + treeAtk + run.bonusAtk;
   const def = run.baseDef + sDef + aDef + treeDef + run.bonusDef;
-  const crit = Math.min(85, run.baseCrit + (w?.critBonus || 0) + (s?.critBonus || 0) + (a?.critBonus || 0) + treeCrit);
+  const crit = Math.min(85, run.baseCrit + (w?.critBonus || 0) + (s?.critBonus || 0) + (a?.critBonus || 0) + treeCrit + Math.floor(luck * 0.4));
   const block = Math.min(75, (w?.blockChance || 0) + (s?.blockChance || 0) + (a?.blockChance || 0) + treeBlock + run.bonusBlock);
-  const critMult = 1.65 + getTreeLvl('crit_dmg') * 0.20;
-  const totalSpellMult = run.spellMult * (1 + getTreeLvl('spell_1') * 0.10);
+  const critMult = 1.65 + getTreeLvl('crit_dmg') * 0.22;
+  const aoeMult = 1.0 + getTreeLvl('aoe_boost') * 0.14;
+  const totalSpellMult = run.spellMult * (1 + getTreeLvl('spell_1') * 0.12 + gearSpellBonus);
+  const manaDiscount = Math.max(0.60, 1 - getTreeLvl('mana_cost') * 0.08);
+  const armorPen = Math.min(0.60, getTreeLvl('armor_pen') * 0.10);
+  const dotMult = 1 + getTreeLvl('dot_dmg') * 0.20;
+  const lifestealPct = getTreeLvl('lifesteal_n') * 0.04;
 
-  return { atk, def, crit, block, critMult, totalSpellMult, weapon: w, shield: s, armor: a };
+  return { atk, def, crit, block, luck, critMult, aoeMult, totalSpellMult, manaDiscount, armorPen, dotMult, lifestealPct, weapon: w, shield: s, armor: a };
 }
 
 function updateRunHud() {
@@ -1673,8 +1708,9 @@ function updateRunHud() {
   document.getElementById('hudName').textContent = run.name;
   document.getElementById('hudClassBadge').textContent = `${run.pClass} (${run.element})`;
   document.getElementById('hudBiomeBadge').textContent = `🌍 ${biome.name}`;
-  document.getElementById('hudStageBadge').textContent = run.endless ? `♾️ Etap ${run.stage}` : `🏁 Etap ${run.stage}/${run.maxStages}`;
+  document.getElementById('hudStageBadge').textContent = `🏁 Etap ${run.stage}`;
   document.getElementById('hudDiffBadge').textContent = getDiffConfig(run.difficulty).name;
+  document.getElementById('shopTabClassLabel').textContent = run.pClass;
 
   document.getElementById('hudHpText').textContent = `${run.hp}/${run.maxHp}`;
   document.getElementById('hudHpBar').style.width = `${Math.max(0, Math.min(100, (run.hp / run.maxHp) * 100))}%`;
@@ -1687,13 +1723,14 @@ function updateRunHud() {
   document.getElementById('hudExpBar').style.width = `${Math.max(0, Math.min(100, (run.exp / run.nextExp) * 100))}%`;
 
   document.getElementById('hudGold').textContent = `${run.gold} zl`;
-  document.getElementById('hudAtk').textContent = `${st.atk} (${st.crit}% kryt)`;
-  document.getElementById('hudDef').textContent = `${st.def} (${st.block}% blok)`;
+  document.getElementById('hudAtk').textContent = `${st.atk} (${st.crit}%)`;
+  document.getElementById('hudDef').textContent = `${st.def} (${st.block}%)`;
+  document.getElementById('hudLuck').textContent = `${st.luck}`;
 
   const c = document.getElementById('hudAvatarCanvas');
   const ctx = c.getContext('2d');
   ctx.clearRect(0, 0, c.width, c.height);
-  drawPixelHero(ctx, 48, 52, 1.8, run.cloakColor, run.pClass);
+  drawDetailedSprite(ctx, 48, 56, 1.8, { color: run.cloakColor, role: run.pClass, isEnemy: false, phase: 0 });
 }
 
 function switchHubView(viewName) {
@@ -1718,25 +1755,25 @@ function drawBiomeBackground(canvasId) {
   ctx.fillRect(0, 0, c.width, c.height);
 
   ctx.fillStyle = biome.accent;
-  for (let i = 0; i < 28; i++) {
+  for (let i = 0; i < 32; i++) {
     const sx = (i * 97 + run.stage * 23) % c.width;
-    const sy = (i * 41) % 130;
+    const sy = (i * 41) % 135;
     ctx.fillRect(sx, sy, 4, 4);
   }
 
   ctx.fillStyle = 'rgba(0,0,0,0.35)';
   for (let x = 0; x < c.width; x += 90) {
     ctx.beginPath();
-    ctx.moveTo(x, 165);
+    ctx.moveTo(x, 170);
     ctx.lineTo(x + 45, 95 + (x % 30));
-    ctx.lineTo(x + 90, 165);
+    ctx.lineTo(x + 90, 170);
     ctx.fill();
   }
 
   ctx.fillStyle = biome.ground;
-  ctx.fillRect(0, 165, c.width, 65);
+  ctx.fillRect(0, 170, c.width, 65);
   ctx.fillStyle = biome.accent;
-  ctx.fillRect(0, 165, c.width, 4);
+  ctx.fillRect(0, 170, c.width, 4);
 }
 
 function generateExploreNode() {
@@ -1747,71 +1784,68 @@ function generateExploreNode() {
   }
 
   const roll = Math.random();
-  if (roll < 0.58) {
-    const isDuo = run.stage >= 3 && Math.random() < 0.42;
+  if (roll < 0.54) {
+    const isDuo = run.stage >= 3 && Math.random() < 0.36;
     run.currentNode = { type: 'combat', isDuo };
   } else {
     const diff = getDiffConfig(run.difficulty);
     const events = [
       {
-        title: '🐺 Zraniony Najemnik przy Ognisku',
-        desc: 'Napotykasz doświadczonego wojownika, który szuka drużyny w zamian za udział w wyprawie lub niewielką opłatę za opatrunki.',
-        opt1: { label: 'Zrekrutuj kompana (45 zl)', action: () => {
-          if (run.gold < 45) return showToast('Za mało złota (45 zl)!');
-          run.gold -= 45;
+        title: '🐺 Wędrowny Najemnik przy Szlaku',
+        desc: 'Doświadczony wojownik oferuje wsparcie w walce lub trening zwiększający Szczęście.',
+        opt1: { label: 'Zrekrutuj kompana (40 zl)', action: () => {
+          if (run.gold < 40) return showToast('Za mało złota (40 zl)!');
+          run.gold -= 40;
           recruitRandomCompanion(false);
           advanceAfterEvent();
         }},
-        opt2: { label: `Opatrz jego rany (+${Math.max(10, Math.round(25 * diff.rewardMult))} EXP)`, action: () => {
-          gainExp(Math.max(10, Math.round(25 * diff.rewardMult)));
+        opt2: { label: 'Poproś o wskazówki (+3 🍀 na Run i EXP)', action: () => {
+          run.bonusLuck += 3;
+          gainExp(Math.round(25 * diff.rewardMult));
+          playSfx('level');
+          showToast('Otrzymano +3 Szczęścia na ten run oraz EXP!');
           advanceAfterEvent();
         }}
       },
       {
-        title: '⛩️ Starożytna Kapliczka Krwi i Many',
-        desc: 'Mroczny obelisk pulsuje energią. Możesz złożyć ofiarę z krwi albo pomodlić się o odnowienie sił.',
-        opt1: { label: `Ofiara krwi (-25 HP → +${Math.round(140 * diff.runGoldMult)} zl)`, action: () => {
-          if (run.hp <= 26) return showToast('Masz za mało HP na ofiarę!');
-          run.hp -= 25;
-          const g = Math.round(140 * diff.runGoldMult);
-          run.gold += g;
-          if (Math.random() < (0.55 * diff.dropMult)) {
-            metaState.runes += 1;
-            showToast(`Otrzymano ${g} zl i +1 Runę Kuźni!`);
-          } else {
-            showToast(`Otrzymano ${g} zl (tym razem bez Runy).`);
-          }
-          saveStorage();
-          playSfx('crit');
+        title: '⛩️ Kapliczka Szczęścia i Many',
+        desc: 'Starożytny kamień pulsuje spokojnym blaskiem. Możesz złożyć złoto w ofierze lub zregenerować siły.',
+        opt1: { label: 'Ofiara (35 zl → +4 🍀 na Run)', action: () => {
+          if (run.gold < 35) return showToast('Potrzebujesz 35 zl!');
+          run.gold -= 35;
+          run.bonusLuck += 4;
+          playSfx('level');
+          showToast('Kapliczka obdarza Cię +4 Szczęścia na ten run!');
           advanceAfterEvent();
         }},
-        opt2: { label: 'Odpocznij przy kapliczce (+45% HP i MP)', action: () => {
-          run.hp = Math.min(run.maxHp, run.hp + Math.round(run.maxHp * 0.45));
-          run.mp = Math.min(run.maxMp, run.mp + Math.round(run.maxMp * 0.45));
+        opt2: { label: 'Odpocznij (+50% HP i MP)', action: () => {
+          run.hp = Math.min(run.maxHp, run.hp + Math.round(run.maxHp * 0.5));
+          run.mp = Math.min(run.maxMp, run.mp + Math.round(run.maxMp * 0.5));
           playSfx('heal');
-          showToast('Zregenerowano siły!');
+          showToast('Zregenerowano 50% HP i MP!');
           advanceAfterEvent();
         }}
       },
       {
-        title: '🧪 Wędrowny Alchemik Otchłani',
-        desc: 'Tajemniczy kupiec oferuje eksperymentalną miksturę wzmacniającą lub zestaw eliksirów.',
-        opt1: { label: 'Wypij nieznany wywar (55% +5 ATK na run / -20 HP)', action: () => {
-          if (Math.random() < 0.55) {
-            run.bonusAtk += 5;
-            playSfx('level');
-            showToast('Sukces! +5 ATK na cały run!');
+        title: '🧪 Skrzynia Wędrowca',
+        desc: 'Na poboczu leży lekko uchylona skrzynia. Co chcesz zrobić?',
+        opt1: { label: 'Przeszukaj dokładnie (złoto + szansa na 🍀)', action: () => {
+          const st = getPlayerStats();
+          const g = Math.round((45 + st.luck * 2) * diff.runGoldMult);
+          run.gold += g;
+          if (Math.random() < Math.min(0.75, 0.25 + st.luck * 0.015)) {
+            run.bonusLuck += 2;
+            showToast(`Znaleziono ${g} zl oraz +2 Szczęścia!`);
           } else {
-            run.hp = Math.max(1, run.hp - 20);
-            playSfx('hit');
-            showToast('Wywar był trujący! Tracisz 20 HP.');
+            showToast(`Znaleziono ${g} zl!`);
           }
+          playSfx('buy');
           advanceAfterEvent();
         }},
-        opt2: { label: 'Weź darmową Miksturę Zdrowia', action: () => {
+        opt2: { label: 'Weź miksturę zdrowia i ruszaj dalej', action: () => {
           addItemToBag(1, 1);
           playSfx('buy');
-          showToast('Otrzymano Miksturę Zdrowia.');
+          showToast('Dodano Słabą Miksturę Zdrowia do plecaka.');
           advanceAfterEvent();
         }}
       }
@@ -1824,6 +1858,7 @@ function generateExploreNode() {
 function advanceAfterEvent() {
   run.stage++;
   checkBiomeTransition();
+  generateShopStock(false);
   generateExploreNode();
   saveCurrentRun(false);
   updateRunHud();
@@ -1835,7 +1870,7 @@ function checkBiomeTransition() {
     let nextIdx = Math.floor(Math.random() * BIOMES.length);
     if (nextIdx === run.biomeIdx) nextIdx = (nextIdx + 1) % BIOMES.length;
     run.biomeIdx = nextIdx;
-    showToast(`🌍 Wkraczasz do nowej krainy: ${BIOMES[nextIdx].name}!`);
+    showToast(`🌍 Nowa kraina: ${BIOMES[nextIdx].name}!`);
   }
 }
 
@@ -1843,9 +1878,9 @@ function renderExploreNode() {
   drawBiomeBackground('sceneCanvas');
   const c = document.getElementById('sceneCanvas');
   const ctx = c.getContext('2d');
-  drawPixelHero(ctx, 210, 145, 2.2, run.cloakColor, run.pClass);
+  drawDetailedSprite(ctx, 220, 148, 2.2, { color: run.cloakColor, role: run.pClass, isEnemy: false, phase: 0.3 });
   run.companions.forEach((comp, idx) => {
-    drawPixelHero(ctx, 135 - idx * 55, 148, 1.8, comp.color, 'Wojownik');
+    drawDetailedSprite(ctx, 140 - idx * 58, 150, 1.85, { color: comp.color, role: 'Wojownik', isEnemy: false, phase: 1.1 + idx });
   });
 
   const card = document.getElementById('exploreCard');
@@ -1854,15 +1889,15 @@ function renderExploreNode() {
 
   if (node.type === 'boss') {
     card.innerHTML = `
-      <h3 style="color:var(--danger);">👑 STRAŻNIK KRAINY: ${biome.boss.name} (Etap ${run.stage})</h3>
-      <p style="margin:8px 0; color:var(--text-dim);">Potężny boss strzeże przejścia do kolejnego regionu! Nagroda zależy od trudności runu (${getDiffConfig(run.difficulty).name}).</p>
-      <button class="danger" onclick="startCombat(true, false)">⚔️ Wyzwij Bossa Krainy!</button>
+      <h3 style="color:var(--danger);">👑 BOSS KRAINY: ${biome.boss.name} (Etap ${run.stage})</h3>
+      <p style="margin:8px 0; color:var(--text-dim);">Pokonanie bossa daje sporą porcję złota, EXP oraz Esencję Otchłani.</p>
+      <button class="danger" onclick="startCombat(true, false)">⚔️ Rozpocznij Walkę z Bossem</button>
     `;
   } else if (node.type === 'combat') {
     card.innerHTML = `
-      <h3 style="color:var(--gold);">${node.isDuo ? '⚔️ Dwuwalka 2v2 na Szlaku!' : '🗡️ Starcie na Szlaku'} (Etap ${run.stage})</h3>
+      <h3 style="color:var(--gold);">${node.isDuo ? '⚔️ Dwuwalka (2 Wrogów)' : '🗡️ Spotkanie z Przeciwnikiem'} (Etap ${run.stage})</h3>
       <p style="margin:8px 0; color:var(--text-dim);">Kraina: <strong>${biome.name}</strong> — <em>${biome.envText}</em></p>
-      <button class="primary" onclick="startCombat(false, ${node.isDuo})">⚔️ Rozpocznij Walkę</button>
+      <button class="primary" onclick="startCombat(false, ${node.isDuo})">⚔️ Wejdź do Walki</button>
     `;
   } else if (node.type === 'event') {
     const ev = node.event;
@@ -1879,47 +1914,60 @@ function renderExploreNode() {
   }
 }
 
-function spawnEnemyUnit(isBoss) {
+function spawnEnemyUnit(isBoss, isDuoMember = false) {
   const biome = BIOMES[run.biomeIdx];
   const diff = getDiffConfig(run.difficulty);
-  const scale = (1 + (run.stage - 1) * 0.16) * diff.enemyMult;
+  const duoDmgScale = isDuoMember ? 0.78 : 1.0;
+  const scale = (1 + (run.stage - 1) * 0.13) * diff.enemyMult;
 
   if (isBoss) {
     const b = biome.boss;
     return {
       name: b.name, type: b.type, elem: b.elem, isBoss: true,
       maxHp: Math.round(b.hp * scale), hp: Math.round(b.hp * scale),
-      atk: Math.round(b.atk * scale), def: Math.round(b.def * (1 + run.stage * 0.06)),
-      gold: Math.round(b.gold * (1 + run.stage * 0.08) * diff.runGoldMult),
-      exp: Math.round(b.exp * (1 + run.stage * 0.08) * diff.rewardMult),
-      burn: 0, poison: 0, freeze: 0
+      atk: Math.round(b.atk * scale), def: Math.round(b.def * (1 + run.stage * 0.04)),
+      gold: Math.round(b.gold * (1 + run.stage * 0.07) * diff.runGoldMult),
+      exp: Math.round(b.exp * (1 + run.stage * 0.07) * diff.rewardMult),
+      burn: 0, poison: 0, bleed: 0, freeze: 0, armor_break: 0, weakness: 0
     };
   }
 
   const tpl = biome.enemies[Math.floor(Math.random() * biome.enemies.length)];
   return {
     name: tpl.name, type: tpl.type, elem: tpl.elem, isBoss: false,
-    maxHp: Math.round(tpl.hp * scale), hp: Math.round(tpl.hp * scale),
-    atk: Math.round(tpl.atk * scale), def: Math.round(tpl.def * (1 + run.stage * 0.05)),
-    gold: Math.round(tpl.gold * (1 + run.stage * 0.07) * diff.runGoldMult),
-    exp: Math.round(tpl.exp * (1 + run.stage * 0.07) * diff.rewardMult),
-    burn: 0, poison: 0, freeze: 0
+    maxHp: Math.round(tpl.hp * scale * (isDuoMember ? 0.85 : 1.0)),
+    hp: Math.round(tpl.hp * scale * (isDuoMember ? 0.85 : 1.0)),
+    atk: Math.max(3, Math.round(tpl.atk * scale * duoDmgScale)),
+    def: Math.round(tpl.def * (1 + run.stage * 0.04)),
+    gold: Math.round(tpl.gold * (1 + run.stage * 0.06) * diff.runGoldMult),
+    exp: Math.round(tpl.exp * (1 + run.stage * 0.06) * diff.rewardMult),
+    burn: 0, poison: 0, bleed: 0, freeze: 0, armor_break: 0, weakness: 0
   };
 }
 
 function startCombat(isBoss, isDuo) {
   playSfx('hit');
-  const enemies = [spawnEnemyUnit(isBoss)];
+  const enemies = [spawnEnemyUnit(isBoss, false)];
   if (isDuo && !isBoss) {
-    enemies.push(spawnEnemyUnit(false));
+    enemies.push(spawnEnemyUnit(false, true));
   }
 
+  const startBarrier = getTreeLvl('start_buff');
   battle = {
     isBoss,
     enemies,
     targetIdx: 0,
     defending: false,
-    log: isDuo ? 'Dwuwalka! Naprzeciw Ciebie staje dwóch przeciwników!' : `Rozpoczyna się walka z: ${enemies[0].name}!`
+    buffs: {
+      barrier: startBarrier,
+      might: 0,
+      bastion: 0,
+      arcane_flow: 0,
+      evasion: 0,
+      berserk: 0,
+      vampire: 0
+    },
+    log: isDuo ? 'Dwuwalka! Dwóch przeciwników staje naprzeciw Ciebie.' : `Rozpoczyna się walka z: ${enemies[0].name}!`
   };
 
   document.getElementById('hubTabs').style.display = 'none';
@@ -1929,12 +1977,54 @@ function startCombat(isBoss, isDuo) {
 
 function getElementMultiplier(atkElem, enemy) {
   let m = 1.0;
-  if (atkElem === 'Swiatlo' && (enemy.type === 'Nieumarly' || enemy.type === 'Zjawa' || enemy.elem === 'Mrok')) m += 0.45;
-  if (atkElem === 'Ogien'   && (enemy.type === 'Bestia' || enemy.elem === 'Natura' || enemy.elem === 'Mroz')) m += 0.30;
-  if (atkElem === 'Mroz'    && (enemy.elem === 'Ogien' || enemy.type === 'Demon')) m += 0.35;
-  if (atkElem === 'Natura'  && (enemy.type === 'Golem' || enemy.type === 'Bestia')) m += 0.30;
-  if (atkElem === 'Mrok'    && (enemy.type === 'Bestia' || enemy.type === 'Golem')) m += 0.25;
+  const mastBonus = getTreeLvl('elem_mast') * 0.12;
+  if (atkElem === 'Swiatlo' && (enemy.type === 'Nieumarly' || enemy.type === 'Zjawa' || enemy.elem === 'Mrok')) m += (0.45 + mastBonus);
+  if (atkElem === 'Ogien'   && (enemy.type === 'Bestia' || enemy.elem === 'Natura' || enemy.elem === 'Mroz')) m += (0.30 + mastBonus);
+  if (atkElem === 'Mroz'    && (enemy.elem === 'Ogien' || enemy.type === 'Demon')) m += (0.35 + mastBonus);
+  if (atkElem === 'Natura'  && (enemy.type === 'Golem' || enemy.type === 'Bestia')) m += (0.30 + mastBonus);
+  if (atkElem === 'Mrok'    && (enemy.type === 'Bestia' || enemy.type === 'Golem')) m += (0.25 + mastBonus);
   return m;
+}
+
+function getEffectiveCombatPlayerStats() {
+  const base = getPlayerStats();
+  const b = battle ? battle.buffs : {};
+
+  let atkMult = 1.0;
+  if (b.might > 0) atkMult += 0.35;
+  if (b.berserk > 0) atkMult += 0.55;
+
+  let defMult = 1.0;
+  if (b.barrier > 0) defMult += 0.50;
+  if (b.bastion > 0) defMult += 0.70;
+  if (battle?.defending) defMult += 0.50;
+
+  let bonusBlock = 0;
+  if (b.barrier > 0) bonusBlock += 15;
+  if (b.bastion > 0) bonusBlock += 25;
+  if (b.evasion > 0) bonusBlock += 30;
+
+  let bonusCrit = 0;
+  if (b.might > 0) bonusCrit += 15;
+  if (b.evasion > 0) bonusCrit += 25;
+
+  let spellMult = base.totalSpellMult;
+  if (b.arcane_flow > 0) spellMult *= 1.40;
+  if (b.vampire > 0) spellMult *= 1.35;
+
+  let extraLifesteal = base.lifestealPct;
+  if (b.berserk > 0) extraLifesteal += 0.20;
+  if (b.vampire > 0) extraLifesteal += 0.30;
+
+  return {
+    ...base,
+    atk: Math.round(base.atk * atkMult),
+    def: Math.round(base.def * defMult),
+    block: Math.min(85, base.block + bonusBlock),
+    crit: Math.min(95, base.crit + bonusCrit),
+    totalSpellMult: spellMult,
+    lifestealPct: extraLifesteal
+  };
 }
 
 function renderBattleUi() {
@@ -1942,29 +2032,30 @@ function renderBattleUi() {
   const c = document.getElementById('battleCanvas');
   const ctx = c.getContext('2d');
 
-  drawPixelHero(ctx, 220, 145, 2.2, run.cloakColor, run.pClass);
+  drawDetailedSprite(ctx, 225, 148, 2.2, { color: run.cloakColor, role: run.pClass, isEnemy: false, phase: 0.5 });
   run.companions.forEach((comp, idx) => {
-    if (comp.hp > 0) drawPixelHero(ctx, 130 - idx * 55, 148, 1.8, comp.color, 'Wojownik');
+    if (comp.hp > 0) drawDetailedSprite(ctx, 135 - idx * 58, 150, 1.85, { color: comp.color, role: 'Wojownik', isEnemy: false, phase: 1.2 + idx });
   });
 
   battle.enemies.forEach((en, idx) => {
     if (en.hp <= 0) return;
-    const ex = 760 + idx * 140;
-    const sc = en.isBoss ? 3.1 : 2.2;
-    drawPixelHero(ctx, ex, 145, sc, en.isBoss ? '#ef4444' : '#64748b', 'Wojownik');
+    const ex = 770 + idx * 135;
+    const sc = en.isBoss ? 2.9 : 2.15;
+    drawDetailedSprite(ctx, ex, 148, sc, { color: en.isBoss ? '#dc2626' : '#64748b', role: 'Wojownik', isEnemy: true, isBoss: en.isBoss, phase: 0.8 + idx });
     if (idx === battle.targetIdx) {
       ctx.strokeStyle = '#facc15';
       ctx.lineWidth = 2;
-      ctx.strokeRect(ex - 26, 95, 52, 72);
+      ctx.strokeRect(ex - 28, 92, 56, 78);
     }
   });
 
   const alliesBox = document.getElementById('alliesContainer');
-  const st = getPlayerStats();
+  const st = getEffectiveCombatPlayerStats();
+  const b = battle.buffs;
   alliesBox.innerHTML = `
     <div class="unit-card">
       <div style="display:flex; justify-content:space-between;">
-        <strong>🧙 ${run.name} (Ty)</strong>
+        <strong>🧙 ${run.name} (${run.pClass})</strong>
         <span style="color:var(--hp);">${run.hp}/${run.maxHp} HP | ${run.mp}/${run.maxMp} MP</span>
       </div>
       <div class="status-badges">
@@ -1972,7 +2063,13 @@ function renderBattleUi() {
         <span class="badge">DEF: ${st.def}</span>
         <span class="badge">Kryt: ${st.crit}%</span>
         <span class="badge">Blok: ${st.block}%</span>
-        ${battle.defending ? '<span class="badge" style="border-color:var(--hp);">🛡️ Garda (+50% DEF)</span>' : ''}
+        ${b.barrier > 0 ? `<span class="badge rare-tag">🛡️ Bariera (${b.barrier}t)</span>` : ''}
+        ${b.might > 0 ? `<span class="badge rare-tag">⚔️ Skupienie (${b.might}t)</span>` : ''}
+        ${b.bastion > 0 ? `<span class="badge rare-tag">🏰 Bastion (${b.bastion}t)</span>` : ''}
+        ${b.arcane_flow > 0 ? `<span class="badge rare-tag">✨ Przypływ (${b.arcane_flow}t)</span>` : ''}
+        ${b.evasion > 0 ? `<span class="badge rare-tag">⚡ Instynkt (${b.evasion}t)</span>` : ''}
+        ${b.berserk > 0 ? `<span class="badge rare-tag">🔥 Furia (${b.berserk}t)</span>` : ''}
+        ${b.vampire > 0 ? `<span class="badge rare-tag">🩸 Pakt (${b.vampire}t)</span>` : ''}
       </div>
     </div>
   `;
@@ -2005,7 +2102,10 @@ function renderBattleUi() {
           <span class="badge">ATK: ${en.atk} | DEF: ${en.def}</span>
           ${en.burn > 0 ? `<span class="badge" style="border-color:#f97316;">🔥 Ogień (${en.burn}t)</span>` : ''}
           ${en.poison > 0 ? `<span class="badge" style="border-color:#4ade80;">☠️ Trucizna (${en.poison}t)</span>` : ''}
+          ${en.bleed > 0 ? `<span class="badge" style="border-color:#ef4444;">🩸 Krwawienie (${en.bleed}t)</span>` : ''}
           ${en.freeze > 0 ? `<span class="badge" style="border-color:#38bdf8;">❄️ Mróz (${en.freeze}t)</span>` : ''}
+          ${en.armor_break > 0 ? `<span class="badge" style="border-color:#facc15;">💔 Pancerz -45% (${en.armor_break}t)</span>` : ''}
+          ${en.weakness > 0 ? `<span class="badge" style="border-color:#c084fc;">🌑 Osłabienie (${en.weakness}t)</span>` : ''}
         </div>
       </div>
     `;
@@ -2034,34 +2134,83 @@ function getUnlockedPlayerSkills() {
   });
 }
 
+function getSkillMpCost(sk) {
+  const st = getPlayerStats();
+  return Math.max(4, Math.round(sk.mp * st.manaDiscount));
+}
+
 function renderBattleActions() {
   const actBox = document.getElementById('battleActions');
-  const skills = getUnlockedPlayerSkills();
+  const allSkills = getUnlockedPlayerSkills();
+  const meleeSkills = allSkills.filter(s => s.kind === 'skill');
+  const spells = allSkills.filter(s => s.kind === 'spell');
+  const buffs = allSkills.filter(s => s.kind === 'buff');
   const potions = run.inventory.filter(slot => {
     const it = getItemById(slot.id);
     return it && (it.cat === 'MiksturaHP' || it.cat === 'MiksturaMP' || it.cat === 'Rzucany');
   });
 
-  let html = `
-    <button class="primary" onclick="playerBattleTurn('attack')">⚔️ Zwykły Atak</button>
-    <button onclick="playerBattleTurn('defend')">🛡️ Obrona (+50% DEF, +8 MP)</button>
-  `;
+  let html = `<div class="action-section-title">⚔️ Ataki i Umiejętności Bojowe</div><div class="actions-grid">`;
+  html += `<button class="primary" onclick="playerBattleTurn('attack')">⚔️ Zwykły Atak<span class="action-btn-sub">100% ATK w wybrany cel</span></button>`;
+  html += `<button onclick="playerBattleTurn('defend')">🛡️ Obrona<span class="action-btn-sub">+50% DEF i odnowa MP w tej turze</span></button>`;
 
-  skills.forEach(sk => {
-    const canMp = run.mp >= sk.mp;
-    html += `<button class="essence-btn" ${canMp ? '' : 'disabled'} onclick="playerBattleTurn('skill', '${sk.id}')">✨ ${sk.name} (${sk.mp} MP)</button>`;
+  meleeSkills.forEach(sk => {
+    const cost = getSkillMpCost(sk);
+    const canMp = run.mp >= cost;
+    html += `
+      <button ${canMp ? '' : 'disabled'} onclick="playerBattleTurn('skill', '${sk.id}')">
+        ${sk.aoe ? '🌀 ' : '🗡️ '}${sk.name} (${cost} MP)
+        <span class="action-btn-sub">${sk.aoe ? '[AoE] ' : ''}${Math.round(sk.mult * 100)}% ATK${sk.debuff ? ' • ' + sk.debuff : ''}</span>
+      </button>`;
   });
+  html += `</div>`;
 
+  html += `<div class="action-section-title">✨ Zaklęcia i Czary Ofensywne / AoE</div><div class="actions-grid">`;
+  if (spells.length === 0) {
+    html += `<div style="font-size:0.8rem; color:var(--text-dim);">Brak zaklęć na obecnym poziomie.</div>`;
+  } else {
+    spells.forEach(sk => {
+      const cost = getSkillMpCost(sk);
+      const canMp = run.mp >= cost;
+      html += `
+        <button class="spell-btn" ${canMp ? '' : 'disabled'} onclick="playerBattleTurn('skill', '${sk.id}')">
+          ✨ ${sk.name} (${cost} MP)
+          <span class="action-btn-sub">${sk.aoe ? '[AoE] ' : ''}${sk.elem} | ${Math.round(sk.mult * 100)}% mocy${sk.debuff ? ' • ' + sk.debuff : ''}</span>
+        </button>`;
+    });
+  }
+  html += `</div>`;
+
+  html += `<div class="action-section-title">🛡️ Buffy i Wzmocnienia Postaci</div><div class="actions-grid">`;
+  buffs.forEach(sk => {
+    const cost = getSkillMpCost(sk);
+    const canMp = run.mp >= cost;
+    html += `
+      <button class="buff-btn" ${canMp ? '' : 'disabled'} onclick="playerBattleTurn('skill', '${sk.id}')">
+        ⚡ ${sk.name} (${cost} MP)
+        <span class="action-btn-sub">${sk.desc}</span>
+      </button>`;
+  });
+  html += `</div>`;
+
+  html += `<div class="action-section-title">🧪 Przedmioty i Taktyka</div><div class="actions-grid">`;
   potions.forEach(slot => {
     const it = getItemById(slot.id);
-    html += `<button class="gold-btn" onclick="playerBattleTurn('item', ${it.id})">🧪 ${it.name} (x${slot.qty})</button>`;
+    html += `<button class="gold-btn" onclick="playerBattleTurn('item', ${it.id})">🧪 ${it.name} (x${slot.qty})<span class="action-btn-sub">${it.desc}</span></button>`;
   });
-
   if (!battle.isBoss) {
-    html += `<button class="danger" onclick="playerBattleTurn('flee')">🏃 Ucieczka (50%)</button>`;
+    html += `<button class="danger" onclick="playerBattleTurn('flee')">🏃 Ucieczka (55%)<span class="action-btn-sub">Opuść starcie bez nagrody</span></button>`;
   }
+  html += `</div>`;
 
   actBox.innerHTML = html;
+}
+
+function applyDebuffToEnemy(enemy, debuffType) {
+  if (!debuffType) return;
+  const extraTurns = getTreeLvl('debuff_dur');
+  const dur = 3 + extraTurns;
+  enemy[debuffType] = Math.max(enemy[debuffType] || 0, dur);
 }
 
 function playerBattleTurn(actionType, param) {
@@ -2070,7 +2219,7 @@ function playerBattleTurn(actionType, param) {
     battle.targetIdx = battle.enemies.findIndex(e => e.hp > 0);
   }
   const target = battle.enemies[battle.targetIdx];
-  const st = getPlayerStats();
+  const st = getEffectiveCombatPlayerStats();
   battle.defending = false;
   let logs = [];
 
@@ -2078,51 +2227,73 @@ function playerBattleTurn(actionType, param) {
     const atkElem = (st.weapon && st.weapon.elem !== 'Fizyczny') ? st.weapon.elem : run.element;
     const elemMult = getElementMultiplier(atkElem, target);
     const isCrit = (Math.random() * 100) < st.crit;
-    let dmg = Math.max(2, Math.round((st.atk * elemMult * (isCrit ? st.critMult : 1.0)) - target.def * 0.45));
+    const effDef = target.def * (1 - st.armorPen) * (target.armor_break > 0 ? 0.55 : 1.0) * (target.weakness > 0 ? 0.75 : 1.0);
+    let dmg = Math.max(2, Math.round((st.atk * elemMult * (isCrit ? st.critMult : 1.0)) - effDef * 0.4));
     target.hp = Math.max(0, target.hp - dmg);
     playSfx(isCrit ? 'crit' : 'hit');
     logs.push(`Zadajesz <strong>${dmg}</strong> obr. (${atkElem})${isCrit ? ' <span style="color:var(--gold);">[KRYTYK!]</span>' : ''} celowi ${target.name}.`);
 
-    if (st.weapon?.statusEffect === 'burn') { target.burn = 3; logs.push('Broń podpala wroga!'); }
-    if (st.weapon?.statusEffect === 'freeze') { target.freeze = 2; logs.push('Broń zamraża wroga!'); }
-    if (st.weapon?.statusEffect === 'lifesteal') {
-      const steal = Math.max(1, Math.round(dmg * 0.20));
+    if (st.weapon?.statusEffect) {
+      applyDebuffToEnemy(target, st.weapon.statusEffect);
+    }
+    if (st.lifestealPct > 0 || st.weapon?.statusEffect === 'lifesteal') {
+      const stealPct = st.lifestealPct + (st.weapon?.statusEffect === 'lifesteal' ? 0.20 : 0);
+      const steal = Math.max(1, Math.round(dmg * stealPct));
       run.hp = Math.min(run.maxHp, run.hp + steal);
       logs.push(`Kradzież życia: +${steal} HP.`);
     }
   } else if (actionType === 'defend') {
     battle.defending = true;
-    const mpGain = Math.min(run.maxMp - run.mp, 8);
+    const guardLevel = getTreeLvl('guard_mp');
+    const mpGain = Math.min(run.maxMp - run.mp, 10 + guardLevel * 5);
+    const hpGain = Math.min(run.maxHp - run.hp, guardLevel * 6);
     run.mp += mpGain;
-    playSfx('block');
-    logs.push(`Przyjmujesz postawę obronną (+50% DEF, +${mpGain} MP).`);
+    run.hp += hpGain;
+    playSfx('heal');
+    logs.push(`Przyjmujesz postawę obronną (+50% DEF, +${mpGain} MP${hpGain > 0 ? `, +${hpGain} HP` : ''}).`);
   } else if (actionType === 'skill') {
     const sk = SKILLS_DB.find(s => s.id === param);
-    if (!sk || run.mp < sk.mp) return;
-    run.mp -= sk.mp;
-    playSfx('crit');
+    const cost = sk ? getSkillMpCost(sk) : 0;
+    if (!sk || run.mp < cost) return;
+    run.mp -= cost;
+    playSfx('spell');
 
-    if (sk.status === 'heal' && !sk.aoe) {
-      const heal = Math.round(45 * st.totalSpellMult + run.level * 6);
+    const extraBuffTurns = getTreeLvl('buff_dur');
+    if (sk.kind === 'buff' && sk.buff) {
+      battle.buffs[sk.buff] = 3 + extraBuffTurns;
+      logs.push(`Aktywujesz <strong>${sk.name}</strong> na ${3 + extraBuffTurns} tury!`);
+    } else if (sk.buff === 'heal' && !sk.aoe) {
+      const heal = Math.round(52 * st.totalSpellMult + run.level * 6);
       run.hp = Math.min(run.maxHp, run.hp + heal);
-      logs.push(`${sk.name} leczy Cię o <strong>+${heal} HP</strong>!`);
+      logs.push(`Rzucasz <strong>${sk.name}</strong> i leczysz się o <strong>+${heal} HP</strong>!`);
     } else {
       const targets = sk.aoe ? battle.enemies.filter(e => e.hp > 0) : [target];
+      const basePower = sk.kind === 'spell' ? (st.atk * 0.8 + 14) * st.totalSpellMult : st.atk;
+      const areaBonus = sk.aoe ? st.aoeMult : 1.0;
+      let totalDealt = 0;
+
       targets.forEach(t => {
-        const elem = sk.elem === 'weapon' ? run.element : sk.elem;
+        const elem = sk.elem === 'weapon' ? ((st.weapon && st.weapon.elem !== 'Fizyczny') ? st.weapon.elem : run.element) : sk.elem;
         const m = getElementMultiplier(elem, t);
-        const dmg = Math.max(3, Math.round(st.atk * sk.mult * st.totalSpellMult * m - t.def * 0.3));
+        const effDef = t.def * (1 - st.armorPen) * (t.armor_break > 0 ? 0.55 : 1.0) * (t.weakness > 0 ? 0.75 : 1.0);
+        const dmg = Math.max(4, Math.round(basePower * sk.mult * areaBonus * m - effDef * 0.25));
         t.hp = Math.max(0, t.hp - dmg);
-        if (sk.status === 'burn') t.burn = 3;
-        if (sk.status === 'poison') t.poison = 4;
-        if (sk.status === 'freeze') t.freeze = 2;
-        if (sk.status === 'lifesteal') run.hp = Math.min(run.maxHp, run.hp + Math.round(dmg * 0.35));
+        totalDealt += dmg;
+        if (sk.debuff) applyDebuffToEnemy(t, sk.debuff);
       });
-      if (sk.status === 'heal') {
+
+      if (sk.buff === 'lifesteal' || st.lifestealPct > 0) {
+        const stealPct = (sk.buff === 'lifesteal' ? 0.35 : 0) + st.lifestealPct;
+        const heal = Math.max(1, Math.round(totalDealt * stealPct));
+        run.hp = Math.min(run.maxHp, run.hp + heal);
+        logs.push(`Wysysasz +${heal} HP!`);
+      }
+      if (sk.buff === 'heal_small') {
         const heal = Math.round(35 * st.totalSpellMult);
         run.hp = Math.min(run.maxHp, run.hp + heal);
+        logs.push(`Światło leczy Cię o +${heal} HP!`);
       }
-      logs.push(`Używasz <strong>${sk.name}</strong>!`);
+      logs.unshift(`${sk.kind === 'spell' ? 'Rzucasz zaklęcie' : 'Używasz'} <strong>${sk.name}</strong>${sk.aoe ? ' (AoE na wszystkich wrogów!)' : ''}!`);
     }
   } else if (actionType === 'item') {
     const it = getItemById(param);
@@ -2140,14 +2311,13 @@ function playerBattleTurn(actionType, param) {
       const m = getElementMultiplier(it.elem, target);
       const dmg = Math.round(it.val * m);
       target.hp = Math.max(0, target.hp - dmg);
-      if (it.statusEffect === 'burn') target.burn = it.turns;
-      if (it.statusEffect === 'poison') target.poison = it.turns;
+      if (it.statusEffect) applyDebuffToEnemy(target, it.statusEffect);
       playSfx('hit');
-      logs.push(`Rzucasz ${it.name} zadając ${dmg} obr.!`);
+      logs.push(`Rzucasz ${it.name} zadając ${dmg} obr. i nakładając efekt!`);
     }
   } else if (actionType === 'flee') {
-    if (Math.random() < 0.50) {
-      showToast('Udało się uciec z pola bitwy!');
+    if (Math.random() < 0.55) {
+      showToast('Udało się uciec ze starcia!');
       endCombat(false);
       return;
     } else {
@@ -2155,6 +2325,18 @@ function playerBattleTurn(actionType, param) {
     }
   }
 
+  // Buffy regenerujące co turę
+  if (battle.buffs.bastion > 0) {
+    const h = Math.round(run.maxHp * 0.08);
+    run.hp = Math.min(run.maxHp, run.hp + h);
+    logs.push(`🏰 Bastion leczy +${h} HP.`);
+  }
+  if (battle.buffs.arcane_flow > 0) {
+    run.mp = Math.min(run.maxMp, run.mp + 14);
+    logs.push(`✨ Przypływ Arkana przywraca +14 MP.`);
+  }
+
+  // Ataki kompanów
   run.companions.forEach(comp => {
     if (comp.hp <= 0) return;
     const aliveEn = battle.enemies.filter(e => e.hp > 0);
@@ -2165,18 +2347,25 @@ function playerBattleTurn(actionType, param) {
     logs.push(`${comp.name} zadaje ${dmg} obr. (${t.name}).`);
   });
 
+  // Obrażenia w czasie (DoT) z debuffów na wrogach
   battle.enemies.forEach(en => {
     if (en.hp > 0 && en.burn > 0) {
-      const bd = Math.max(4, Math.round(st.atk * 0.35));
+      const bd = Math.max(4, Math.round(st.atk * 0.35 * st.dotMult));
       en.hp = Math.max(0, en.hp - bd);
       en.burn--;
       logs.push(`🔥 ${en.name} płonie (-${bd} HP).`);
     }
     if (en.hp > 0 && en.poison > 0) {
-      const pd = Math.max(4, Math.round(st.atk * 0.30));
+      const pd = Math.max(4, Math.round(st.atk * 0.30 * st.dotMult));
       en.hp = Math.max(0, en.hp - pd);
       en.poison--;
       logs.push(`☠️ Trucizna rani ${en.name} (-${pd} HP).`);
+    }
+    if (en.hp > 0 && en.bleed > 0) {
+      const bld = Math.max(4, Math.round(st.atk * 0.32 * st.dotMult));
+      en.hp = Math.max(0, en.hp - bld);
+      en.bleed--;
+      logs.push(`🩸 Krwawienie rani ${en.name} (-${bld} HP).`);
     }
   });
 
@@ -2185,27 +2374,40 @@ function playerBattleTurn(actionType, param) {
     return;
   }
 
+  // Tura przeciwników
+  const aliveCount = battle.enemies.filter(e => e.hp > 0).length;
   battle.enemies.forEach(en => {
     if (en.hp <= 0) return;
-    const atkMult = en.freeze > 0 ? 0.70 : 1.0;
+    const freezeMult = en.freeze > 0 ? 0.70 : 1.0;
+    const weakMult = en.weakness > 0 ? 0.75 : 1.0;
+    const duoMult = aliveCount > 1 ? 0.82 : 1.0;
+
     if (en.freeze > 0) en.freeze--;
+    if (en.armor_break > 0) en.armor_break--;
+    if (en.weakness > 0) en.weakness--;
 
     if ((Math.random() * 100) < st.block) {
-      playSfx('block');
-      logs.push(`<span style="color:var(--rune);">🛡️ BLOK 100%!</span> Całkowicie zatrzymujesz cios ${en.name}!`);
+      playSfx('heal');
+      logs.push(`<span style="color:var(--rune);">🛡️ BLOK / UNIK!</span> Zatrzymujesz cios ${en.name}!`);
       return;
     }
 
-    const effDef = battle.defending ? Math.round(st.def * 1.5) : st.def;
-    const dmg = Math.max(1, Math.round(en.atk * atkMult - effDef * 0.5));
+    const dmg = Math.max(1, Math.round(en.atk * freezeMult * weakMult * duoMult - st.def * 0.52));
     run.hp = Math.max(0, run.hp - dmg);
     logs.push(`${en.name} zadaje Ci <strong>${dmg}</strong> obr.`);
   });
 
+  // Zmniejszenie liczników buffów gracza po turze
+  Object.keys(battle.buffs).forEach(k => {
+    if (battle.buffs[k] > 0) battle.buffs[k]--;
+  });
+
   const biome = BIOMES[run.biomeIdx];
-  const envDmg = Math.max(1, biome.envDmg - Math.floor(st.def * 0.15));
-  run.hp = Math.max(0, run.hp - envDmg);
-  logs.push(`<span style="color:${biome.accent};">[${biome.name}] -${envDmg} HP.</span>`);
+  const envDmg = Math.max(0, biome.envDmg - Math.floor(st.def * 0.2));
+  if (envDmg > 0) {
+    run.hp = Math.max(0, run.hp - envDmg);
+    logs.push(`<span style="color:${biome.accent};">[${biome.name}] -${envDmg} HP.</span>`);
+  }
 
   if (run.hp <= 0) {
     handlePlayerDefeat();
@@ -2220,9 +2422,15 @@ function playerBattleTurn(actionType, param) {
 function handleBattleVictory() {
   playSfx('level');
   const diff = getDiffConfig(run.difficulty);
+  const st = getPlayerStats();
   const goldMult = 1 + getTreeLvl('gold_1') * 0.12;
-  const lootBonus = getTreeLvl('loot_1') * 0.03;
   const essMult = diff.rewardMult * (1 + getTreeLvl('ess_gain') * 0.15);
+
+  const regenLvl = getTreeLvl('regen_1');
+  if (regenLvl > 0) {
+    run.hp = Math.min(run.maxHp, run.hp + regenLvl * 10);
+    run.mp = Math.min(run.maxMp, run.mp + regenLvl * 5);
+  }
 
   let totalGold = 0;
   let totalExp = 0;
@@ -2233,33 +2441,18 @@ function handleBattleVictory() {
     totalExp += en.exp;
 
     if (en.isBoss) {
-      const baseEss = run.endless ? 10 : 18;
-      const gainedEss = Math.max(3, Math.round(baseEss * essMult));
+      const gainedEss = Math.max(4, Math.round(18 * essMult));
       metaState.essence += gainedEss;
       dropLogs.push(`🔮 +${gainedEss} Esencji za Bossa!`);
-    } else if (Math.random() < ((0.07 + lootBonus) * diff.dropMult)) {
+    } else if (Math.random() < Math.min(0.45, (0.08 + st.luck * 0.008) * diff.dropMult)) {
       const gainedEss = Math.max(1, Math.round(2 * essMult));
       metaState.essence += gainedEss;
       dropLogs.push(`🔮 +${gainedEss} Esencji!`);
     }
 
-    const baseRuneChance = en.isBoss ? (0.35 + lootBonus) : (0.035 + lootBonus * 0.6);
-    if (Math.random() < (baseRuneChance * diff.dropMult)) {
+    if (Math.random() < Math.min(0.65, ((en.isBoss ? 0.30 : 0.04) + st.luck * 0.005) * diff.dropMult)) {
       metaState.runes += 1;
-      dropLogs.push(`💠 +1 Runa Kuźni!`);
-    }
-
-    const baseGearChance = (0.06 + lootBonus) * diff.dropMult;
-    if (Math.random() < baseGearChance) {
-      const eligibleGear = ITEMS_CATALOG.filter(i =>
-        (i.cat === 'Bron' || i.cat === 'Tarcza' || i.cat === 'Pancerz') &&
-        run.level >= (i.reqLvl || 1)
-      );
-      if (eligibleGear.length > 0) {
-        const dropped = eligibleGear[Math.floor(Math.random() * eligibleGear.length)];
-        addItemToBag(dropped.id, 1);
-        dropLogs.push(`🎁 Drop: ${dropped.name}!`);
-      }
+      dropLogs.push(`💠 +1 Runa!`);
     }
   });
 
@@ -2267,21 +2460,13 @@ function handleBattleVictory() {
   gainExp(totalExp);
   saveStorage();
 
-  const wasBoss = battle.isBoss;
-  const finishedStage = run.stage;
   run.stage++;
   checkBiomeTransition();
-  generateShopStock();
+  generateShopStock(false);
   generateExploreNode();
   saveCurrentRun(false);
 
   showToast(`Zwycięstwo! +${totalGold} zl, +${totalExp} EXP. ${dropLogs.join(' ')}`);
-
-  if (wasBoss && finishedStage >= run.maxStages && !run.endless) {
-    run.endless = true;
-    showToast('🏆 Pokonałeś finałowego Bossa! Odblokowano Tryb Nieskończony!');
-  }
-
   endCombat(true);
 }
 
@@ -2294,7 +2479,7 @@ function endCombat(won) {
 
 function handlePlayerDefeat() {
   playSfx('hit');
-  showToast('💀 Poległeś w Otchłani! Twoja Esencja i Drzewko Umiejętności zostały zachowane.');
+  showToast('💀 Poległeś! Twoja Esencja, Runy i Drzewko Umiejętności pozostają zachowane.');
   metaState.slots[activeSlotIndex] = null;
   saveStorage();
   run = null;
@@ -2308,14 +2493,15 @@ function gainExp(amount) {
   while (run.exp >= run.nextExp) {
     run.exp -= run.nextExp;
     run.level++;
-    run.nextExp = Math.round(run.nextExp * 1.28);
+    run.nextExp = Math.round(run.nextExp * 1.26);
     run.maxHp += 16;
     run.maxMp += 8;
     run.baseAtk += 2;
     run.baseDef += 1;
+    run.baseLuck += 1;
     run.hp = run.maxHp;
     run.mp = run.maxMp;
-    showToast(`⬆️ Awans na Poziom ${run.level}! Sprawdź nowe zaklęcia i przedmioty w sklepie!`);
+    showToast(`⬆️ Awans na Poziom ${run.level}! Nowe przedmioty i czary dla klasy ${run.pClass} w sklepie!`);
   }
 }
 
@@ -2339,7 +2525,7 @@ function getMaxCompanions() {
 function recruitRandomCompanion(free) {
   const maxC = getMaxCompanions();
   const tpl = COMPANIONS_POOL[Math.floor(Math.random() * COMPANIONS_POOL.length)];
-  const scale = 1 + (run.stage - 1) * 0.12;
+  const scale = 1 + (run.stage - 1) * 0.11;
   const newComp = {
     name: tpl.name,
     maxHp: Math.round(tpl.hp * scale),
@@ -2368,15 +2554,15 @@ function renderInventory() {
   eqBox.innerHTML = `
     <div style="font-size:0.86rem; line-height:1.7;">
       <div>🗡️ Broń: <strong>${w ? `${w.name} (+${run.upgrades.weapon})` : 'Brak'}</strong></div>
-      <div>🛡️ Tarcza: <strong>${s ? `${s.name} (+${run.upgrades.shield})` : 'Brak'}</strong></div>
-      <div>🥋 Pancerz: <strong>${a ? `${a.name} (+${run.upgrades.armor})` : 'Brak'}</strong></div>
+      <div>🛡️ Tarcza / Fokus: <strong>${s ? `${s.name} (+${run.upgrades.shield})` : 'Brak'}</strong></div>
+      <div>🥋 Pancerz / Szata: <strong>${a ? `${a.name} (+${run.upgrades.armor})` : 'Brak'}</strong></div>
     </div>
   `;
 
   const compBox = document.getElementById('companionsBox');
   document.getElementById('compCountLabel').textContent = `${run.companions.length}/${getMaxCompanions()}`;
   if (run.companions.length === 0) {
-    compBox.innerHTML = `<p style="font-size:0.83rem; color:var(--text-dim);">Brak kompanów. Zrekrutuj ich podczas wydarzeń na szlaku lub zdobądź ze Skrzyni Esencji.</p>`;
+    compBox.innerHTML = `<p style="font-size:0.83rem; color:var(--text-dim);">Brak kompanów. Spotkasz ich na szlaku lub w Skrzyni Esencji w menu.</p>`;
   } else {
     compBox.innerHTML = run.companions.map(c => `
       <div style="font-size:0.84rem; margin-bottom:6px; border-bottom:1px solid var(--border); padding-bottom:4px;">
@@ -2390,8 +2576,11 @@ function renderInventory() {
   skBox.innerHTML = skills.map(sk => `
     <div class="item-card">
       <div>
-        <strong style="color:var(--essence);">${sk.name}</strong> (${sk.mp} MP)
-        <p style="font-size:0.78rem; color:var(--text-dim); margin-top:3px;">${sk.desc}</p>
+        <strong style="color:${sk.kind === 'spell' ? 'var(--mp)' : (sk.kind === 'buff' ? 'var(--luck)' : 'var(--gold)')};">${sk.name}</strong>
+        <div style="font-size:0.74rem; color:var(--text-dim); margin:2px 0;">
+          ${sk.kind === 'spell' ? 'Zaklęcie' : (sk.kind === 'buff' ? 'Buff' : 'Atak')} ${sk.aoe ? '• AoE' : ''} • ${getSkillMpCost(sk)} MP
+        </div>
+        <p style="font-size:0.78rem; color:var(--text-dim);">${sk.desc}</p>
       </div>
     </div>
   `).join('');
@@ -2402,14 +2591,19 @@ function renderInventory() {
     const it = getItemById(slot.id);
     if (!it) return;
     const isEq = (run.equipped.weapon === it.id || run.equipped.shield === it.id || run.equipped.armor === it.id);
+    const classAllowed = canClassUseItem(it, run.pClass);
     const card = document.createElement('div');
     card.className = 'item-card ' + (isEq ? 'equipped' : '');
 
     let actionBtn = '';
     if (it.cat === 'Bron' || it.cat === 'Tarcza' || it.cat === 'Pancerz') {
-      actionBtn = isEq
-        ? `<button disabled>✅ Założono</button>`
-        : `<button class="primary" onclick="equipItem(${it.id})">Załóż</button>`;
+      if (!classAllowed) {
+        actionBtn = `<button disabled>Nie dla klasy ${run.pClass}</button>`;
+      } else {
+        actionBtn = isEq
+          ? `<button disabled>✅ Założono</button>`
+          : `<button class="primary" onclick="equipItem(${it.id})">Załóż</button>`;
+      }
     } else if (it.cat === 'MiksturaHP' || it.cat === 'MiksturaMP') {
       actionBtn = `<button class="gold-btn" onclick="usePotionOutOfCombat(${it.id})">Wypij</button>`;
     }
@@ -2428,7 +2622,7 @@ function renderInventory() {
 
 function equipItem(id) {
   const it = getItemById(id);
-  if (!it) return;
+  if (!it || !canClassUseItem(it, run.pClass)) return;
   if (it.cat === 'Bron') run.equipped.weapon = id;
   if (it.cat === 'Tarcza') run.equipped.shield = id;
   if (it.cat === 'Pancerz') run.equipped.armor = id;
@@ -2453,21 +2647,27 @@ function usePotionOutOfCombat(id) {
 function getShopPriceMultiplier() {
   const diff = getDiffConfig(run.difficulty);
   const treeDiscount = Math.max(0.75, 1 - getTreeLvl('gold_1') * 0.04);
-  const stageInflation = 1 + (run.stage - 1) * 0.05;
-  return diff.shopMult * treeDiscount * stageInflation;
+  return diff.shopMult * treeDiscount;
 }
 
-function generateShopStock() {
-  const pool = [...ITEMS_CATALOG];
+// Sklep za złoto pokazuje WYŁĄCZNIE rzeczy dostępne na obecny poziom ORAZ pasujące do klasy bohatera
+function generateShopStock(isReroll = false) {
+  const st = getPlayerStats();
+  const availableItems = ITEMS_CATALOG.filter(i =>
+    run.level >= (i.reqLvl || 1) && canClassUseItem(i, run.pClass)
+  );
+  const pool = [...availableItems];
   const chosenItems = [];
+
   while (chosenItems.length < 6 && pool.length > 0) {
     const idx = Math.floor(Math.random() * pool.length);
     chosenItems.push(pool.splice(idx, 1)[0].id);
   }
 
-  // Dodajemy też 2 zwoje umiejętności dla klasy gracza (lub ogólne) z wymaganym poziomem
   const scrollCandidates = SKILLS_DB.filter(sk =>
-    sk.shopScrollLvl !== null && (sk.classReq === 'all' || sk.classReq === run.pClass)
+    !sk.crateOnly &&
+    run.level >= (sk.shopLvl || 1) &&
+    (sk.classReq === 'all' || sk.classReq === run.pClass)
   );
   const chosenScrolls = [];
   const copyScrolls = [...scrollCandidates];
@@ -2476,92 +2676,171 @@ function generateShopStock() {
     chosenScrolls.push(copyScrolls.splice(idx, 1)[0].id);
   }
 
-  run.shopStock = { items: chosenItems, scrolls: chosenScrolls };
+  const luckBonusChance = st.luck * 0.008;
+  const rerollBonus = isReroll ? (0.10 + getTreeLvl('reroll_1') * 0.15) : 0.03;
+  const rareChance = Math.min(0.65, luckBonusChance + rerollBonus);
+
+  let rareFind = null;
+  if (Math.random() < rareChance) {
+    const rRoll = Math.random();
+    const classBooks = SKILLS_DB.filter(s => s.crateOnly && (s.classReq === run.pClass || s.classReq === 'all') && !metaState.unlockedSkills.includes(s.id));
+    if (rRoll < 0.30 && classBooks.length > 0) {
+      const bk = classBooks[Math.floor(Math.random() * classBooks.length)];
+      rareFind = { kind: 'book', skillId: bk.id, price: 140 };
+    } else if (rRoll < 0.65) {
+      rareFind = { kind: 'essence', amount: 6, price: 95 };
+    } else {
+      rareFind = { kind: 'rune', amount: 1, price: 85 };
+    }
+  }
+
+  run.shopStock = { items: chosenItems, scrolls: chosenScrolls, rareFind };
 }
 
 function rerollShop() {
-  const cost = 35 + run.rerolls * 15;
-  if (run.gold < cost) return showToast('Za mało złota na odświeżenie oferty!');
+  const cost = 25 + run.rerolls * 12;
+  if (run.gold < cost) return showToast('Za mało złota na Reroll!');
   run.gold -= cost;
   run.rerolls++;
-  generateShopStock();
+  generateShopStock(true);
   playSfx('click');
   updateRunHud();
   renderGoldShop();
+  if (run.shopStock.rareFind) {
+    showToast('🍀 Szczęście dopisało! W ofercie pojawiła się rzadka okazja dla Twojej klasy!');
+  }
 }
 
 function renderGoldShop() {
   if (!run.shopStock || Array.isArray(run.shopStock)) {
-    generateShopStock();
+    generateShopStock(false);
   }
   const mult = getShopPriceMultiplier();
-  const diff = getDiffConfig(run.difficulty);
+  const st = getPlayerStats();
+  const rareProbPct = Math.min(65, Math.round((st.luck * 0.8 + 10 + getTreeLvl('reroll_1') * 15))).toFixed(0);
+
   document.getElementById('shopEconomyInfo').textContent =
-    `Twój poziom w runie: Poz. ${run.level} | Trudność: ${diff.name} (Złoto w runie x${diff.runGoldMult}, Dropy/Nagrody x${diff.rewardMult}) | Mnożnik cen: x${mult.toFixed(2)}`;
-  document.getElementById('rerollCostLabel').textContent = 35 + run.rerolls * 15;
+    `Klasa: ${run.pClass} | Poziom: ${run.level} | 🍀 Szczęście: ${st.luck} (szansa na rzadki okaz przy rerollu: ~${rareProbPct}%)`;
+  document.getElementById('rerollCostLabel').textContent = 25 + run.rerolls * 12;
 
   const grid = document.getElementById('goldShopGrid');
   grid.innerHTML = '';
 
-  // 1. Przedmioty z wymaganym poziomem w runie
+  const rf = run.shopStock.rareFind;
+  if (rf && !rf.claimed) {
+    const price = Math.max(25, Math.round(rf.price * mult));
+    const canBuy = run.gold >= price;
+    const card = document.createElement('div');
+    card.className = 'item-card rare-find';
+
+    if (rf.kind === 'book') {
+      const sk = SKILLS_DB.find(s => s.id === rf.skillId);
+      const already = metaState.unlockedSkills.includes(rf.skillId);
+      card.innerHTML = `
+        <div>
+          <span class="badge rare-tag">🍀 RZADKI TRAF (${run.pClass})</span>
+          <strong style="color:var(--essence); display:block; margin-top:4px;">📘 ${sk.name}</strong>
+          <p style="font-size:0.78rem; color:var(--text-dim); margin-top:4px;">${sk.desc}</p>
+        </div>
+        <button class="essence-btn" ${(!already && canBuy) ? '' : 'disabled'} onclick="buyRareFind(${price})">${already ? 'Już odblokowane' : `Kup (${price} zl)`}</button>
+      `;
+    } else if (rf.kind === 'essence') {
+      card.innerHTML = `
+        <div>
+          <span class="badge rare-tag">🍀 RZADKI TRAF</span>
+          <strong style="color:var(--essence); display:block; margin-top:4px;">🔮 +${rf.amount} Esencji Otchłani</strong>
+          <p style="font-size:0.78rem; color:var(--text-dim); margin-top:4px;">Rzadka okazja zdobycia Esencji za złoto.</p>
+        </div>
+        <button class="gold-btn" ${canBuy ? '' : 'disabled'} onclick="buyRareFind(${price})">Kup (${price} zl)</button>
+      `;
+    } else if (rf.kind === 'rune') {
+      card.innerHTML = `
+        <div>
+          <span class="badge rare-tag">🍀 RZADKI TRAF</span>
+          <strong style="color:var(--rune); display:block; margin-top:4px;">💠 +${rf.amount} Runa (na kolejne update'y)</strong>
+          <p style="font-size:0.78rem; color:var(--text-dim); margin-top:4px;">Rzadki zasób odłożony pod kolejne aktualizacje.</p>
+        </div>
+        <button class="gold-btn" ${canBuy ? '' : 'disabled'} onclick="buyRareFind(${price})">Kup (${price} zl)</button>
+      `;
+    }
+    grid.appendChild(card);
+  }
+
   (run.shopStock.items || []).forEach(id => {
     const it = getItemById(id);
-    if (!it) return;
-    const reqLvl = it.reqLvl || 1;
-    const lvlUnlocked = run.level >= reqLvl;
+    if (!it || run.level < (it.reqLvl || 1) || !canClassUseItem(it, run.pClass)) return;
     const price = Math.max(5, Math.round(it.price * mult));
-    const canBuy = lvlUnlocked && run.gold >= price;
+    const canBuy = run.gold >= price;
+    const classLabel = it.classes.includes('all') ? 'Wszystkie klasy' : it.classes.join(', ');
 
     const card = document.createElement('div');
-    card.className = 'item-card ' + (!lvlUnlocked ? 'locked-lvl' : '');
+    card.className = 'item-card';
     card.innerHTML = `
       <div>
         <strong>${it.name}</strong>
-        <div style="margin:4px 0;">
-          <span class="badge ${lvlUnlocked ? 'lvl-ok' : 'lvl-lock'}">${lvlUnlocked ? `Wym. Poz. ${reqLvl} (Dostępne)` : `🔒 Wym. Poz. ${reqLvl}`}</span>
+        <div style="margin:3px 0;"><span class="badge class-tag">${classLabel}</span></div>
+        <div style="font-size:0.76rem; color:var(--rune);">
+          ${it.cat} ${it.atk ? `| ATK:+${it.atk}` : ''} ${it.def ? `| DEF:+${it.def}` : ''} ${it.spellBonus ? `| Czar:+${it.spellBonus}%` : ''} ${it.luckBonus ? `| 🍀:+${it.luckBonus}` : ''}
         </div>
-        <div style="font-size:0.76rem; color:var(--rune);">${it.cat} ${it.atk ? `| ATK:+${it.atk}` : ''} ${it.def ? `| DEF:+${it.def}` : ''}</div>
         <p style="font-size:0.78rem; color:var(--text-dim); margin-top:4px;">${it.desc}</p>
       </div>
-      <button class="gold-btn" ${canBuy ? '' : 'disabled'} onclick="buyGoldItem(${it.id}, ${price})">
-        ${lvlUnlocked ? `Kup (${price} zl)` : `Odblokuje się na Poz. ${reqLvl}`}
-      </button>
+      <button class="gold-btn" ${canBuy ? '' : 'disabled'} onclick="buyGoldItem(${it.id}, ${price})">Kup (${price} zl)</button>
     `;
     grid.appendChild(card);
   });
 
-  // 2. Zwoje umiejętności z wymaganym poziomem w runie
   (run.shopStock.scrolls || []).forEach(skillId => {
     const sk = SKILLS_DB.find(s => s.id === skillId);
-    if (!sk) return;
-    const reqLvl = sk.shopScrollLvl || 1;
-    const lvlUnlocked = run.level >= reqLvl;
+    if (!sk || run.level < (sk.shopLvl || 1)) return;
     const alreadyKnown = getUnlockedPlayerSkills().some(s => s.id === sk.id);
-    const price = Math.max(40, Math.round((85 + reqLvl * 35) * mult));
-    const canBuy = lvlUnlocked && !alreadyKnown && run.gold >= price;
+    const price = Math.max(30, Math.round((65 + (sk.shopLvl || 1) * 25) * mult));
+    const canBuy = !alreadyKnown && run.gold >= price;
 
     const card = document.createElement('div');
-    card.className = 'item-card ' + (!lvlUnlocked ? 'locked-lvl' : '');
+    card.className = 'item-card';
     card.innerHTML = `
       <div>
-        <strong style="color:var(--essence);">📜 Zwój: ${sk.name}</strong>
-        <div style="margin:4px 0;">
-          <span class="badge ${lvlUnlocked ? 'lvl-ok' : 'lvl-lock'}">${lvlUnlocked ? `Wym. Poz. ${reqLvl} (Dostępne)` : `🔒 Wym. Poz. ${reqLvl}`}</span>
+        <strong style="color:${sk.kind === 'spell' ? 'var(--mp)' : (sk.kind === 'buff' ? 'var(--luck)' : 'var(--essence)')};">📜 ${sk.name}</strong>
+        <div style="font-size:0.76rem; color:var(--gold); margin-top:2px;">
+          ${sk.kind === 'spell' ? 'Zaklęcie' : (sk.kind === 'buff' ? 'Buff' : 'Atak')} ${sk.aoe ? '• AoE' : ''} • ${getSkillMpCost(sk)} MP
         </div>
-        <div style="font-size:0.76rem; color:var(--gold);">Umiejętność (${sk.mp} MP)</div>
         <p style="font-size:0.78rem; color:var(--text-dim); margin-top:4px;">${sk.desc}</p>
       </div>
-      <button class="essence-btn" ${canBuy ? '' : 'disabled'} onclick="buySkillScroll('${sk.id}', ${price})">
-        ${alreadyKnown ? '✅ Już opanowano' : (lvlUnlocked ? `Naucz się (${price} zl)` : `Odblokuje się na Poz. ${reqLvl}`)}
+      <button class="spell-btn" ${canBuy ? '' : 'disabled'} onclick="buySkillScroll('${sk.id}', ${price})">
+        ${alreadyKnown ? '✅ Już opanowano' : `Naucz się (${price} zl)`}
       </button>
     `;
     grid.appendChild(card);
   });
 }
 
+function buyRareFind(price) {
+  const rf = run.shopStock?.rareFind;
+  if (!rf || rf.claimed || run.gold < price) return;
+  run.gold -= price;
+  rf.claimed = true;
+
+  if (rf.kind === 'book') {
+    if (!metaState.unlockedSkills.includes(rf.skillId)) metaState.unlockedSkills.push(rf.skillId);
+    showToast('Odblokowano rzadką Księgę klasową!');
+  } else if (rf.kind === 'essence') {
+    metaState.essence += rf.amount;
+    showToast(`Otrzymano +${rf.amount} Esencji!`);
+  } else if (rf.kind === 'rune') {
+    metaState.runes += rf.amount;
+    showToast(`Otrzymano +${rf.amount} Runę (na kolejne update'y)!`);
+  }
+
+  saveStorage();
+  saveCurrentRun(false);
+  playSfx('level');
+  updateRunHud();
+  renderGoldShop();
+}
+
 function buyGoldItem(id, price) {
   const it = getItemById(id);
-  if (!it || run.level < (it.reqLvl || 1) || run.gold < price) return;
+  if (!it || run.level < (it.reqLvl || 1) || !canClassUseItem(it, run.pClass) || run.gold < price) return;
   run.gold -= price;
   addItemToBag(id, 1);
   playSfx('buy');
@@ -2573,7 +2852,7 @@ function buyGoldItem(id, price) {
 
 function buySkillScroll(skillId, price) {
   const sk = SKILLS_DB.find(s => s.id === skillId);
-  if (!sk || run.level < (sk.shopScrollLvl || 1) || run.gold < price) return;
+  if (!sk || run.level < (sk.shopLvl || 1) || run.gold < price) return;
   if (!Array.isArray(run.learnedScrollSkills)) run.learnedScrollSkills = [];
   if (run.learnedScrollSkills.includes(skillId)) return;
   run.gold -= price;
@@ -2582,15 +2861,15 @@ function buySkillScroll(skillId, price) {
   saveCurrentRun(false);
   updateRunHud();
   renderGoldShop();
-  showToast(`Opanowano umiejętność: ${sk.name}!`);
+  showToast(`Opanowano: ${sk.name}!`);
 }
 
 function renderForge() {
   const grid = document.getElementById('forgeGrid');
   const slots = [
-    { key: 'weapon', label: 'Założona Broń', item: getItemById(run.equipped.weapon), bonusText: '+4 ATK za poziom' },
-    { key: 'shield', label: 'Założona Tarcza', item: getItemById(run.equipped.shield), bonusText: '+3 DEF za poziom' },
-    { key: 'armor',  label: 'Założony Pancerz', item: getItemById(run.equipped.armor), bonusText: '+3 DEF za poziom' }
+    { key: 'weapon', label: 'Założona Broń',   item: getItemById(run.equipped.weapon), bonusText: '+4 ATK za poziom' },
+    { key: 'shield', label: 'Założona Tarcza / Fokus',  item: getItemById(run.equipped.shield), bonusText: '+3 DEF za poziom' },
+    { key: 'armor',  label: 'Założony Pancerz / Szata', item: getItemById(run.equipped.armor),  bonusText: '+3 DEF za poziom' }
   ];
 
   grid.innerHTML = slots.map(s => {
@@ -2598,30 +2877,29 @@ function renderForge() {
       return `<div class="item-card"><strong>${s.label}</strong><p style="color:var(--text-dim); font-size:0.82rem;">Brak założonego przedmiotu w tym slocie.</p></div>`;
     }
     const curUpg = run.upgrades[s.key] || 0;
-    const runeCost = 1 + Math.floor(curUpg / 2);
+    const goldCost = 45 + curUpg * 35;
     return `
       <div class="item-card">
         <div>
-          <strong style="color:var(--rune);">${s.item.name} (+${curUpg})</strong>
-          <div style="font-size:0.8rem; color:var(--gold); margin:4px 0;">${s.bonusText}</div>
-          <p style="font-size:0.78rem; color:var(--text-dim);">Koszt ulepszenia: ${runeCost} 💠 Run</p>
+          <strong style="color:var(--gold);">${s.item.name} (+${curUpg})</strong>
+          <div style="font-size:0.8rem; color:var(--hp); margin:4px 0;">${s.bonusText}</div>
+          <p style="font-size:0.78rem; color:var(--text-dim);">Koszt wykucia: <strong>${goldCost} zl</strong> (monety)</p>
         </div>
-        <button class="primary" ${metaState.runes >= runeCost ? '' : 'disabled'} onclick="upgradeGearWithRune('${s.key}', ${runeCost})">Ulepsz (+1)</button>
+        <button class="gold-btn" ${run.gold >= goldCost ? '' : 'disabled'} onclick="upgradeGearWithGold('${s.key}', ${goldCost})">Ulepsz (+1) za ${goldCost} zl</button>
       </div>
     `;
   }).join('');
 }
 
-function upgradeGearWithRune(slotKey, cost) {
-  if (metaState.runes < cost) return;
-  metaState.runes -= cost;
+function upgradeGearWithGold(slotKey, cost) {
+  if (run.gold < cost) return;
+  run.gold -= cost;
   run.upgrades[slotKey] = (run.upgrades[slotKey] || 0) + 1;
-  saveStorage();
   saveCurrentRun(false);
   playSfx('level');
   updateRunHud();
   renderForge();
-  showToast('Wykuto ulepszenie w Kuźni Runicznej!');
+  showToast('Wykuto ulepszenie w Kuźni za monety!');
 }
 
 function updateSettings() {
